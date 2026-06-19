@@ -1,0 +1,124 @@
+import { SiInstagram, SiFacebook, SiTiktok } from "react-icons/si";
+import { useLang } from "@/context/LanguageContext";
+
+export function Footer() {
+  const { lang } = useLang();
+
+  const t = {
+    tagline: {
+      it: "Paninoteca take-away specializzata in panini alla brace. La vera Cheesesteak americana arriva a Rimini.",
+      en: "Take-away sandwich shop specialising in grilled sandwiches. The real American Cheesesteak comes to Rimini.",
+    },
+    locations: { it: "SEDI", en: "LOCATIONS" },
+    hours:     { it: "ORARI",    en: "HOURS" },
+    contact:   { it: "CONTATTI", en: "CONTACT" },
+    rights:    { it: "Tutti i diritti riservati.", en: "All rights reserved." },
+    rimini_hours: {
+      it: "Lun: 18:00 – 05:00\nMar: 18:00 – 05:00\nMer: 18:00 – 05:00\nGio: 18:00 – 05:00\nVen: 18:00 – 05:00\nSab: 18:00 – 05:00\nDom: 18:00 – 05:00",
+      en: "Mon: 6 pm – 5 am\nTue: 6 pm – 5 am\nWed: 6 pm – 5 am\nThu: 6 pm – 5 am\nFri: 6 pm – 5 am\nSat: 6 pm – 5 am\nSun: 6 pm – 5 am",
+    },
+    santa_hours: {
+      it: "Lun: 18:00 – 23:30\nMar: Chiuso\nMer: 18:00 – 23:30\nGio: 18:00 – 23:30\nVen: 18:00 – 02:30\nSab: 18:00 – 02:30\nDom: 18:00 – 23:30",
+      en: "Mon: 6–11:30 pm\nTue: Closed\nWed: 6–11:30 pm\nThu: 6–11:30 pm\nFri: 6 pm – 2:30 am\nSat: 6 pm – 2:30 am\nSun: 6–11:30 pm",
+    },
+  };
+
+  return (
+    <footer className="bg-card border-t border-border/60 py-16 mt-24">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+        {/* Brand */}
+        <div className="md:col-span-1">
+          <div className="navbar-wood inline-flex items-center justify-center p-2 rounded-sm">
+            <img
+              src="/images/logo-transparent.png"
+              alt="Officina del Panino"
+              className="w-52 h-auto"
+              style={{ filter: "drop-shadow(0 0 5px #ffffff) drop-shadow(0 0 12px #fff5cc) drop-shadow(0 0 24px #ffd060) drop-shadow(0 0 40px #ffaa20)" }}
+            />
+          </div>
+          <p className="text-primary font-display text-sm tracking-widest mt-3 mb-2 uppercase">Dal 2019</p>
+          <p className="text-muted-foreground text-sm leading-relaxed">{t.tagline[lang]}</p>
+        </div>
+
+        {/* Rimini */}
+        <div>
+          <h4 className="font-display text-base mb-4 uppercase tracking-wider text-primary">Rimini</h4>
+          <address className="not-italic text-muted-foreground space-y-1 text-sm">
+            <a href="https://www.google.com/maps/search/?api=1&query=Via+Circonvallazione+Occidentale+70+Rimini" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline underline-offset-2">Via Circonvallazione Occ. 70</a>
+            <p className="pt-1">Tel: 0541 141 9757</p>
+          </address>
+          <div className="mt-4 text-sm text-muted-foreground space-y-1">
+            {t.rimini_hours[lang].split("\n").map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </div>
+        </div>
+
+        {/* Santarcangelo */}
+        <div>
+          <h4 className="font-display text-base mb-4 uppercase tracking-wider text-primary">Santarcangelo</h4>
+          <address className="not-italic text-muted-foreground space-y-1 text-sm">
+            <a href="https://www.google.com/maps/search/?api=1&query=Piazza+Guglielmo+Marconi+10+Santarcangelo+di+Romagna" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline underline-offset-2">P.za G. Marconi, 10<br/>47822 Santarcangelo di Romagna</a>
+            <p className="pt-1">Tel: 0541 184 0930</p>
+          </address>
+          <div className="mt-4 text-sm text-muted-foreground space-y-1">
+            {t.santa_hours[lang].split("\n").map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </div>
+        </div>
+
+        {/* Social & Order */}
+        <div>
+          <h4 className="font-display text-base mb-4 uppercase tracking-wider">{lang === "it" ? "SEGUICI" : "FOLLOW US"}</h4>
+          <div className="flex gap-4 mb-6">
+            <a
+              href="https://www.instagram.com/officinadelpanino.rimini/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              data-testid="social-instagram"
+              className="w-10 h-10 bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+            >
+              <SiInstagram size={18} />
+            </a>
+            <a
+              href="https://www.facebook.com/officinadelpaninorimini/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              data-testid="social-facebook"
+              className="w-10 h-10 bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+            >
+              <SiFacebook size={18} />
+            </a>
+            <a
+              href="https://www.tiktok.com/@officinadelpanino"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              data-testid="social-tiktok"
+              className="w-10 h-10 bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+            >
+              <SiTiktok size={18} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-border text-center text-xs text-muted-foreground flex flex-col md:flex-row justify-between items-center gap-4">
+        <p>&copy; {new Date().getFullYear()} Officina del Panino. {t.rights[lang]}</p>
+        <a
+          href="https://www.instagram.com/fabioshkurta7/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-center gap-2 text-muted-foreground/60 hover:text-primary transition-colors duration-300"
+        >
+          <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+          <span className="font-display text-[10px] tracking-[0.25em] uppercase">Website Designed by Fabio Shkurta</span>
+          <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
+        </a>
+      </div>
+    </footer>
+  );
+}

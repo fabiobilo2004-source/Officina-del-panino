@@ -1,0 +1,13 @@
+[build]
+  command = "PORT=3000 BASE_PATH=/ npx vite build --config vite.config.ts"
+  publish = "dist/public"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PORT = "3000"
+  BASE_PATH = "/"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Inter:wght@400;500;600&family=Abril+Fatface&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-display: var(--app-font-display);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --button-outline: rgba(255,255,255, .10);
+  --badge-outline: rgba(255,255,255, .05);
+  --opaque-button-border-intensity: 9;
+  --elevate-1: rgba(255,255,255, .04);
+  --elevate-2: rgba(255,255,255, .09);
+
+  /* Warm espresso dark — not pure black */
+  --background: 25 22% 11%;
+  --foreground: 40 25% 94%;
+  --border: 25 20% 20%;
+  --card: 25 18% 15%;
+  --card-foreground: 40 25% 94%;
+  --card-border: 25 20% 20%;
+
+  --popover: 25 18% 15%;
+  --popover-foreground: 40 25% 94%;
+  --popover-border: 25 20% 20%;
+
+  /* Warm red C0392B */
+  --primary: 5 66% 46%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 25 15% 22%;
+  --secondary-foreground: 40 25% 94%;
+
+  --muted: 25 18% 18%;
+  --muted-foreground: 30 10% 62%;
+
+  --accent: 5 66% 46%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --input: 25 15% 22%;
+  --ring: 5 66% 46%;
+
+  --app-font-sans: 'Inter', sans-serif;
+  --app-font-display: 'Oswald', sans-serif;
+  --app-font-serif: Georgia, serif;
+  --radius: 0.25rem; 
+
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+}
+
+/* Force dark mode colors always since it's a late night vibe */
+.dark {
+  --background: 25 22% 11%;
+  --foreground: 40 25% 94%;
+  --border: 25 20% 20%;
+  --card: 25 18% 15%;
+  --card-foreground: 40 25% 94%;
+  --card-border: 25 20% 20%;
+  --popover: 25 18% 15%;
+  --popover-foreground: 40 25% 94%;
+  --popover-border: 25 20% 20%;
+  --primary: 5 66% 46%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 25 15% 22%;
+  --secondary-foreground: 40 25% 94%;
+  --muted: 25 18% 18%;
+  --muted-foreground: 30 10% 62%;
+  --accent: 5 66% 46%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --input: 25 15% 22%;
+  --ring: 5 66% 46%;
+}
+
+/* Light theme override for the Menu page — warm sandy beige like the printed menu */
+.menu-light {
+  --background: 38 38% 82%;
+  --foreground: 0 0% 8%;
+  --card: 38 30% 90%;
+  --card-foreground: 0 0% 8%;
+  --card-border: 38 25% 65%;
+  --border: 38 25% 65%;
+  --muted: 38 28% 86%;
+  --muted-foreground: 0 0% 22%;
+}
+
+/* Navbar wood grain texture */
+.navbar-wood {
+  background-color: #6B3A1E;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0) 0px,        rgba(0,0,0,0) 15px,
+      rgba(0,0,0,0.18) 15px,    rgba(0,0,0,0.18) 16px,
+      rgba(255,255,255,0.05) 16px, rgba(255,255,255,0.05) 18px,
+      rgba(0,0,0,0) 18px,        rgba(0,0,0,0) 35px,
+      rgba(0,0,0,0.12) 35px,    rgba(0,0,0,0.12) 36px,
+      rgba(255,255,255,0.03) 36px, rgba(255,255,255,0.03) 37px
+    ),
+    repeating-linear-gradient(
+      176deg,
+      rgba(0,0,0,0) 0px, rgba(0,0,0,0) 10px,
+      rgba(0,0,0,0.06) 10px, rgba(0,0,0,0.06) 11px,
+      rgba(0,0,0,0) 11px, rgba(0,0,0,0) 26px,
+      rgba(80,35,10,0.10) 26px, rgba(80,35,10,0.10) 27px
+    ),
+    linear-gradient(to right, #5A2E12, #7A4222 28%, #6B3818 58%, #7A4020 80%, #5A2E12);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Text selection brand color */
+::selection {
+  background: hsl(5 66% 46% / 0.3);
+  color: hsl(40 20% 95%);
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 32s linear infinite;
+  will-change: transform;
+}
+@media (max-width: 767px) {
+  .marquee-track {
+    animation-duration: 16s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .gear-cw,
+  .gear-ccw,
+  .gear-cw-fast,
+  .wrench-swing {
+    animation: none;
+  }
+}
+
+@keyframes gear-cw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes gear-ccw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+@keyframes wrench-swing {
+  0%, 100% { transform: rotate(-18deg); }
+  50%       { transform: rotate(18deg); }
+}
+.gear-cw  { animation: gear-cw  18s linear infinite; transform-origin: center; }
+.gear-ccw { animation: gear-ccw 12s linear infinite; transform-origin: center; }
+.gear-cw-fast  { animation: gear-cw  8s linear infinite; transform-origin: center; }
+.wrench-swing  { animation: wrench-swing 3s ease-in-out infinite; transform-origin: 50% 80%; }
+
+@layer base {
+  * {
+    @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+  #root {
+    overflow-x: hidden;
+  }
+  button, a, [role="button"] {
+    touch-action: manipulation;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--app-font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
