@@ -33,7 +33,7 @@ export function Footer() {
               src="/images/logo-transparent.png"
               alt="Officina del Panino"
               className="w-52 h-auto"
-              style={{ filter: "drop-shadow(0 0 5px #ffffff) drop-shadow(0 0 12px #fff5cc) drop-shadow(0 0 24px #ffd060) drop-shadow(0 0 40px #ffaa20)" }}
+              style={{ filter: "drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 4px #fff5cc) drop-shadow(0 0 6px #ffd060) drop-shadow(0 0 8px #ffaa20)" }}
             />
           </div>
           <p className="text-primary font-display text-sm tracking-widest mt-3 mb-2 uppercase">Dal 2019</p>

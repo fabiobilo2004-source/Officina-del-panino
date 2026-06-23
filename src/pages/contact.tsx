@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Phone, Clock, Volume2, VolumeX } from "lucide-react";
+import { MapPin, Phone, Clock, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { SiInstagram, SiFacebook, SiJusteat, SiTiktok } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
 
@@ -144,11 +144,46 @@ export default function Contact() {
   const [activeLocation, setActiveLocation] = useState<LocationKey>("rimini");
   const [direction, setDirection] = useState(0);
   const [now, setNow] = useState(() => new Date());
-  const [videoMuted, setVideoMuted] = useState(true);
+  const [videoMuted, setVideoMuted] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likeAnim, setLikeAnim] = useState(false);
+  const baseLikes = activeLocation === "rimini" ? 36000 : 47000;
+  const [likeCount, setLikeCount] = useState(baseLikes);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
+  const handlePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play().catch(() => {});
+      setVideoPlaying(true);
+    } else {
+      v.pause();
+      setVideoPlaying(false);
+    }
+  };
+
+  useEffect(() => {
+    setVideoPlaying(false);
+    setLiked(false);
+    setLikeCount(activeLocation === "rimini" ? 36000 : 47000);
+  }, [activeLocation]);
+
+  const handleLike = () => {
+    setLiked(prev => {
+      setLikeCount(c => prev ? c - 1 : c + 1);
+      return !prev;
+    });
+    setLikeAnim(true);
+    setTimeout(() => setLikeAnim(false), 300);
+  };
+
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 60_000);
     return () => clearInterval(id);
   }, []);
+
 
   const switchLocation = (key: LocationKey) => {
     const keys: LocationKey[] = ["rimini", "santarcangelo"];
@@ -230,7 +265,8 @@ export default function Contact() {
               <img
                 src={loc.photo}
                 alt={lang === "it" ? loc.nameIt : loc.nameEn}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover"
+                style={isRimini ? { objectPosition: "center 25%" } : { objectPosition: "center" }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
               <div className="absolute bottom-8 left-8 md:left-16">
@@ -366,16 +402,48 @@ export default function Contact() {
 
                       {/* Video */}
                       {isRimini ? (
-                        <video autoPlay muted loop playsInline preload="none" src="/videos/rimini.mov"
-                          className="absolute inset-0 w-full h-full object-cover"
-                          ref={(el) => { if (el) el.playbackRate = 0.6; }} />
+                        <video
+                          ref={videoRef}
+                          playsInline preload="auto"
+                          muted
+                          src="/videos/rimini.mp4"
+                          className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+                          onClick={handlePlay}
+                          onEnded={() => setVideoPlaying(false)}
+                          onLoadedMetadata={(e) => { (e.target as HTMLVideoElement).playbackRate = 0.5; }} />
                       ) : (
-                        <video autoPlay muted={videoMuted} loop playsInline preload="none" src="/videos/santarcangelo.mp4"
-                          className="absolute inset-0 w-full h-full object-cover" />
+                        <video
+                          ref={videoRef}
+                          playsInline preload="auto"
+                          muted={videoMuted}
+                          src="/videos/santarcangelo.mp4"
+                          className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+                          onClick={handlePlay}
+                          onEnded={() => setVideoPlaying(false)} />
                       )}
 
                       {/* Gradient overlay bottom */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+
+                      {/* Play/Pause button */}
+                      <button
+                        onClick={handlePlay}
+                        className={`absolute inset-0 flex items-center justify-center z-20 transition-opacity duration-200 ${videoPlaying ? "opacity-0 hover:opacity-100" : "opacity-100"}`}
+                      >
+                        {videoPlaying
+                          ? <Pause size={40} className="text-white drop-shadow-lg" fill="white" />
+                          : <Play size={40} className="text-white drop-shadow-lg ml-1" fill="white" />
+                        }
+                      </button>
+                      {/* Volume button — solo Santarcangelo */}
+                      {!isRimini && (
+                        <button
+                          onClick={() => setVideoMuted(m => !m)}
+                          className="absolute bottom-10 right-3 z-30 w-7 h-7 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+                        >
+                          {videoMuted ? <VolumeX size={13} /> : <Volume2 size={13} />}
+                        </button>
+                      )}
 
                       {/* Top bar */}
                       <div className="absolute top-0 left-0 right-0 flex items-center justify-center px-3 pt-4 pb-2 z-10">
@@ -383,7 +451,7 @@ export default function Contact() {
                       </div>
 
                       {/* Right side actions */}
-                      <div className="absolute right-2 bottom-20 flex flex-col items-center gap-4 z-10">
+                      <div className="absolute right-2 bottom-20 flex flex-col items-center gap-4 z-30">
                         {/* Avatar */}
                         <div className="relative mb-1">
                           <div className="w-9 h-9 rounded-full bg-black border-2 border-white overflow-hidden flex items-center justify-center">
@@ -394,18 +462,30 @@ export default function Contact() {
                           </div>
                         </div>
                         {/* Heart */}
-                        <div className="flex flex-col items-center gap-0.5">
+                        <button onClick={handleLike} className="flex flex-col items-center gap-0.5 active:scale-90 transition-transform">
                           <div className="w-8 h-8 flex items-center justify-center">
-                            <svg viewBox="0 0 24 24" className="w-7 h-7 fill-white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            <svg
+                              viewBox="0 0 24 24"
+                              className="w-7 h-7 transition-all duration-200"
+                              style={{
+                                fill: liked ? "#fe2c55" : "white",
+                                transform: likeAnim ? "scale(1.4)" : "scale(1)",
+                                filter: liked ? "drop-shadow(0 0 6px #fe2c55)" : "none",
+                              }}
+                            >
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
                           </div>
-                          <span className="text-white text-[10px] font-semibold">47.2K</span>
-                        </div>
+                          <span className="text-white text-[10px] font-semibold">
+                            {likeCount >= 1000 ? `${(likeCount / 1000).toFixed(1)}K` : likeCount}
+                          </span>
+                        </button>
                         {/* Comment */}
                         <div className="flex flex-col items-center gap-0.5">
                           <div className="w-8 h-8 flex items-center justify-center">
                             <svg viewBox="0 0 24 24" className="w-7 h-7 fill-white"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                           </div>
-                          <span className="text-white text-[10px] font-semibold">1.2K</span>
+                          <span className="text-white text-[10px] font-semibold">{isRimini ? "847" : "1.3K"}</span>
                         </div>
                         {/* Share */}
                         <div className="flex flex-col items-center gap-0.5">
@@ -432,13 +512,6 @@ export default function Contact() {
                         </div>
                       </div>
 
-                      {/* Mute button Santarcangelo */}
-                      {!isRimini && (
-                        <button onClick={() => setVideoMuted((m) => !m)}
-                          className="absolute top-12 right-3 w-7 h-7 bg-black/50 text-white flex items-center justify-center rounded-full z-20">
-                          {videoMuted ? <VolumeX size={13} /> : <Volume2 size={13} />}
-                        </button>
-                      )}
 
                       {/* Home bar */}
                       <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-16 h-1 bg-white/40 rounded-full z-10" />

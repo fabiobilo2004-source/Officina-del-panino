@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Officina del Panino Rimini"
+version = "1.0.0"
+id = "artifacts/officina-del-panino"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19747
+
+[services.development]
+run = "pnpm --filter @workspace/officina-del-panino run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/officina-del-panino", "run", "build" ]
+publicDir = "artifacts/officina-del-panino/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19747"
+BASE_PATH = "/"

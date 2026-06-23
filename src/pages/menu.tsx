@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useLang } from "@/context/LanguageContext";
 
 function BestSellerCard({
@@ -12,15 +12,15 @@ function BestSellerCard({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
-  const x = useTransform(scrollYProgress, [0, 0.8, 1], [direction === "left" ? -350 : 350, 0, 0]);
-  const opacity = useTransform(scrollYProgress, [0.05, 0.65, 1], [0, 1, 1]);
+  const x = useTransform(scrollYProgress, [0, 1], [direction === "left" ? -300 : 300, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
   return (
     <div ref={ref} className="flex flex-col">
-      <div className="relative h-56 flex items-end justify-center">
+      <div className="relative h-64 flex items-center justify-center" style={{ isolation: "isolate" }}>
         <motion.img
           src={imgSrc}
           alt={item.name}
-          className="h-48 w-auto object-contain drop-shadow-2xl"
+          className="h-[250px] w-auto max-w-[250px] object-contain drop-shadow-2xl"
           style={{ x, opacity }}
         />
       </div>
@@ -208,24 +208,17 @@ export default function Menu() {
   const sfiziRef    = useRef<HTMLDivElement>(null);
   const insalateRef = useRef<HTMLDivElement>(null);
   const drinksRef   = useRef<HTMLDivElement>(null);
-  // Scroll-driven entrance: panini fly in from outside as section scrolls into view
-  const { scrollYProgress: paniniScrollProgress } = useScroll({
-    target: paniniRef,
-    offset: ["start end", "center center"],
-  });
+  const { scrollYProgress: paniniProgress } = useScroll({ target: paniniRef, offset: ["start end", "center center"] });
 
-  // Chiave (left): flies in from left
-  const s0x   = useTransform(paniniScrollProgress, [0, 0.8, 1], [-600, 0, 0]);
-  const s0rot = useTransform(paniniScrollProgress, [0, 0.8, 1], [-18, 0, 0]);
-  const s0op  = useTransform(paniniScrollProgress, [0.05, 0.6, 1], [0, 1, 1]);
-  // Trapano (center): flies in from below
-  const s1y   = useTransform(paniniScrollProgress, [0, 0.8, 1], [280, 0, 0]);
-  const s1rot = useTransform(paniniScrollProgress, [0, 0.8, 1], [12, 0, 0]);
-  const s1op  = useTransform(paniniScrollProgress, [0.1, 0.65, 1], [0, 1, 1]);
-  // Bullone (right): flies in from right
-  const s2x   = useTransform(paniniScrollProgress, [0, 0.8, 1], [600, 0, 0]);
-  const s2rot = useTransform(paniniScrollProgress, [0, 0.8, 1], [18, 0, 0]);
-  const s2op  = useTransform(paniniScrollProgress, [0.05, 0.6, 1], [0, 1, 1]);
+  const s0x   = useTransform(paniniProgress, [0, 1], [-600, 0]);
+  const s0rot = useTransform(paniniProgress, [0, 1], [-18, 0]);
+  const s0op  = useTransform(paniniProgress, [0, 0.6], [0, 1]);
+  const s1y   = useTransform(paniniProgress, [0, 1], [280, 0]);
+  const s1rot = useTransform(paniniProgress, [0, 1], [12, 0]);
+  const s1op  = useTransform(paniniProgress, [0.05, 0.65], [0, 1]);
+  const s2x   = useTransform(paniniProgress, [0, 1], [600, 0]);
+  const s2rot = useTransform(paniniProgress, [0, 1], [18, 0]);
+  const s2op  = useTransform(paniniProgress, [0, 0.6], [0, 1]);
 
   const [tier, setTier] = useState<"basic" | "premium">("basic");
   const [selected, setSelected] = useState<{
@@ -354,19 +347,18 @@ export default function Menu() {
                 const imgSrc = item.name === "Trapano" ? "/images/panino-trapano.png"
                              : item.name === "Bullone" ? "/images/panino-bullone.png"
                              : "/images/panino-chiave.png";
-                const pStyle = i === 0
-                  ? { x: s0x, rotate: s0rot, opacity: s0op }
-                  : i === 1
-                  ? { y: s1y, rotate: s1rot, opacity: s1op }
-                  : { x: s2x, rotate: s2rot, opacity: s2op };
                 return (
                   <div key={i} className="flex flex-col">
-                    <div className="relative h-56 flex items-end justify-center">
+                    <div className="relative h-64 flex items-center justify-center" style={{ isolation: "isolate" }}>
                       <motion.img
                         src={imgSrc}
                         alt={item.name}
-                        className="h-48 w-auto object-contain drop-shadow-2xl"
-                        style={pStyle}
+                        className="h-[250px] w-auto max-w-[250px] object-contain drop-shadow-2xl"
+                        style={
+                          i === 0 ? { x: s0x, rotate: s0rot, opacity: s0op } :
+                          i === 1 ? { y: s1y, rotate: s1rot, opacity: s1op } :
+                                    { x: s2x, rotate: s2rot, opacity: s2op }
+                        }
                       />
                     </div>
                     <div className="pt-5 mt-2 border-t border-primary/50">
@@ -640,15 +632,6 @@ export default function Menu() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <div className="flex items-end gap-4 border-b border-border pb-4 mb-6">
               <h2 className="text-3xl font-display flex-1">{t.birre[lang]}</h2>
-              <motion.img
-                src="/images/birra.png"
-                alt="Birra"
-                className="h-24 w-auto object-contain drop-shadow-xl flex-shrink-0"
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              />
             </div>
             <div className="space-y-4">
               {menuData.birre.map((item, i) => (
@@ -664,15 +647,6 @@ export default function Menu() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <div className="flex items-end gap-4 border-b border-border pb-4 mb-6">
               <h2 className="text-3xl font-display flex-1">{t.vini[lang]}</h2>
-              <motion.img
-                src="/images/vino.png"
-                alt="Vino"
-                className="h-24 w-auto object-contain drop-shadow-xl flex-shrink-0 translate-x-[1cm]"
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              />
             </div>
             <div className="space-y-4">
               {menuData.vini.map((item, i) => (
@@ -698,6 +672,24 @@ export default function Menu() {
             </div>
           </motion.div>
         </div>
+
+        {/* Download Menu */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mt-20 mb-4"
+        >
+          <a
+            href="/images/menu.jpg"
+            download="menu-officina-del-panino.jpg"
+            className="inline-flex items-center gap-2 border border-primary text-primary font-display text-sm tracking-widest uppercase px-6 py-3 hover:bg-primary hover:text-white transition-colors duration-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            {lang === "it" ? "Scarica Menu" : "Download Menu"}
+          </a>
+        </motion.div>
 
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu as MenuIcon, X } from "lucide-react";
+import { SiInstagram, SiFacebook, SiTiktok } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
 
 export function Navbar() {
@@ -45,7 +46,7 @@ export function Navbar() {
             className="h-[68px] md:h-20 w-auto"
             onLoad={() => setLogoLoaded(true)}
             style={{
-              filter: logoLoaded ? "drop-shadow(0 0 5px #ffffff) drop-shadow(0 0 12px #fff5cc) drop-shadow(0 0 24px #ffd060) drop-shadow(0 0 40px #ffaa20)" : "none",
+              filter: logoLoaded ? "drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 4px #fff5cc) drop-shadow(0 0 6px #ffd060) drop-shadow(0 0 8px #ffaa20)" : "none",
               overflow: "visible",
               transition: "filter 0.4s ease",
             }}
@@ -66,6 +67,19 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+
+          {/* Social icons */}
+          <div className="flex items-center gap-3 border-l border-[#f5e6d8]/20 pl-6">
+            <a href="https://www.instagram.com/officinadelpanino.rimini/" target="_blank" rel="noopener noreferrer" className="text-[#f5e6d8]/70 hover:text-white transition-colors">
+              <SiInstagram size={16} />
+            </a>
+            <a href="https://www.facebook.com/officinadelpaninorimini/" target="_blank" rel="noopener noreferrer" className="text-[#f5e6d8]/70 hover:text-white transition-colors">
+              <SiFacebook size={16} />
+            </a>
+            <a href="https://www.tiktok.com/@officinadelpanino" target="_blank" rel="noopener noreferrer" className="text-[#f5e6d8]/70 hover:text-white transition-colors">
+              <SiTiktok size={16} />
+            </a>
+          </div>
 
           <button
             onClick={() => setLang(lang === "it" ? "en" : "it")}
@@ -111,6 +125,17 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+          <div className="flex items-center gap-5 pt-2 border-t border-[#f5e6d8]/20 mt-2">
+            <a href="https://www.instagram.com/officinadelpanino.rimini/" target="_blank" rel="noopener noreferrer" className="text-[#f5e6d8]/80 hover:text-white transition-colors">
+              <SiInstagram size={20} />
+            </a>
+            <a href="https://www.facebook.com/officinadelpaninorimini/" target="_blank" rel="noopener noreferrer" className="text-[#f5e6d8]/80 hover:text-white transition-colors">
+              <SiFacebook size={20} />
+            </a>
+            <a href="https://www.tiktok.com/@officinadelpanino" target="_blank" rel="noopener noreferrer" className="text-[#f5e6d8]/80 hover:text-white transition-colors">
+              <SiTiktok size={20} />
+            </a>
+          </div>
         </div>
       )}
     </nav>

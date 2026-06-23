@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { ChevronLeft, ChevronRight, ChevronDown, X, ZoomIn, Phone } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronDown, X, ZoomIn, Phone, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { SiTripadvisor, SiGoogle, SiJusteat } from "react-icons/si";
@@ -75,6 +75,7 @@ function getLiveStatus(days: { key: string; it: string; en: string; time: string
 
 const creazioniImages = [
   "/images/creazioni-spread.jpg",
+  "/images/paniniinsalata.jpg",
   "/images/creazioni-vicini.jpg",
   "/images/creazioni-castello.png",
   "/images/panini-trio.jpg",
@@ -148,6 +149,13 @@ function StoryImage() {
   const isInView = useInView(ref, { once: true, margin: "-20%" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const imgY = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+  const [colored, setColored] = useState(false);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const t = setTimeout(() => setColored(true), 1000);
+    return () => clearTimeout(t);
+  }, [isInView]);
 
   return (
     <div ref={ref} className="aspect-square overflow-hidden">
@@ -155,7 +163,7 @@ function StoryImage() {
         src="/images/storia-fondatori.jpg"
         alt="I fondatori di Officina del Panino Rimini"
         className="w-full h-[120%] -mt-[10%] object-cover transition-[filter] duration-1000"
-        style={{ filter: isInView ? "grayscale(0%)" : "grayscale(80%)", y: imgY }}
+        style={{ filter: colored ? "grayscale(0%)" : "grayscale(100%)", y: imgY }}
       />
     </div>
   );
@@ -208,42 +216,40 @@ export default function Home() {
     });
   }, []);
 
-  // Lavorazione video: play only when in view
-  useEffect(() => {
+  const [lavorazionePlaying, setLavorazionePlaying] = useState(false);
+  const [lavorazioneMuted, setLavorazioneMuted] = useState(false);
+  const panegiustoVideoRef = useRef<HTMLVideoElement>(null);
+  const [panegiustoPlaying, setPanegiustoPlaying] = useState(false);
+  const [panegiustoMuted, setPanegiustoMuted] = useState(false);
+
+  const handlePanegiustoPlay = () => {
+    const v = panegiustoVideoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play().catch(() => {});
+      setPanegiustoPlaying(true);
+    } else {
+      v.pause();
+      setPanegiustoPlaying(false);
+    }
+  };
+
+  const handleLavorazionePlay = () => {
     const v = lavorazioneVideoRef.current;
     if (!v) return;
-    v.muted = true;
-    v.playsInline = true;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          v.play().catch(() => {});
-        } else {
-          v.pause();
-        }
-      },
-      { threshold: 0.3 }
-    );
-    observer.observe(v);
-    return () => observer.disconnect();
-  }, []);
+    if (v.paused) {
+      v.play().catch(() => {});
+      setLavorazionePlaying(true);
+    } else {
+      v.pause();
+      setLavorazionePlaying(false);
+    }
+  };
   const getCardW = (el: HTMLDivElement) => {
     const card = el.firstElementChild as HTMLElement | null;
     return (card?.offsetWidth ?? 288) + 16;
   };
 
-  const isResettingReview = useRef(false);
-  const isResettingTrip   = useRef(false);
-
-  // Init both carousels at the start of the middle set
-  useEffect(() => {
-    const init = (el: HTMLDivElement | null, len: number) => {
-      if (!el) return;
-      setTimeout(() => { el.scrollLeft = getCardW(el) * len; }, 0);
-    };
-    init(reviewScrollRef.current, reviewsList.length);
-    init(tripReviewScrollRef.current, tripReviewsList.length);
-  }, []);
 
   useEffect(() => {
     if (lightboxIdx === null) return;
@@ -256,35 +262,6 @@ export default function Home() {
     return () => document.removeEventListener("keydown", onKey);
   }, [lightboxIdx]);
 
-  const handleReviewScroll = () => {
-    const el = reviewScrollRef.current;
-    if (!el || isResettingReview.current) return;
-    const setW = getCardW(el) * reviewsList.length;
-    if (el.scrollLeft < setW) {
-      isResettingReview.current = true;
-      el.scrollLeft += setW;
-      setTimeout(() => { isResettingReview.current = false; }, 50);
-    } else if (el.scrollLeft >= setW * 2) {
-      isResettingReview.current = true;
-      el.scrollLeft -= setW;
-      setTimeout(() => { isResettingReview.current = false; }, 50);
-    }
-  };
-
-  const handleTripScroll = () => {
-    const el = tripReviewScrollRef.current;
-    if (!el || isResettingTrip.current) return;
-    const setW = getCardW(el) * tripReviewsList.length;
-    if (el.scrollLeft < setW) {
-      isResettingTrip.current = true;
-      el.scrollLeft += setW;
-      setTimeout(() => { isResettingTrip.current = false; }, 50);
-    } else if (el.scrollLeft >= setW * 2) {
-      isResettingTrip.current = true;
-      el.scrollLeft -= setW;
-      setTimeout(() => { isResettingTrip.current = false; }, 50);
-    }
-  };
 
   const scrollReviews = (dir: "left" | "right") => {
     const el = reviewScrollRef.current;
@@ -324,7 +301,7 @@ export default function Home() {
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             poster="/images/hero-insegna.jpg"
             src="/videos/officina-video.mp4"
             className={`w-full h-full object-cover${isMobile ? "" : " scale-[1.35]"}`}
@@ -484,6 +461,7 @@ export default function Home() {
                   <img
                     src={src}
                     alt=""
+                    loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -576,6 +554,7 @@ export default function Home() {
               <img
                 src="/images/takeaway-box.jpg"
                 alt="Take Away Officina del Panino"
+                loading="lazy"
                 className="w-full object-cover"
                 style={{ aspectRatio: "3/4", objectPosition: "center" }}
               />
@@ -637,67 +616,157 @@ export default function Home() {
 
       {/* Come prepariamo i tuoi panini — Video Section */}
       <section className="py-24 bg-background border-b border-border/30">
-        <div className="max-w-5xl mx-auto px-6">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
+          {/* Testo sinistra */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 text-center md:text-left"
           >
-            <h2 className="text-4xl md:text-5xl font-display text-primary mb-2">
+            <h2 className="text-4xl md:text-5xl font-display text-primary mb-4">
               {lang === "it" ? "COME PREPARIAMO I TUOI PANINI" : "HOW WE MAKE YOUR SANDWICH"}
             </h2>
-            <div className="w-12 h-px bg-primary mx-auto" />
+            <div className="w-12 h-px bg-primary md:mx-0 mx-auto" />
           </motion.div>
+          {/* Video destra */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative mx-auto overflow-hidden border border-border/40"
-            style={{ aspectRatio: "9/16", maxWidth: "420px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="relative overflow-hidden border border-border/40 w-full max-w-[280px] md:max-w-[340px] flex-shrink-0"
+            style={{ aspectRatio: "9/16" }}
           >
             <video
               ref={lavorazioneVideoRef}
-              muted
-              loop
               playsInline
-              preload="none"
+              preload="auto"
+              muted
               src="/videos/lavorazione-web.mp4"
               className="w-full h-full object-cover"
+              onEnded={() => setLavorazionePlaying(false)}
             />
+            <button
+              onClick={handleLavorazionePlay}
+              className={`absolute inset-0 flex items-center justify-center z-10 transition-opacity duration-200 ${lavorazionePlaying ? "opacity-0 hover:opacity-100" : "opacity-100"}`}
+            >
+              {lavorazionePlaying
+                ? <Pause size={48} className="text-white drop-shadow-lg" fill="white" />
+                : <Play size={48} className="text-white drop-shadow-lg ml-1" fill="white" />
+              }
+            </button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Pane Giusto Section ── */}
+      <section className="py-24 bg-background border-b border-border/30">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
+          {/* Text — sinistra su desktop */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 text-center md:text-left"
+          >
+            <p className="font-display text-sm tracking-widest uppercase text-muted-foreground mb-2">
+              {lang === "it" ? "IL NOSTRO PANE" : "OUR BREAD"}
+            </p>
+            <h2 className="text-4xl md:text-5xl font-display text-foreground leading-tight mb-1">
+              {lang === "it"
+                ? <>Il pane giusto fa la differenza. 🍞🔥</>
+                : <>The right bread makes all the difference. 🍞🔥</>}
+            </h2>
+            <h3 className="text-2xl md:text-3xl font-display text-primary mb-4">
+              {lang === "it" ? "E noi lo sappiamo bene." : "And we know it well."}
+            </h3>
+            <div className="w-12 h-px bg-primary md:mx-0 mx-auto" />
+          </motion.div>
+          {/* Video verticale — destra su desktop */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="relative overflow-hidden border border-border/40 w-full max-w-[280px] md:max-w-[340px] flex-shrink-0"
+            style={{ aspectRatio: "9/16" }}
+          >
+            <video
+              ref={panegiustoVideoRef}
+              src="/videos/panegiusto.mp4"
+              preload="auto"
+              playsInline
+              muted={panegiustoMuted}
+              className="w-full h-full object-cover"
+              onEnded={() => setPanegiustoPlaying(false)}
+            />
+            <button
+              onClick={handlePanegiustoPlay}
+              className={`absolute inset-0 flex items-center justify-center z-10 transition-opacity duration-200 ${panegiustoPlaying ? "opacity-0 hover:opacity-100" : "opacity-100"}`}
+            >
+              {panegiustoPlaying
+                ? <Pause size={56} className="text-white drop-shadow-lg" fill="white" />
+                : <Play size={56} className="text-white drop-shadow-lg ml-1" fill="white" />
+              }
+            </button>
+            <button
+              onClick={() => setPanegiustoMuted(m => !m)}
+              className="absolute bottom-3 right-3 z-20 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+            >
+              {panegiustoMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+            </button>
           </motion.div>
         </div>
       </section>
 
       {/* ── Award Section ── */}
       <section className="py-20 md:py-28 bg-background border-b border-border/30 overflow-hidden">
-        <div className="max-w-2xl mx-auto px-6 flex flex-col items-center text-center gap-10">
+        <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           {/* Text */}
           <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-3xl md:text-4xl lg:text-5xl font-display text-foreground leading-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-display text-foreground leading-tight text-center md:text-left"
           >
             {lang === "it"
-              ? <>Non lo diciamo noi.<br /><span className="text-primary">Lo dice chi ci ha già scelto.</span></>
-              : <>We don't say it.<br /><span className="text-primary">Those who chose us do.</span></>
+              ? <>Riconoscimenti</>
+              : <>Awards</>
             }
           </motion.p>
-          {/* Image */}
+          {/* Just Eat Award photo */}
           <motion.img
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            src="/images/miglior-paninoteca.jpg"
-            alt="Miglior Paninoteca d'Italia 2022 2023 2024"
-            className="w-full max-w-sm object-cover"
+            src="/images/just-eat-award-2024.jpg"
+            alt="Just Eat Awards 2024 – Miglior Hamburgeria e Paninoteca"
+            loading="lazy"
+            className="w-full max-w-sm mx-auto rounded-sm object-cover"
             style={{ aspectRatio: "1/1", objectPosition: "center top" }}
           />
         </div>
+        {/* Existing awards image */}
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+          className="max-w-sm mx-auto px-6 mt-12"
+        >
+          <img
+            src="/images/miglior-paninoteca.jpg"
+            alt="Miglior Paninoteca d'Italia 2022 2023 2024"
+            loading="lazy"
+            className="w-full object-cover"
+            style={{ aspectRatio: "1/1", objectPosition: "center top" }}
+          />
+        </motion.div>
       </section>
 
       {/* ── Late Night Section ── */}
@@ -741,6 +810,7 @@ export default function Home() {
             <img
               src="/images/panini-logo.png"
               alt="Due panini davanti al logo Officina del Panino"
+              loading="lazy"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0a0704]/60 via-transparent to-transparent" />
@@ -787,8 +857,8 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <div ref={reviewScrollRef} className="flex gap-4 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }} onScroll={handleReviewScroll}>
-            {[...reviewsList, ...reviewsList, ...reviewsList].map((review, i) => (
+          <div ref={reviewScrollRef} className="flex gap-4 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            {reviewsList.map((review, i) => (
               <motion.div
                 key={i}
                 className="bg-card border border-border p-6 flex flex-col gap-3 flex-shrink-0 w-[80vw] sm:w-72"
@@ -844,8 +914,8 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <div ref={tripReviewScrollRef} className="flex gap-4 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }} onScroll={handleTripScroll}>
-            {[...tripReviewsList, ...tripReviewsList, ...tripReviewsList].map((review, i) => (
+          <div ref={tripReviewScrollRef} className="flex gap-4 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            {tripReviewsList.map((review, i) => (
               <motion.div
                 key={i}
                 className="bg-card border border-border p-6 flex flex-col gap-3 flex-shrink-0 w-[80vw] sm:w-72"
