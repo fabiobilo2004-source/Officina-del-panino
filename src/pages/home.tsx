@@ -287,7 +287,7 @@ export default function Home() {
     }
   };
 
-  // Pause videos when scrolled out of view
+  // Auto-play when in view, pause+reset when out of view
   useEffect(() => {
     const entries: [React.RefObject<HTMLVideoElement | null>, (b: boolean) => void][] = [
       [estateVideoRef, setEstatePlaying],
@@ -296,8 +296,20 @@ export default function Home() {
     ];
     const observers = entries.map(([ref, setSt]) => {
       const obs = new IntersectionObserver(
-        ([e]) => { if (!e.isIntersecting) { ref.current?.pause(); setSt(false); } },
-        { threshold: 0.15 }
+        ([e]) => {
+          const v = ref.current;
+          if (!v) return;
+          if (e.isIntersecting) {
+            v.currentTime = 0;
+            v.play().catch(() => {});
+            setSt(true);
+          } else {
+            v.pause();
+            v.currentTime = 0;
+            setSt(false);
+          }
+        },
+        { threshold: 0.3 }
       );
       if (ref.current) obs.observe(ref.current);
       return obs;
