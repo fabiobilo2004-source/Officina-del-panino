@@ -507,15 +507,17 @@ export default function Home() {
           {[
             { value: "2",    label: lang === "it" ? "Sedi"     : "Locations" },
             { value: "2019", label: lang === "it" ? "Dal"      : "Since" },
-            { value: "da 9€", label: lang === "it" ? "Panini" : "Sandwiches" },
+            { value: "9–12.5€", label: lang === "it" ? "Panini a" : "Sandwiches from" },
           ].map(({ value, label }, i, arr) => (
             <>
               <div key={value} className="flex-1 flex flex-col items-center gap-1">
                 <span className="font-display text-[9px] sm:text-xs tracking-widest uppercase text-muted-foreground">
                   {label}
                 </span>
-                <span className="font-display text-4xl sm:text-5xl md:text-6xl text-primary leading-none">
-                  {value}
+                <span className="font-display text-4xl sm:text-5xl md:text-6xl text-primary leading-none text-center">
+                  {value === "9–12.5€"
+                    ? <><span className="block">9–</span><span className="block">12.5€</span></>
+                    : value}
                 </span>
               </div>
               {i < arr.length - 1 && (
