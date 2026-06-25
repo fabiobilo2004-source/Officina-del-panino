@@ -241,6 +241,9 @@ export default function Home() {
 
   const [lavorazionePlaying, setLavorazionePlaying] = useState(false);
   const [lavorazioneMuted, setLavorazioneMuted] = useState(false);
+  const lavorazioneSectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: lavorazioneScrollY } = useScroll({ target: lavorazioneSectionRef, offset: ["start end", "end start"] });
+
   const estateSectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress: estateScrollY } = useScroll({ target: estateSectionRef, offset: ["start end", "end start"] });
   const estateTextY = useTransform(estateScrollY, [0, 1], ["40px", "-40px"]);
@@ -248,6 +251,14 @@ export default function Home() {
   const paneSectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress: paneScrollY } = useScroll({ target: paneSectionRef, offset: ["start end", "end start"] });
   const paneTextY = useTransform(paneScrollY, [0, 1], ["40px", "-40px"]);
+
+  // Mobile-only: video expands to full width as section scrolls into view
+  const lavorazioneVidW  = useTransform(lavorazioneScrollY, [0.05, 0.45], ["280px", "100vw"]);
+  const lavorazioneVidMX = useTransform(lavorazioneScrollY, [0.05, 0.45], ["0px", "-24px"]);
+  const estateVidW       = useTransform(estateScrollY,      [0.05, 0.45], ["280px", "100vw"]);
+  const estateVidMX      = useTransform(estateScrollY,      [0.05, 0.45], ["0px", "-24px"]);
+  const paneVidW         = useTransform(paneScrollY,        [0.05, 0.45], ["280px", "100vw"]);
+  const paneVidMX        = useTransform(paneScrollY,        [0.05, 0.45], ["0px", "-24px"]);
 
   const estateVideoRef = useRef<HTMLVideoElement>(null);
   const [estatePlaying, setEstatePlaying] = useState(false);
@@ -697,7 +708,7 @@ export default function Home() {
       </section>
 
       {/* Come prepariamo i tuoi panini — Video Section */}
-      <section className="py-24 bg-background border-b border-border/30">
+      <section ref={lavorazioneSectionRef} className="py-24 bg-background border-b border-border/30">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
           {/* Testo sinistra */}
           <motion.div
@@ -718,8 +729,8 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="relative overflow-hidden border border-border/40 w-full max-w-[280px] md:max-w-[340px] flex-shrink-0"
-            style={{ aspectRatio: "9/16" }}
+            className="relative overflow-hidden border border-border/40 flex-shrink-0 md:w-full md:max-w-[340px]"
+            style={isMobile ? { width: lavorazioneVidW, maxWidth: "100vw", marginLeft: lavorazioneVidMX, marginRight: lavorazioneVidMX, aspectRatio: "9/16" } : { aspectRatio: "9/16" }}
           >
             <video
               ref={lavorazioneVideoRef}
@@ -772,8 +783,8 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="relative overflow-hidden border border-border/40 w-full max-w-[280px] md:max-w-[340px] flex-shrink-0"
-            style={{ aspectRatio: "9/16" }}
+            className="relative overflow-hidden border border-border/40 flex-shrink-0 md:w-full md:max-w-[340px]"
+            style={isMobile ? { width: estateVidW, maxWidth: "100vw", marginLeft: estateVidMX, marginRight: estateVidMX, aspectRatio: "9/16" } : { aspectRatio: "9/16" }}
           >
             <video
               ref={estateVideoRef}
@@ -836,8 +847,8 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="relative overflow-hidden border border-border/40 w-full max-w-[280px] md:max-w-[340px] flex-shrink-0"
-            style={{ aspectRatio: "9/16" }}
+            className="relative overflow-hidden border border-border/40 flex-shrink-0 md:w-full md:max-w-[340px]"
+            style={isMobile ? { width: paneVidW, maxWidth: "100vw", marginLeft: paneVidMX, marginRight: paneVidMX, aspectRatio: "9/16" } : { aspectRatio: "9/16" }}
           >
             <video
               ref={panegiustoVideoRef}
