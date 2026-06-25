@@ -220,6 +220,7 @@ export default function Home() {
   const [lavorazioneMuted, setLavorazioneMuted] = useState(false);
   const estateVideoRef = useRef<HTMLVideoElement>(null);
   const [estatePlaying, setEstatePlaying] = useState(false);
+  const [estateMuted, setEstateMuted] = useState(true);
   const handleEstatePlay = () => {
     const v = estateVideoRef.current;
     if (!v) return;
@@ -680,11 +681,15 @@ export default function Home() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="flex-1 text-center md:text-left"
           >
-            <p className="font-display text-sm tracking-widest uppercase text-muted-foreground mb-2">
+            <p className="font-display text-sm tracking-widest uppercase text-muted-foreground mb-3">
               {lang === "it" ? "OFFICINA DEL PANINO" : "OFFICINA DEL PANINO"}
             </p>
-            <h2 className="text-4xl md:text-5xl font-display text-foreground leading-tight mb-4">
-              {lang === "it" ? "Panini fatti come si deve, fino all'ultimo ordine della notte." : "Sandwiches done right, until the last order of the night."}
+            <h2 className="text-4xl md:text-5xl font-display leading-tight mb-4">
+              <span className="text-foreground">{lang === "it" ? "Panini fatti" : "Sandwiches done"} </span>
+              <span className="text-primary">{lang === "it" ? "come si deve," : "right,"}</span>
+              <br />
+              <span className="text-foreground">{lang === "it" ? "fino all'ultimo ordine" : "until the last order"} </span>
+              <span className="text-primary">{lang === "it" ? "della notte." : "of the night."}</span>
             </h2>
             <div className="w-12 h-px bg-primary md:mx-0 mx-auto" />
           </motion.div>
@@ -701,7 +706,7 @@ export default function Home() {
               src="/videos/estate.mp4"
               preload="auto"
               playsInline
-              muted
+              muted={estateMuted}
               loop
               onEnded={() => setEstatePlaying(false)}
               className="absolute inset-0 w-full h-full object-cover cursor-pointer"
@@ -714,6 +719,12 @@ export default function Home() {
               <div className="w-14 h-14 rounded-full bg-black/50 flex items-center justify-center">
                 {estatePlaying ? <Pause size={24} className="text-white" /> : <Play size={24} className="text-white ml-1" />}
               </div>
+            </button>
+            <button
+              onClick={() => setEstateMuted(m => !m)}
+              className="absolute bottom-3 right-3 z-20 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+            >
+              {estateMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
             </button>
           </motion.div>
         </div>
