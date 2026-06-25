@@ -169,6 +169,32 @@ function StoryImage() {
   );
 }
 
+function ParallaxCreazioneCard({ src, fromLeft, onClick }: { src: string; fromLeft: boolean; onClick: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
+  const x = useTransform(scrollYProgress, [0, 1], [fromLeft ? -300 : 300, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ x, opacity }}
+      className="relative cursor-pointer group"
+      onClick={onClick}
+    >
+      <img
+        src={src}
+        alt=""
+        loading="lazy"
+        className="w-full h-auto object-contain"
+      />
+      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+        <ZoomIn size={32} className="text-white drop-shadow-lg" />
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Home() {
   const { lang } = useLang();
   const { scrollY } = useScroll();
@@ -454,42 +480,43 @@ export default function Home() {
       </section>
 
 
-      {/* Featured Items */}
+      {/* Featured Items — Parallax Scroll */}
       <section className="py-24 bg-card border-b border-border/30">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-display text-primary mb-2">{t.creations[lang]}</h2>
             <div className="w-12 h-px bg-primary mx-auto" />
           </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {creazioniImages.map((src, i) => {
-              return (
-                <motion.div
-                  key={src}
-                  initial={{ y: 90, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, amount: 0.08 }}
-                  transition={{ duration: 0.75, delay: i * 0.065, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ scale: 1.03 }}
-                  className={`relative overflow-hidden bg-card cursor-pointer group ${i === 0 ? "col-span-2 md:col-span-1" : ""}`}
-                  style={{ aspectRatio: "1 / 1" }}
-                  onClick={() => setLightboxIdx(i)}
-                >
-                  <img
-                    src={src}
-                    alt=""
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <ZoomIn size={32} className="text-white drop-shadow-lg" />
+
+          {(() => {
+            const imgs = creazioniImages.slice(0, -4);
+            const leftImgs  = imgs.filter((_, i) => i % 2 === 0);
+            const rightImgs = imgs.filter((_, i) => i % 2 === 1);
+            return (
+              <>
+                {/* Desktop: 2 colonne sfalsate */}
+                <div className="hidden md:grid grid-cols-2 gap-8 items-start">
+                  <div className="flex flex-col gap-8">
+                    {leftImgs.map((src, i) => (
+                      <ParallaxCreazioneCard key={src} src={src} fromLeft={true} onClick={() => setLightboxIdx(i * 2)} />
+                    ))}
                   </div>
-                </motion.div>
-              );
-            })}
-          </div>
-          
+                  <div className="flex flex-col gap-8 mt-36">
+                    {rightImgs.map((src, i) => (
+                      <ParallaxCreazioneCard key={src} src={src} fromLeft={false} onClick={() => setLightboxIdx(i * 2 + 1)} />
+                    ))}
+                  </div>
+                </div>
+                {/* Mobile: singola colonna */}
+                <div className="flex md:hidden flex-col gap-6">
+                  {imgs.map((src, i) => (
+                    <ParallaxCreazioneCard key={src} src={src} fromLeft={i % 2 === 0} onClick={() => setLightboxIdx(i)} />
+                  ))}
+                </div>
+              </>
+            );
+          })()}
+
           <div className="mt-12 text-center">
             <Button asChild variant="outline" className="rounded-none font-display uppercase tracking-[0.2em] text-sm h-14 px-10 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
               <Link href="/menu">{t.full_menu[lang]}</Link>
