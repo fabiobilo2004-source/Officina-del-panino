@@ -303,7 +303,7 @@ export default function Home() {
     workshop_p1: { it: "L'Officina del Panino nasce dall'idea di due giovani imprenditori con la volontà di far conoscere la cultura gastronomica del proprio paese di origine: un piccolo paese del napoletano, noto per le sue specialità culinarie segnate da una forte influenza americana. Siamo una paninoteca take-away specializzata in panini alla brace, nel cuore di Rimini, alle spalle del Castel Sismondo.", en: "Officina del Panino was born from the idea of two young entrepreneurs with a passion for sharing the food culture of their hometown — a small village near Naples, renowned for its culinary traditions rooted in strong American influence. We are a take-away sandwich shop specialising in fire-grilled sandwiches, in the heart of Rimini, just behind Castel Sismondo." },
     workshop_p2: { it: "Fu proprio da uno di quei viaggi oltreoceano che nacque la voglia di importare la famosa Cheesesteak di Filadelfia — carne bovina trita con formaggio fuso — abbinata ai contorni tipici campani. Un prodotto innovativo che ha conquistato il palato di molti, diventando quasi un culto. Rimini è il nostro punto di partenza per far diffondere questa gustosa pietanza in tutto il territorio nazionale.", en: "It was during one of those trips across the Atlantic that the dream of bringing the legendary Philadelphia Cheesesteak to Italy was born — thinly sliced beef with melted cheese, paired with classic Campanian sides. A truly original take that has won over countless food lovers and become something of a cult. Rimini is our home base as we spread this flavour across Italy." },
     creations: { it: "LE NOSTRE CREAZIONI", en: "OUR CREATIONS" },
-    creations_sub: { it: "12 proposte a 11€ · Monta il tuo da 10€", en: "12 sandwiches at €11 · Build your own from €10" },
+    creations_sub: { it: "Panini a partire da 9€", en: "Sandwiches from €9" },
     full_menu: { it: "MENU COMPLETO", en: "SEE FULL MENU" },
     reviews: { it: "COSA DICONO", en: "WHAT PEOPLE SAY" },
   };
@@ -507,7 +507,7 @@ export default function Home() {
           {[
             { value: "2",    label: lang === "it" ? "Sedi"     : "Locations" },
             { value: "2019", label: lang === "it" ? "Dal"      : "Since" },
-            { value: "11€",  label: lang === "it" ? "Panini a" : "Sandwiches from" },
+            { value: "9–12.5€", label: lang === "it" ? "Panini a" : "Sandwiches from" },
           ].map(({ value, label }, i, arr) => (
             <>
               <div key={value} className="flex-1 flex flex-col items-center gap-1">
