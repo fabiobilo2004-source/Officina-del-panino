@@ -218,6 +218,15 @@ export default function Home() {
 
   const [lavorazionePlaying, setLavorazionePlaying] = useState(false);
   const [lavorazioneMuted, setLavorazioneMuted] = useState(false);
+  const estateVideoRef = useRef<HTMLVideoElement>(null);
+  const [estatePlaying, setEstatePlaying] = useState(false);
+  const handleEstatePlay = () => {
+    const v = estateVideoRef.current;
+    if (!v) return;
+    if (v.paused) { v.play().catch(() => {}); setEstatePlaying(true); }
+    else { v.pause(); setEstatePlaying(false); }
+  };
+
   const panegiustoVideoRef = useRef<HTMLVideoElement>(null);
   const [panegiustoPlaying, setPanegiustoPlaying] = useState(false);
   const [panegiustoMuted, setPanegiustoMuted] = useState(false);
@@ -656,6 +665,55 @@ export default function Home() {
                 ? <Pause size={48} className="text-white drop-shadow-lg" fill="white" />
                 : <Play size={48} className="text-white drop-shadow-lg ml-1" fill="white" />
               }
+            </button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Estate Section ── */}
+      <section className="py-24 bg-card border-b border-border/30">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 text-center md:text-left"
+          >
+            <p className="font-display text-sm tracking-widest uppercase text-muted-foreground mb-2">
+              {lang === "it" ? "OFFICINA DEL PANINO" : "OFFICINA DEL PANINO"}
+            </p>
+            <h2 className="text-4xl md:text-5xl font-display text-foreground leading-tight mb-4">
+              {lang === "it" ? "Panini fatti come si deve, fino all'ultimo ordine della notte." : "Sandwiches done right, until the last order of the night."}
+            </h2>
+            <div className="w-12 h-px bg-primary md:mx-0 mx-auto" />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="relative overflow-hidden border border-border/40 w-full max-w-[280px] md:max-w-[340px] flex-shrink-0"
+            style={{ aspectRatio: "9/16" }}
+          >
+            <video
+              ref={estateVideoRef}
+              src="/videos/estate.mp4"
+              preload="auto"
+              playsInline
+              muted
+              loop
+              onEnded={() => setEstatePlaying(false)}
+              className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+              onClick={handleEstatePlay}
+            />
+            <button
+              onClick={handleEstatePlay}
+              className={`absolute inset-0 flex items-center justify-center z-10 transition-opacity duration-200 ${estatePlaying ? "opacity-0 hover:opacity-100" : "opacity-100"}`}
+            >
+              <div className="w-14 h-14 rounded-full bg-black/50 flex items-center justify-center">
+                {estatePlaying ? <Pause size={24} className="text-white" /> : <Play size={24} className="text-white ml-1" />}
+              </div>
             </button>
           </motion.div>
         </div>
