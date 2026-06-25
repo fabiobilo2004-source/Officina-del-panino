@@ -373,12 +373,21 @@ export default function Home() {
           className="relative z-10 text-center px-6 max-w-4xl mx-auto mt-[68px] md:mt-20"
           style={isMobile ? {} : { y: heroContentY, opacity: heroContentOpacity }}
         >
-          <motion.h1 
+          <svg aria-hidden="true" style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}>
+            <defs>
+              <filter id="letterpress-stamp" x="-2%" y="-2%" width="104%" height="104%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" result="noise"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -5 4.5" in="noise" result="mask"/>
+                <feComposite in="SourceGraphic" in2="mask" operator="in"/>
+              </filter>
+            </defs>
+          </svg>
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-[2.75rem] md:text-7xl lg:text-8xl text-white mb-3 md:mb-6 leading-tight"
-            style={{ fontFamily: "'Black Ops One', sans-serif", textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
+            className="text-[2.75rem] md:text-7xl lg:text-8xl text-white mb-3 md:mb-6 leading-none tracking-wide"
+            style={{ fontFamily: "'Anton', sans-serif", filter: "url(#letterpress-stamp) drop-shadow(0 2px 20px rgba(0,0,0,0.9))" }}
           >
             {t.hero_title_1[lang]}<br /><span className="text-primary">{t.hero_title_2[lang]}</span>
           </motion.h1>
@@ -705,6 +714,7 @@ export default function Home() {
               playsInline
               preload="auto"
               muted
+              poster="/images/panini-trio.jpg"
               src="/videos/lavorazione-web.mp4"
               className="w-full h-full object-cover"
               onEnded={() => setLavorazionePlaying(false)}
@@ -758,6 +768,7 @@ export default function Home() {
               src="/videos/estate.mp4"
               preload="auto"
               playsInline
+              poster="/images/notte.jpg"
               muted={estateMuted}
               loop
               onEnded={() => setEstatePlaying(false)}
@@ -821,6 +832,7 @@ export default function Home() {
               src="/videos/panegiusto.mp4"
               preload="auto"
               playsInline
+              poster="/images/panino-heinz.jpg"
               muted={panegiustoMuted}
               className="w-full h-full object-cover"
               onEnded={() => setPanegiustoPlaying(false)}
