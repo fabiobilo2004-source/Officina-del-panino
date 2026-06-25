@@ -75,7 +75,7 @@ const menuData = {
       name: "Pistone",
       isNew: true,
       desc: "Il nostro hot dog con doppio wurstel fritto, doppio cheddar, bacon croccante, cipolla stufata e salsa BBQ",
-      descEn: "Our hot dog with double fried wurstel, double cheddar, crispy bacon, stewed onion and BBQ sauce",
+      descEn: "Our hot dog with double fried frankfurter, double cheddar, crispy bacon, stewed onion and BBQ sauce",
     },
     {
       name: "Trivella 2.0",
@@ -105,7 +105,7 @@ const menuData = {
       name: "Cacciavite",
       isNew: false,
       desc: "Doppia Salsiccia, doppia provola affumicata, friarelli e patate al forno",
-      descEn: "Double sausage, double smoked provola, friarelli and baked potatoes",
+      descEn: "Double sausage, double smoked provola, broccoli rabe and baked potatoes",
     },
   ],
   vegOptions: [
@@ -114,7 +114,7 @@ const menuData = {
       isNew: true,
       badge: "VEGETARIANO",
       desc: "Friarielli, funghi trifolati, doppia provola affumicata, patate al forno, maionese al basilico",
-      descEn: "Friarelli, sautéed mushrooms, double smoked provola, baked potatoes, basil mayo",
+      descEn: "Broccoli rabe, sautéed mushrooms, double smoked provola, baked potatoes, basil mayo",
     },
     {
       name: "Perno",
@@ -135,7 +135,7 @@ const menuData = {
     },
     contorni: {
       it: ["Cipolla stufata", "Friarielli", "Funghi trifolati", "Insalata", "Melanzane a funghetto", "Melanzane alla griglia", "Parmigiana di melanzane", "Patate al forno", "Patate alla piastra con provola", "Patatine fritte", "Peperoni in padella", "Pomodorini", "Rucola"],
-      en: ["Stewed onion", "Friarelli", "Sautéed mushrooms", "Lettuce", "Eggplant funghetto", "Grilled eggplant", "Eggplant parmigiana", "Baked potatoes", "Grilled potatoes with provola", "French fries", "Pan peppers", "Cherry tomatoes", "Arugula"],
+      en: ["Stewed onion", "Broccoli rabe", "Sautéed mushrooms", "Lettuce", "Eggplant funghetto", "Grilled eggplant", "Eggplant parmigiana", "Baked potatoes", "Grilled potatoes with provola", "French fries", "Pan peppers", "Cherry tomatoes", "Arugula"],
     },
     salse: {
       it: ["Ketchup", "Mayonese", "Mayonese al basilico", "Mayonese al pepe rosa", "Mayonese al tartufo", "Salsa BBQ", "Salsa burger", "Salsa curry", "Salsa piccante"],
