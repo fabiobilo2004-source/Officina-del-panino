@@ -218,6 +218,14 @@ export default function Home() {
 
   const [lavorazionePlaying, setLavorazionePlaying] = useState(false);
   const [lavorazioneMuted, setLavorazioneMuted] = useState(false);
+  const estateSectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: estateScrollY } = useScroll({ target: estateSectionRef, offset: ["start end", "end start"] });
+  const estateTextY = useTransform(estateScrollY, [0, 1], ["40px", "-40px"]);
+
+  const paneSectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: paneScrollY } = useScroll({ target: paneSectionRef, offset: ["start end", "end start"] });
+  const paneTextY = useTransform(paneScrollY, [0, 1], ["40px", "-40px"]);
+
   const estateVideoRef = useRef<HTMLVideoElement>(null);
   const [estatePlaying, setEstatePlaying] = useState(false);
   const [estateMuted, setEstateMuted] = useState(true);
@@ -672,13 +680,14 @@ export default function Home() {
       </section>
 
       {/* ── Estate Section ── */}
-      <section className="py-24 bg-card border-b border-border/30">
+      <section ref={estateSectionRef} className="py-24 bg-card border-b border-border/30">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            style={{ y: estateTextY }}
             className="flex-1 text-center md:text-right"
           >
             <p className="font-display text-sm tracking-widest uppercase text-muted-foreground mb-3">
@@ -731,7 +740,7 @@ export default function Home() {
       </section>
 
       {/* ── Pane Giusto Section ── */}
-      <section className="py-24 bg-background border-b border-border/30">
+      <section ref={paneSectionRef} className="py-24 bg-background border-b border-border/30">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
           {/* Text — sinistra su desktop */}
           <motion.div
@@ -739,6 +748,7 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            style={{ y: paneTextY }}
             className="flex-1 text-center md:text-left"
           >
             <p className="font-display text-sm tracking-widest uppercase text-muted-foreground mb-2">
