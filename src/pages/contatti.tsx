@@ -71,6 +71,35 @@ export default function Contatti() {
           transition={{ delay: 0.1 }}
           className="flex flex-col gap-10"
         >
+          {/* Phones */}
+          <div>
+            <h3 className="font-display text-xs tracking-widest uppercase text-muted-foreground mb-4">
+              {t.phones[lang]}
+            </h3>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="tel:+390541419757"
+                className="flex-1 flex items-center gap-4 border border-border bg-card px-5 py-4 hover:border-primary hover:text-primary text-muted-foreground transition-colors group"
+              >
+                <Phone size={18} className="text-primary shrink-0" />
+                <div>
+                  <p className="font-display text-[10px] tracking-widest uppercase text-muted-foreground mb-0.5">Rimini</p>
+                  <p className="font-mono text-base text-foreground group-hover:text-primary transition-colors">0541 141 9757</p>
+                </div>
+              </a>
+              <a
+                href="tel:+3905411840930"
+                className="flex-1 flex items-center gap-4 border border-border bg-card px-5 py-4 hover:border-primary hover:text-primary text-muted-foreground transition-colors group"
+              >
+                <Phone size={18} className="text-primary shrink-0" />
+                <div>
+                  <p className="font-display text-[10px] tracking-widest uppercase text-muted-foreground mb-0.5">Santarcangelo</p>
+                  <p className="font-mono text-base text-foreground group-hover:text-primary transition-colors">0541 184 0930</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
           {/* Contact form */}
           <div>
             <h3 className="font-display text-xs tracking-widest uppercase text-muted-foreground mb-4">
@@ -131,35 +160,6 @@ export default function Contatti() {
                 </button>
               </form>
             )}
-          </div>
-
-          {/* Phones */}
-          <div>
-            <h3 className="font-display text-xs tracking-widest uppercase text-muted-foreground mb-4">
-              {t.phones[lang]}
-            </h3>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="tel:+390541419757"
-                className="flex-1 flex items-center gap-4 border border-border bg-card px-5 py-4 hover:border-primary hover:text-primary text-muted-foreground transition-colors group"
-              >
-                <Phone size={18} className="text-primary shrink-0" />
-                <div>
-                  <p className="font-display text-[10px] tracking-widest uppercase text-muted-foreground mb-0.5">Rimini</p>
-                  <p className="font-mono text-base text-foreground group-hover:text-primary transition-colors">0541 141 9757</p>
-                </div>
-              </a>
-              <a
-                href="tel:+3905411840930"
-                className="flex-1 flex items-center gap-4 border border-border bg-card px-5 py-4 hover:border-primary hover:text-primary text-muted-foreground transition-colors group"
-              >
-                <Phone size={18} className="text-primary shrink-0" />
-                <div>
-                  <p className="font-display text-[10px] tracking-widest uppercase text-muted-foreground mb-0.5">Santarcangelo</p>
-                  <p className="font-mono text-base text-foreground group-hover:text-primary transition-colors">0541 184 0930</p>
-                </div>
-              </a>
-            </div>
           </div>
         </motion.div>
 
