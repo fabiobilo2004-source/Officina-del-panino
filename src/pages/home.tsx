@@ -80,7 +80,6 @@ const creazioniImages = [
   "/images/creazioni-castello.png",
   "/images/panini-trio.jpg",
   "/images/sandwich1.jpg",
-  "/images/panini-wings.jpg",
   "/images/sandwiches-bag.jpg",
   "/images/panino-rucola.webp",
   "/images/panino-verdure.webp",
