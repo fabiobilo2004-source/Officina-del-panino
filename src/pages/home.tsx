@@ -286,6 +286,25 @@ export default function Home() {
       setLavorazionePlaying(false);
     }
   };
+
+  // Pause videos when scrolled out of view
+  useEffect(() => {
+    const entries: [React.RefObject<HTMLVideoElement | null>, (b: boolean) => void][] = [
+      [estateVideoRef, setEstatePlaying],
+      [lavorazioneVideoRef, setLavorazionePlaying],
+      [panegiustoVideoRef, setPanegiustoPlaying],
+    ];
+    const observers = entries.map(([ref, setSt]) => {
+      const obs = new IntersectionObserver(
+        ([e]) => { if (!e.isIntersecting) { ref.current?.pause(); setSt(false); } },
+        { threshold: 0.15 }
+      );
+      if (ref.current) obs.observe(ref.current);
+      return obs;
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
   const getCardW = (el: HTMLDivElement) => {
     const card = el.firstElementChild as HTMLElement | null;
     return (card?.offsetWidth ?? 288) + 16;
