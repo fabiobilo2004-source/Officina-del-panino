@@ -377,8 +377,8 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-[2.75rem] md:text-7xl lg:text-8xl font-display text-white mb-3 md:mb-6 leading-tight"
-            style={{ textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
+            className="text-[2.75rem] md:text-7xl lg:text-8xl text-white mb-3 md:mb-6 leading-tight"
+            style={{ fontFamily: "'Rubik Dirt', sans-serif", textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
           >
             {t.hero_title_1[lang]}<br /><span className="text-primary">{t.hero_title_2[lang]}</span>
           </motion.h1>
