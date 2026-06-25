@@ -57,7 +57,7 @@ const menuData = {
       name: "Biella",
       isNew: true,
       desc: "Doppio Cheese-steak di manzo, doppio formaggio fuso, rucola, pomodorini e scaglie di Grana",
-      descEn: "Double beef cheese-steak, double melted cheese, rocket, cherry tomatoes and Grana shavings",
+      descEn: "Double beef cheese-steak, double melted cheese, arugula, cherry tomatoes and Grana shavings",
     },
     {
       name: "Carrucola 2.0",
@@ -69,7 +69,7 @@ const menuData = {
       name: "Martello",
       isNew: false,
       desc: "Doppia Porchetta, parmigiana di melanzane e patate alla piastra con provola affumicata",
-      descEn: "Double porchetta, aubergine parmigiana and grilled potatoes with smoked provola",
+      descEn: "Double porchetta, eggplant parmigiana and grilled potatoes with smoked provola",
     },
     {
       name: "Pistone",
@@ -81,13 +81,13 @@ const menuData = {
       name: "Trivella 2.0",
       isNew: false,
       desc: "Doppia salsiccia, doppia provola affumicata, melanzane a funghetto e mayonese al basilico",
-      descEn: "Double sausage, double smoked provola, aubergine funghetto and basil mayo",
+      descEn: "Double sausage, double smoked provola, eggplant funghetto and basil mayo",
     },
     {
       name: "Incudine",
       isNew: false,
       desc: "Hamburger di scottona 200 gr., doppio cheddar, rucola, pomodorini e melanzane alla griglia",
-      descEn: "200g scottona burger, double cheddar, rocket, cherry tomatoes and grilled aubergine",
+      descEn: "200g scottona burger, double cheddar, arugula, cherry tomatoes and grilled eggplant",
     },
     {
       name: "Chiodo",
@@ -121,7 +121,7 @@ const menuData = {
       isNew: true,
       badge: "VEGAN",
       desc: "Peperoni in padella, cipolla stufata, melanzane a funghetto e rucola",
-      descEn: "Pan peppers, stewed onion, aubergine funghetto and rocket",
+      descEn: "Pan peppers, stewed onion, eggplant funghetto and arugula",
     },
   ],
   buildYourOwn: {
@@ -135,7 +135,7 @@ const menuData = {
     },
     contorni: {
       it: ["Cipolla stufata", "Friarielli", "Funghi trifolati", "Insalata", "Melanzane a funghetto", "Melanzane alla griglia", "Parmigiana di melanzane", "Patate al forno", "Patate alla piastra con provola", "Patatine fritte", "Peperoni in padella", "Pomodorini", "Rucola"],
-      en: ["Stewed onion", "Friarelli", "Sautéed mushrooms", "Lettuce", "Aubergine funghetto", "Grilled aubergine", "Aubergine parmigiana", "Baked potatoes", "Grilled potatoes with provola", "French fries", "Pan peppers", "Cherry tomatoes", "Rocket"],
+      en: ["Stewed onion", "Friarelli", "Sautéed mushrooms", "Lettuce", "Eggplant funghetto", "Grilled eggplant", "Eggplant parmigiana", "Baked potatoes", "Grilled potatoes with provola", "French fries", "Pan peppers", "Cherry tomatoes", "Arugula"],
     },
     salse: {
       it: ["Ketchup", "Mayonese", "Mayonese al basilico", "Mayonese al pepe rosa", "Mayonese al tartufo", "Salsa BBQ", "Salsa burger", "Salsa curry", "Salsa piccante"],
@@ -166,13 +166,13 @@ const menuData = {
     {
       name: "Contadina",
       desc: "Lattuga, rucola, filetti di pollo, pomodorini, melanzane grigliate e doppia provola affumicata",
-      descEn: "Lettuce, rocket, chicken fillets, cherry tomatoes, grilled aubergine and double smoked provola",
+      descEn: "Lettuce, arugula, chicken fillets, cherry tomatoes, grilled eggplant and double smoked provola",
       price: "10€",
     },
     {
       name: "Cheesteak Salad",
       desc: "Lattuga, rucola, pomodorini, cheese-steak, bacon, doppio cheddar e scaglie di grana",
-      descEn: "Lettuce, rocket, cherry tomatoes, cheese-steak, bacon, double cheddar and Grana shavings",
+      descEn: "Lettuce, arugula, cherry tomatoes, cheese-steak, bacon, double cheddar and Grana shavings",
       price: "10€",
     },
   ],
