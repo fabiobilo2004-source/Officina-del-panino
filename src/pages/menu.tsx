@@ -497,7 +497,6 @@ export default function Menu() {
                           <span className={`text-xs font-mono px-2 py-0.5 rounded-full border ${atLimit ? "border-white text-white bg-white/20" : catLight[key] ? "border-white/30 text-white/60" : "border-black/20 text-gray-600"}`}>
                             {count}/{limit}
                           </span>
-                          {atLimit && <span className={`text-xs font-mono ${catLight[key] ? "text-white/80" : "text-gray-700"}`}>{t.at_limit[lang]}</span>}
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {items.map((item, idx) => {
