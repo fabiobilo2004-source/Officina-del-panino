@@ -813,7 +813,7 @@ export default function Home() {
             className="text-3xl md:text-4xl lg:text-5xl font-display text-foreground leading-tight text-center md:text-left"
           >
             {lang === "it"
-              ? <>Riconoscimenti</>
+              ? <>Premi e Riconoscimenti</>
               : <>Awards</>
             }
           </motion.p>
