@@ -445,37 +445,30 @@ export default function Menu() {
               {
                 key: "basic",
                 price: "10 €",
-                bgPos: "top center",
-                desc: { it: "1 carne, 1 formaggio,\n1 contorno, 1 salsa", en: "1 meat, 1 cheese,\n1 topping, 1 sauce" },
+                label: { it: "BASE", en: "BASIC" },
+                desc: { it: "1 carne · 1 formaggio · 1 contorno · 1 salsa", en: "1 meat · 1 cheese · 1 topping · 1 sauce" },
               },
               {
                 key: "premium",
                 price: "12.5 €",
-                bgPos: "bottom center",
-                desc: { it: "2 carni, 2 formaggi,\n2 contorni, 2 salse", en: "2 meats, 2 cheeses,\n2 toppings, 2 sauces" },
+                label: { it: "COMPLETO", en: "FULL" },
+                desc: { it: "2 carni · 2 formaggi · 2 contorni · 2 salse", en: "2 meats · 2 cheeses · 2 toppings · 2 sauces" },
               },
-            ] as const).map(({ key, price, bgPos, desc }) => (
+            ] as const).map(({ key, price, label, desc }) => (
               <motion.button
                 key={key}
                 onClick={() => changeTier(key)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                className={`w-full cursor-pointer rounded-2xl overflow-hidden transition-all relative ${
-                  tier === key ? "ring-4 ring-primary shadow-xl" : "opacity-70 hover:opacity-90"
+                className={`w-full cursor-pointer rounded-2xl overflow-hidden transition-all flex flex-col items-center justify-center gap-2 py-8 px-4 bg-card border-2 ${
+                  tier === key ? "border-primary shadow-xl shadow-primary/20" : "border-border opacity-70 hover:opacity-90"
                 }`}
-                style={{
-                  height: '210px',
-                  backgroundImage: 'url(/images/burger-tiers.png)',
-                  backgroundSize: '100% 200%',
-                  backgroundPosition: bgPos,
-                  backgroundRepeat: 'no-repeat',
-                }}
               >
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
-                  <span className="font-display text-2xl font-bold text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{price}</span>
-                  <span className="font-display text-sm font-bold text-primary text-center leading-snug drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] whitespace-pre-line">{desc[lang]}</span>
-                </div>
+                <span className="font-display text-xs tracking-widest uppercase text-muted-foreground">{label[lang]}</span>
+                <span className="font-display text-4xl font-bold text-primary">{price}</span>
+                <div className="w-8 h-px bg-primary/40" />
+                <span className="font-display text-xs text-foreground text-center leading-relaxed tracking-wide">{desc[lang]}</span>
               </motion.button>
             ))}
           </div>
