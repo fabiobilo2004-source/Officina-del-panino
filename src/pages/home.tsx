@@ -1018,23 +1018,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Banner finale ── */}
-      <section className="py-16 bg-primary text-white text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <p className="font-display text-sm tracking-widest uppercase opacity-70 mb-2">
-            {lang === "it" ? "RIMINI · OGNI NOTTE" : "RIMINI · EVERY NIGHT"}
-          </p>
-          <h2 className="text-3xl md:text-5xl font-display text-white">
-            {lang === "it" ? "Aperti fino alle 5:00 di mattina." : "Open until 5am."}
-          </h2>
-        </motion.div>
-      </section>
-
       {/* Lightbox */}
       {lightboxIdx !== null && (
         <motion.div
