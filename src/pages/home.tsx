@@ -514,10 +514,8 @@ export default function Home() {
                 <span className="font-display text-[9px] sm:text-xs tracking-widest uppercase text-muted-foreground">
                   {label}
                 </span>
-                <span className="font-display text-4xl sm:text-5xl md:text-6xl text-primary leading-none text-center">
-                  {value === "9–12.5€"
-                    ? <><span className="block">9–</span><span className="block">12.5€</span></>
-                    : value}
+                <span className={`font-display text-primary leading-none text-center ${value === "9–12.5€" ? "text-2xl sm:text-3xl md:text-4xl" : "text-4xl sm:text-5xl md:text-6xl"}`}>
+                  {value}
                 </span>
               </div>
               {i < arr.length - 1 && (
