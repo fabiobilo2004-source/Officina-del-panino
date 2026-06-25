@@ -439,19 +439,29 @@ export default function Menu() {
 
           <p className="text-gray-700 mb-6 font-bold">{t.build_sub[lang]}</p>
 
-          {/* Burger tier selector — usa l'immagine originale divisa a metà */}
+          {/* Burger tier selector */}
           <div className="flex flex-row gap-4 mb-10 w-full">
             {([
-              { key: "basic",   bgPos: "top center" },
-              { key: "premium", bgPos: "bottom center" },
-            ] as const).map(({ key, bgPos }) => (
+              {
+                key: "basic",
+                price: "10 €",
+                bgPos: "top center",
+                desc: { it: "1 carne, 1 formaggio,\n1 contorno, 1 salsa", en: "1 meat, 1 cheese,\n1 topping, 1 sauce" },
+              },
+              {
+                key: "premium",
+                price: "12.5 €",
+                bgPos: "bottom center",
+                desc: { it: "2 carni, 2 formaggi,\n2 contorni, 2 salse", en: "2 meats, 2 cheeses,\n2 toppings, 2 sauces" },
+              },
+            ] as const).map(({ key, price, bgPos, desc }) => (
               <motion.button
                 key={key}
                 onClick={() => changeTier(key)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                className={`w-full cursor-pointer rounded-2xl overflow-hidden transition-all ${
+                className={`w-full cursor-pointer rounded-2xl overflow-hidden transition-all relative ${
                   tier === key ? "ring-4 ring-primary shadow-xl" : "opacity-70 hover:opacity-90"
                 }`}
                 style={{
@@ -461,7 +471,12 @@ export default function Menu() {
                   backgroundPosition: bgPos,
                   backgroundRepeat: 'no-repeat',
                 }}
-              />
+              >
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                  <span className="font-display text-2xl font-bold text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{price}</span>
+                  <span className="font-display text-sm font-bold text-primary text-center leading-snug drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] whitespace-pre-line">{desc[lang]}</span>
+                </div>
+              </motion.button>
             ))}
           </div>
 
