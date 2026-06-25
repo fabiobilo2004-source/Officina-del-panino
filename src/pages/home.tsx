@@ -251,7 +251,7 @@ export default function Home() {
 
   const estateVideoRef = useRef<HTMLVideoElement>(null);
   const [estatePlaying, setEstatePlaying] = useState(false);
-  const [estateMuted, setEstateMuted] = useState(true);
+  const [estateMuted, setEstateMuted] = useState(false);
   const handleEstatePlay = () => {
     const v = estateVideoRef.current;
     if (!v) return;
@@ -261,7 +261,7 @@ export default function Home() {
 
   const panegiustoVideoRef = useRef<HTMLVideoElement>(null);
   const [panegiustoPlaying, setPanegiustoPlaying] = useState(false);
-  const [panegiustoMuted, setPanegiustoMuted] = useState(true);
+  const [panegiustoMuted, setPanegiustoMuted] = useState(false);
 
   const handlePanegiustoPlay = () => {
     const v = panegiustoVideoRef.current;
@@ -301,7 +301,6 @@ export default function Home() {
           if (!v) return;
           if (e.isIntersecting) {
             v.currentTime = 0;
-            v.muted = true;
             v.play().catch(() => {});
             setSt(true);
           } else {
