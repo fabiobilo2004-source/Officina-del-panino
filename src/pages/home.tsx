@@ -288,7 +288,7 @@ export default function Home() {
   const t = {
     hero_title_1: { it: "OFFICINA", en: "OFFICINA" },
     hero_title_2: { it: "DEL PANINO", en: "DEL PANINO" },
-    hero_sub: { it: "Felicità ad ogni morso", en: "Happiness in every bite" },
+    hero_sub: { it: "La felicità ad ogni morso", en: "Happiness in every bite" },
     hero_menu: { it: "VEDI IL MENU", en: "VIEW MENU" },
     hero_order: { it: "ORDINA ORA", en: "ORDER NOW" },
     workshop_title: { it: "LA NOSTRA STORIA", en: "OUR STORY" },
