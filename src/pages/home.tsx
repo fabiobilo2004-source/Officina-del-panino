@@ -673,13 +673,13 @@ export default function Home() {
 
       {/* ── Estate Section ── */}
       <section className="py-24 bg-card border-b border-border/30">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row-reverse items-center gap-12 md:gap-16">
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1 text-center md:text-left"
+            className="flex-1 text-center md:text-right"
           >
             <p className="font-display text-sm tracking-widest uppercase text-muted-foreground mb-3">
               {lang === "it" ? "OFFICINA DEL PANINO" : "OFFICINA DEL PANINO"}
@@ -691,10 +691,10 @@ export default function Home() {
               <span className="text-foreground">{lang === "it" ? "fino all'ultimo ordine" : "until the last order"} </span>
               <span className="text-primary">{lang === "it" ? "della notte." : "of the night."}</span>
             </h2>
-            <div className="w-12 h-px bg-primary md:mx-0 mx-auto" />
+            <div className="w-12 h-px bg-primary md:ml-auto mx-auto" />
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
