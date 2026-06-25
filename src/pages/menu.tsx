@@ -75,7 +75,7 @@ const menuData = {
       name: "Pistone",
       isNew: true,
       desc: "Il nostro hot dog con doppio wurstel fritto, doppio cheddar, bacon croccante, cipolla stufata e salsa BBQ",
-      descEn: "Our hot dog with double fried frankfurter, double cheddar, crispy bacon, stewed onion and BBQ sauce",
+      descEn: "Our hot dog with double fried wurstel, double cheddar, crispy bacon, stewed onion and BBQ sauce",
     },
     {
       name: "Trivella 2.0",
@@ -127,7 +127,7 @@ const menuData = {
   buildYourOwn: {
     carni: {
       it: ["Bacon", "Cheese-steak di manzo", "Cheese-steak di pollo", "Hamburger di scottona", "Porchetta", "Salsiccia", "Straccetto di pollo", "Wurstel"],
-      en: ["Bacon", "Beef cheese-steak", "Chicken cheese-steak", "Scottona beef burger", "Porchetta", "Sausage", "Chicken strips", "Frankfurter"],
+      en: ["Bacon", "Beef cheese-steak", "Chicken cheese-steak", "Scottona beef burger", "Porchetta", "Sausage", "Chicken strips", "Wurstel"],
     },
     formaggi: {
       it: ["Cheddar", "Formaggio fuso", "Provola affumicata"],
@@ -158,7 +158,7 @@ const menuData = {
       { name: "Provola affumicata", nameEn: "Smoked provola", extra: "+1,5€" },
     ],
     carni: [
-      { name: "Wurstel", nameEn: "Frankfurter", extra: "+1€" },
+      { name: "Wurstel", nameEn: "Wurstel", extra: "+1€" },
       { name: "Manzo / Porchetta / Salsiccia / Bacon", nameEn: "Beef / Porchetta / Sausage / Bacon", extra: "+1,5€" },
     ],
   },
