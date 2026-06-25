@@ -78,24 +78,24 @@ export default function Gallery() {
         </motion.div>
 
         {/* Vertical grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
           {photos.map((photo, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
-              className="group relative overflow-hidden bg-card cursor-pointer"
-              style={{ aspectRatio: "1/1" }}
+              className="group relative bg-card cursor-pointer flex items-center justify-center overflow-hidden"
+              style={{ aspectRatio: "4/3" }}
               onClick={() => setSelectedIndex(i)}
               data-testid={`gallery-img-${i}`}
             >
               <img
                 src={photo.src}
                 alt={photo.alt}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </motion.div>
           ))}
         </div>
