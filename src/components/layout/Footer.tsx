@@ -28,14 +28,14 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
         {/* Brand */}
         <div className="md:col-span-1">
-          <div className="navbar-wood inline-flex items-center justify-center p-2 rounded-sm">
+          <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="navbar-wood inline-flex items-center justify-center p-2 rounded-sm cursor-pointer">
             <img
               src="/images/logo-transparent.png"
               alt="Officina del Panino"
               className="w-52 h-auto"
               style={{ filter: "drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 4px #fff5cc) drop-shadow(0 0 6px #ffd060) drop-shadow(0 0 8px #ffaa20)" }}
             />
-          </div>
+          </a>
           <p className="text-primary font-display text-sm tracking-widest mt-3 mb-2 uppercase">Dal 2019</p>
           <p className="text-muted-foreground text-sm leading-relaxed">{t.tagline[lang]}</p>
         </div>
