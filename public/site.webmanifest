@@ -1,0 +1,12 @@
+{
+  "name": "Officina del Panino",
+  "short_name": "Officina del Panino",
+  "description": "Panini artigianali a Rimini e Santarcangelo di Romagna",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e1410",
+  "theme_color": "#c0392b",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

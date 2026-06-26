@@ -1,23 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Officina del Panino Rimini</title>
-    <meta name="description" content="Officina del Panino Rimini — built on Replit. Update this description to reflect the app." />
+    <title>Officina del Panino — Rimini &amp; Santarcangelo</title>
+    <meta name="description" content="Panini artigianali a Rimini e Santarcangelo di Romagna. Aperto fino alle 5:00 di notte. Ingredienti freschi, ricette originali e atmosfera da vera officina." />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="Officina del Panino Rimini" />
-    <meta property="og:description" content="Officina del Panino Rimini — built on Replit. Update this description to reflect the app." />
-    <meta property="og:type" content="website" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Officina del Panino — Rimini &amp; Santarcangelo" />
+    <meta property="og:description" content="Panini artigianali a Rimini e Santarcangelo di Romagna. Aperto fino alle 5:00 di notte." />
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:image" content="/opengraph.jpg" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
+    <meta property="og:locale" content="it_IT" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Officina del Panino Rimini" />
-    <meta name="twitter:description" content="Officina del Panino Rimini — built on Replit. Update this description to reflect the app." />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="twitter:title" content="Officina del Panino — Rimini &amp; Santarcangelo" />
+    <meta name="twitter:description" content="Panini artigianali a Rimini e Santarcangelo di Romagna. Aperto fino alle 5:00 di notte." />
+    <meta name="twitter:image" content="/opengraph.jpg" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
     <link rel="shortcut icon" href="/favicon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Structured data: Local Business + Logo -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Officina del Panino",
+          "url": "https://www.officinadelpanino.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.officinadelpanino.com/favicon.png",
+            "width": 512,
+            "height": 512
+          },
+          "sameAs": [
+            "https://www.instagram.com/officinadelpanino.rimini/",
+            "https://www.facebook.com/officinadelpaninorimini/",
+            "https://www.tiktok.com/@officinadelpanino"
+          ]
+        },
+        {
+          "@type": "FastFoodRestaurant",
+          "name": "Officina del Panino — Rimini",
+          "image": "https://www.officinadelpanino.com/opengraph.jpg",
+          "logo": "https://www.officinadelpanino.com/favicon.png",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Via Circonvallazione Occidentale, 70",
+            "addressLocality": "Rimini",
+            "postalCode": "47922",
+            "addressCountry": "IT"
+          },
+          "telephone": "+390541419757",
+          "openingHours": "Mo-Su 18:00-05:00",
+          "servesCuisine": "Panini, Sandwich",
+          "url": "https://www.officinadelpanino.com"
+        },
+        {
+          "@type": "FastFoodRestaurant",
+          "name": "Officina del Panino — Santarcangelo",
+          "image": "https://www.officinadelpanino.com/opengraph.jpg",
+          "logo": "https://www.officinadelpanino.com/favicon.png",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Piazza Guglielmo Marconi, 10",
+            "addressLocality": "Santarcangelo di Romagna",
+            "postalCode": "47822",
+            "addressCountry": "IT"
+          },
+          "telephone": "+3905411840930",
+          "openingHours": ["Mo 18:00-23:30","We 18:00-23:30","Th 18:00-23:30","Fr 18:00-02:30","Sa 18:00-02:30","Su 18:00-23:30"],
+          "servesCuisine": "Panini, Sandwich",
+          "url": "https://www.officinadelpanino.com"
+        }
+      ]
+    }
+    </script>
     <link rel="preload" as="video" href="/videos/officina-video.mp4" type="video/mp4" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
