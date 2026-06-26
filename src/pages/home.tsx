@@ -537,7 +537,7 @@ export default function Home() {
           </div>
 
           {(() => {
-            const imgs = creazioniImages.slice(0, -4);
+            const imgs = creazioniImages.slice(0, -5);
             const leftImgs  = imgs.filter((_, i) => i % 2 === 0);
             const rightImgs = imgs.filter((_, i) => i % 2 === 1);
             return (
