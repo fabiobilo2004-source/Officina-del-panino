@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Phone, Clock, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { SiInstagram, SiFacebook, SiJusteat, SiTiktok } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
@@ -151,10 +151,6 @@ export default function Contact() {
   const [likeCount, setLikeCount] = useState(baseLikes);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
-  const [isMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
-  const phoneFrameRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: phoneScrollY } = useScroll({ target: phoneFrameRef, offset: ["start end", "end start"] });
-  const phoneVidW = useTransform(phoneScrollY, [0.0, 0.45], ["130px", "88vw"]);
 
   const handlePlay = () => {
     const v = videoRef.current;
@@ -402,12 +398,7 @@ export default function Contact() {
                     />
                   </div>
                   <div className="flex justify-center">
-                  <motion.div
-                    ref={phoneFrameRef}
-                    style={isMobile ? { width: phoneVidW, maxWidth: "88vw" } : { width: "260px" }}
-                    className="mx-auto"
-                  >
-                    <div className="relative w-full rounded-[40px] overflow-hidden bg-black border-[3px] border-[#2a2a2a]" style={{ aspectRatio: "9/19.5", boxShadow: "0 24px 60px rgba(0,0,0,0.7)" }}>
+                    <div className="relative w-[260px] rounded-[40px] overflow-hidden bg-black border-[3px] border-[#2a2a2a]" style={{ aspectRatio: "9/19.5", boxShadow: "0 24px 60px rgba(0,0,0,0.7)" }}>
 
                       {/* Video */}
                       {isRimini ? (
@@ -525,10 +516,10 @@ export default function Contact() {
                       {/* Home bar */}
                       <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-16 h-1 bg-white/40 rounded-full z-10" />
                     </div>
-                  </motion.div>
                   </div>
               </div>
             </div>
+          </div>
           </motion.div>
         </AnimatePresence>
       </div>
