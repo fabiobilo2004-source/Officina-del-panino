@@ -389,7 +389,7 @@ export default function Contact() {
                       src={loc.mapSrc}
                       width="100%"
                       height="100%"
-                      style={{ border: 0, filter: "grayscale(100%) invert(90%) hue-rotate(180deg) contrast(150%)" }}
+                      style={{ border: 0 }}
                       allowFullScreen={false}
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
