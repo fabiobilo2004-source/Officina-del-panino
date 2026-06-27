@@ -631,82 +631,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Take Away Section ── */}
-      <section className="py-20 md:py-28 bg-card border-y border-border/30 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-
-            {/* Photo */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="relative overflow-hidden"
-            >
-              <img
-                src="/images/takeaway-box.webp"
-                alt="Take Away Officina del Panino"
-                loading="lazy"
-                className="w-full object-cover"
-                style={{ aspectRatio: "3/4", objectPosition: "center" }}
-              />
-            </motion.div>
-
-            {/* Text + CTA */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-8"
-            >
-              <div>
-                <p className="font-display text-sm tracking-widest uppercase text-muted-foreground mb-2">
-                  TAKE AWAY
-                </p>
-                <h2 className="text-4xl md:text-5xl font-display text-primary mb-2">
-                  {lang === "it" ? "ORDINA ORA" : "ORDER NOW"}
-                </h2>
-                <div className="w-12 h-px bg-primary mb-5" />
-                <p className="text-muted-foreground text-lg leading-relaxed">
-                  {lang === "it"
-                    ? "Ordina comodamente da Just Eat oppure chiamaci direttamente — i nostri panini ti aspettano."
-                    : "Order easily on Just Eat or call us directly — our sandwiches are waiting for you."}
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <a
-                  href="https://www.justeat.it/restaurants-officina-del-panino-rimini-47923/menu"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 px-6 py-4 bg-orange-500 text-white font-display uppercase tracking-widest text-sm hover:bg-orange-600 transition-colors"
-                >
-                  <SiJusteat size={20} />
-                  {lang === "it" ? "Ordina su Just Eat" : "Order on Just Eat"}
-                </a>
-                <a
-                  href="tel:+390541419757"
-                  className="flex items-center gap-4 px-6 py-4 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
-                >
-                  <span className="text-primary">☎</span>
-                  Rimini — 0541 141 9757
-                </a>
-                <a
-                  href="tel:+3905411840930"
-                  className="flex items-center gap-4 px-6 py-4 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
-                >
-                  <span className="text-primary">☎</span>
-                  Santarcangelo — 0541 184 0930
-                </a>
-              </div>
-            </motion.div>
-
-          </div>
-        </div>
-      </section>
-
       {/* Come prepariamo i tuoi panini — Video Section */}
       <section ref={lavorazioneSectionRef} className="py-24 bg-background border-b border-border/30">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
@@ -879,53 +803,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Award Section ── */}
-      <section className="py-20 md:py-28 bg-background border-b border-border/30 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          {/* Text */}
-          <motion.p
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-3xl md:text-4xl lg:text-5xl font-display text-foreground leading-tight text-center md:text-left"
-          >
-            {lang === "it"
-              ? <>Premi e <span className="text-primary">Riconoscimenti</span></>
-              : <>Awards</>
-            }
-          </motion.p>
-          {/* Just Eat Award photo */}
-          <motion.img
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            src="/images/just-eat-award-2024.webp"
-            alt="Just Eat Awards 2024 – Miglior Hamburgeria e Paninoteca"
-            loading="lazy"
-            className="w-full max-w-sm mx-auto rounded-sm object-cover"
-            style={{ aspectRatio: "1/1", objectPosition: "center top" }}
-          />
-        </div>
-        {/* Existing awards image */}
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="max-w-sm mx-auto px-6 mt-12"
-        >
-          <img
-            src="/images/miglior-paninoteca.webp"
-            alt="Miglior Paninoteca d'Italia 2022 2023 2024"
-            loading="lazy"
-            className="w-full object-cover"
-            style={{ aspectRatio: "1/1", objectPosition: "center top" }}
-          />
-        </motion.div>
-      </section>
-
       {/* ── Late Night Section ── */}
       <section className="py-0 bg-background border-b border-border/30 overflow-hidden">
         <div className="grid md:grid-cols-2 min-h-[480px]">
@@ -975,6 +852,129 @@ export default function Home() {
         </div>
       </section>
 
+
+      {/* ── Take Away Section ── */}
+      <section className="py-20 md:py-28 bg-card border-y border-border/30 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+
+            {/* Photo */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="relative overflow-hidden"
+            >
+              <img
+                src="/images/takeaway-box.webp"
+                alt="Take Away Officina del Panino"
+                loading="lazy"
+                className="w-full object-cover"
+                style={{ aspectRatio: "3/4", objectPosition: "center" }}
+              />
+            </motion.div>
+
+            {/* Text + CTA */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col gap-8"
+            >
+              <div>
+                <p className="font-display text-sm tracking-widest uppercase text-muted-foreground mb-2">
+                  TAKE AWAY
+                </p>
+                <h2 className="text-4xl md:text-5xl font-display text-primary mb-2">
+                  {lang === "it" ? "ORDINA ORA" : "ORDER NOW"}
+                </h2>
+                <div className="w-12 h-px bg-primary mb-5" />
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  {lang === "it"
+                    ? "Ordina comodamente da Just Eat oppure chiamaci direttamente — i nostri panini ti aspettano."
+                    : "Order easily on Just Eat or call us directly — our sandwiches are waiting for you."}
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <a
+                  href="https://www.justeat.it/restaurants-officina-del-panino-rimini-47923/menu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 px-6 py-4 bg-orange-500 text-white font-display uppercase tracking-widest text-sm hover:bg-orange-600 transition-colors"
+                >
+                  <SiJusteat size={20} />
+                  {lang === "it" ? "Ordina su Just Eat" : "Order on Just Eat"}
+                </a>
+                <a
+                  href="tel:+390541419757"
+                  className="flex items-center gap-4 px-6 py-4 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+                >
+                  <span className="text-primary">☎</span>
+                  Rimini — 0541 141 9757
+                </a>
+                <a
+                  href="tel:+3905411840930"
+                  className="flex items-center gap-4 px-6 py-4 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+                >
+                  <span className="text-primary">☎</span>
+                  Santarcangelo — 0541 184 0930
+                </a>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── Award Section ── */}
+      <section className="py-20 md:py-28 bg-background border-b border-border/30 overflow-hidden">
+        <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+          {/* Text */}
+          <motion.p
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="text-3xl md:text-4xl lg:text-5xl font-display text-foreground leading-tight text-center md:text-left"
+          >
+            {lang === "it"
+              ? <>Premi e <span className="text-primary">Riconoscimenti</span></>
+              : <>Awards</>
+            }
+          </motion.p>
+          {/* Just Eat Award photo */}
+          <motion.img
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            src="/images/just-eat-award-2024.webp"
+            alt="Just Eat Awards 2024 – Miglior Hamburgeria e Paninoteca"
+            loading="lazy"
+            className="w-full max-w-sm mx-auto rounded-sm object-cover"
+            style={{ aspectRatio: "1/1", objectPosition: "center top" }}
+          />
+        </div>
+        {/* Existing awards image */}
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+          className="max-w-sm mx-auto px-6 mt-12"
+        >
+          <img
+            src="/images/miglior-paninoteca.webp"
+            alt="Miglior Paninoteca d'Italia 2022 2023 2024"
+            loading="lazy"
+            className="w-full object-cover"
+            style={{ aspectRatio: "1/1", objectPosition: "center top" }}
+          />
+        </motion.div>
+      </section>
 
       {/* Reviews — titolo unico + due carousel */}
       <section className="py-14 md:py-24 px-4 sm:px-6 max-w-7xl mx-auto">
