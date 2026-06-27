@@ -44,7 +44,7 @@ export function Footer() {
         <div>
           <h4 className="font-display text-base mb-4 uppercase tracking-wider text-primary">Rimini</h4>
           <address className="not-italic text-muted-foreground space-y-1 text-sm">
-            <a href="https://www.google.com/maps/search/?api=1&query=Via+Circonvallazione+Occidentale+70+Rimini" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline underline-offset-2">Via Circonvallazione Occ. 70</a>
+            <a href="https://www.google.com/maps/place/Officina+Del+Panino+-+Rimini/@44.0592474,12.5601417,17z/data=!3m1!4b1!4m6!3m5!1s0x132cc3400c5cc94b:0xc915d079235ec43e!8m2!3d44.0592474!4d12.5627166!16s%2Fg%2F11h_wy233j" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline underline-offset-2">Via Circonvallazione Occ. 70</a>
             <p className="pt-1">Tel: 0541 141 9757</p>
           </address>
           <div className="mt-4 text-sm text-muted-foreground space-y-1">
@@ -58,7 +58,7 @@ export function Footer() {
         <div>
           <h4 className="font-display text-base mb-4 uppercase tracking-wider text-primary">Santarcangelo</h4>
           <address className="not-italic text-muted-foreground space-y-1 text-sm">
-            <a href="https://www.google.com/maps/search/?api=1&query=Piazza+Guglielmo+Marconi+10+Santarcangelo+di+Romagna" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline underline-offset-2">P.za G. Marconi, 10<br/>47822 Santarcangelo di Romagna</a>
+            <a href="https://www.google.com/maps/place/Officina+Del+Panino+-+Santarcangelo/@44.0623582,12.4425889,17z/data=!3m1!4b1!4m6!3m5!1s0x132cc10031ca2e5b:0x6025f48f4bc5a6ea!8m2!3d44.0623582!4d12.4451638!16s%2Fg%2F11yp4jgy2k" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline underline-offset-2">P.za G. Marconi, 10<br/>47822 Santarcangelo di Romagna</a>
             <p className="pt-1">Tel: 0541 184 0930</p>
           </address>
           <div className="mt-4 text-sm text-muted-foreground space-y-1">
