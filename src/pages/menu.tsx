@@ -326,9 +326,9 @@ export default function Menu() {
             /* Mobile: ogni panino ha il proprio scroll tracking → entrano uno alla volta */
             <div className="flex flex-col gap-10">
               {menuData.bestSellers.map((item, i) => {
-                const imgSrc = item.name === "Trapano" ? "/images/panino-trapano.png"
-                             : item.name === "Bullone" ? "/images/panino-bullone.png"
-                             : "/images/panino-chiave.png";
+                const imgSrc = item.name === "Trapano" ? "/images/panino-trapano.webp"
+                             : item.name === "Bullone" ? "/images/panino-bullone.webp"
+                             : "/images/panino-chiave.webp";
                 return (
                   <BestSellerCard
                     key={i}
@@ -344,9 +344,9 @@ export default function Menu() {
             /* Desktop: animazione condivisa, tutti e 3 entrano insieme */
             <div className="grid md:grid-cols-3 gap-10">
               {menuData.bestSellers.map((item, i) => {
-                const imgSrc = item.name === "Trapano" ? "/images/panino-trapano.png"
-                             : item.name === "Bullone" ? "/images/panino-bullone.png"
-                             : "/images/panino-chiave.png";
+                const imgSrc = item.name === "Trapano" ? "/images/panino-trapano.webp"
+                             : item.name === "Bullone" ? "/images/panino-bullone.webp"
+                             : "/images/panino-chiave.webp";
                 return (
                   <div key={i} className="flex flex-col">
                     <div className="relative h-64 flex items-center justify-center" style={{ isolation: "isolate" }}>
@@ -456,7 +456,7 @@ export default function Menu() {
                 }`}
                 style={{
                   height: '210px',
-                  backgroundImage: 'url(/images/burger-tiers.png)',
+                  backgroundImage: 'url(/images/burger-tiers.webp)',
                   backgroundSize: '100% 200%',
                   backgroundPosition: bgPos,
                   backgroundRepeat: 'no-repeat',
@@ -565,7 +565,7 @@ export default function Menu() {
             <div className="flex items-center gap-4 border-b border-black/15 pb-4 mb-6">
               <h2 className="text-3xl font-display flex-1 text-primary">{t.patatine_title[lang]}</h2>
               <motion.img
-                src="/images/patatine.png"
+                src="/images/patatine.webp"
                 alt="Patatine"
                 className="h-20 w-auto object-contain drop-shadow-xl flex-shrink-0"
                 initial={{ x: 80, rotate: 12, opacity: 0 }}
@@ -681,7 +681,7 @@ export default function Menu() {
           className="text-center mt-20 mb-4"
         >
           <a
-            href="/images/menu.jpg"
+            href="/images/menu.webp"
             download="menu-officina-del-panino.jpg"
             className="inline-flex items-center gap-2 border border-primary text-primary font-display text-sm tracking-widest uppercase px-6 py-3 hover:bg-primary hover:text-white transition-colors duration-200"
           >

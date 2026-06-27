@@ -74,18 +74,18 @@ function getLiveStatus(days: { key: string; it: string; en: string; time: string
 }
 
 const creazioniImages = [
-  "/images/creazioni-spread.jpg",
-  "/images/paniniinsalata.jpg",
-  "/images/creazioni-vicini.jpg",
-  "/images/creazioni-castello.png",
-  "/images/panini-trio.jpg",
-  "/images/sandwich1.jpg",
-  "/images/sandwiches-bag.jpg",
+  "/images/creazioni-spread.webp",
+  "/images/paniniinsalata.webp",
+  "/images/creazioni-vicini.webp",
+  "/images/creazioni-castello.webp",
+  "/images/panini-trio.webp",
+  "/images/sandwich1.webp",
+  "/images/sandwiches-bag.webp",
   "/images/panino-rucola.webp",
   "/images/panino-verdure.webp",
   "/images/panino-melanzane.webp",
-  "/images/panino-heinz.jpg",
-  "/images/wings-cheesefries.jpg",
+  "/images/panino-heinz.webp",
+  "/images/wings-cheesefries.webp",
 ];
 
 const reviewsList = [
@@ -157,7 +157,7 @@ function StoryImage() {
   return (
     <div ref={ref} className="aspect-square overflow-hidden">
       <motion.img
-        src="/images/storia-fondatori.jpg"
+        src="/images/storia-fondatori.webp"
         alt="I fondatori di Officina del Panino Rimini"
         className="w-full h-[120%] -mt-[10%] object-cover transition-[filter] duration-1000"
         style={{ filter: colored ? "grayscale(0%)" : "grayscale(100%)", y: imgY }}
@@ -385,7 +385,7 @@ export default function Home() {
             loop
             playsInline
             preload="metadata"
-            poster="/images/hero-insegna.jpg"
+            poster="/images/hero-insegna.webp"
             src="/videos/officina-video.mp4"
             className={`w-full h-full object-cover${isMobile ? "" : " scale-[1.35]"}`}
           />
@@ -645,7 +645,7 @@ export default function Home() {
               className="relative overflow-hidden"
             >
               <img
-                src="/images/takeaway-box.jpg"
+                src="/images/takeaway-box.webp"
                 alt="Take Away Officina del Panino"
                 loading="lazy"
                 className="w-full object-cover"
@@ -737,7 +737,7 @@ export default function Home() {
               playsInline
               preload="auto"
               muted
-              poster="/images/panini-trio.jpg"
+              poster="/images/panini-trio.webp"
               src="/videos/lavorazione-web.mp4"
               className="w-full h-full object-cover"
               onEnded={() => setLavorazionePlaying(false)}
@@ -791,7 +791,7 @@ export default function Home() {
               src="/videos/estate.mp4"
               preload="auto"
               playsInline
-              poster="/images/notte.jpg"
+              poster="/images/notte.webp"
               muted={estateMuted}
               loop
               onEnded={() => setEstatePlaying(false)}
@@ -855,7 +855,7 @@ export default function Home() {
               src="/videos/panegiusto.mp4"
               preload="auto"
               playsInline
-              poster="/images/panino-heinz.jpg"
+              poster="/images/panino-heinz.webp"
               muted={panegiustoMuted}
               className="w-full h-full object-cover"
               onEnded={() => setPanegiustoPlaying(false)}
@@ -901,7 +901,7 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            src="/images/just-eat-award-2024.jpg"
+            src="/images/just-eat-award-2024.webp"
             alt="Just Eat Awards 2024 – Miglior Hamburgeria e Paninoteca"
             loading="lazy"
             className="w-full max-w-sm mx-auto rounded-sm object-cover"
@@ -917,7 +917,7 @@ export default function Home() {
           className="max-w-sm mx-auto px-6 mt-12"
         >
           <img
-            src="/images/miglior-paninoteca.jpg"
+            src="/images/miglior-paninoteca.webp"
             alt="Miglior Paninoteca d'Italia 2022 2023 2024"
             loading="lazy"
             className="w-full object-cover"
@@ -956,7 +956,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Image side — sostituisci /images/notte.jpg con la tua immagine */}
+          {/* Image side — sostituisci /images/notte.webp con la tua immagine */}
           <motion.div
             initial={{ opacity: 0, scale: 1.05 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -965,7 +965,7 @@ export default function Home() {
             className="relative min-h-[320px] md:min-h-0 overflow-hidden"
           >
             <img
-              src="/images/panini-logo.png"
+              src="/images/panini-logo.webp"
               alt="Due panini davanti al logo Officina del Panino"
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover"
@@ -989,7 +989,7 @@ export default function Home() {
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
             <div>
               <div className="flex items-center gap-3">
-                <img src="/images/google-logo.png" alt="Google" className="w-7 h-7 object-contain" />
+                <img src="/images/google-logo.webp" alt="Google" className="w-7 h-7 object-contain" />
                 <span className="text-2xl md:text-3xl font-display text-foreground">Google</span>
               </div>
               <div className="flex items-center gap-1 mt-1">

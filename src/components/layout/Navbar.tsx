@@ -41,7 +41,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-[68px] md:h-20 flex items-center justify-between">
         <Link href="/" className="hover:opacity-90 transition-opacity block" style={{ overflow: "visible" }} data-testid="nav-logo">
           <img
-            src="/images/logo-transparent.png"
+            src="/images/logo-transparent.webp"
             alt="Officina del Panino"
             className="h-[68px] md:h-20 w-auto"
             onLoad={() => setLogoLoaded(true)}

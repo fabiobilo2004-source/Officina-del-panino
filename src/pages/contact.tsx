@@ -15,7 +15,7 @@ const locations = {
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Via+Circonvallazione+Occidentale+70+Rimini",
     phone: "0541 141 9757",
     tel: "tel:+390541419757",
-    photo: "/images/storefront.jpg",
+    photo: "/images/storefront.webp",
     mapSrc:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2856.123!2d12.565!3d44.059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132cba!2sVia+Circonvallazione+Occidentale+70+Rimini!5e0!3m2!1sen!2sit!4v1",
     days: [
@@ -36,7 +36,7 @@ const locations = {
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=Piazza+Guglielmo+Marconi+10+Santarcangelo+di+Romagna",
     phone: "0541 184 0930",
     tel: "tel:+3905411840930",
-    photo: "/images/santarcangelo.jpg",
+    photo: "/images/santarcangelo.webp",
     mapSrc:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11412.0!2d12.4488!3d44.0645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132cb6a3e4e!2sPiazza+Guglielmo+Marconi+10+Santarcangelo+di+Romagna!5e0!3m2!1sen!2sit!4v1",
     days: [
@@ -455,7 +455,7 @@ export default function Contact() {
                         {/* Avatar */}
                         <div className="relative mb-1">
                           <div className="w-9 h-9 rounded-full bg-black border-2 border-white overflow-hidden flex items-center justify-center">
-                            <img src="/images/logo-transparent.png" alt="Officina del Panino" className="w-full h-full object-cover" />
+                            <img src="/images/logo-transparent.webp" alt="Officina del Panino" className="w-full h-full object-cover" />
                           </div>
                           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#fe2c55] rounded-full flex items-center justify-center">
                             <span className="text-white text-[8px] font-bold">+</span>

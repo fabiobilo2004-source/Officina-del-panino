@@ -30,7 +30,7 @@ export function Footer() {
         <div className="md:col-span-1">
           <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="navbar-wood inline-flex items-center justify-center p-2 rounded-sm cursor-pointer">
             <img
-              src="/images/logo-transparent.png"
+              src="/images/logo-transparent.webp"
               alt="Officina del Panino"
               className="w-52 h-auto"
               style={{ filter: "drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 4px #fff5cc) drop-shadow(0 0 6px #ffd060) drop-shadow(0 0 8px #ffaa20)" }}

@@ -4,24 +4,24 @@ import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 
 const photos = [
-  { src: "/images/creazioni-spread.jpg",      alt: "Panini aperti con tutti gli ingredienti",               titleKey: "spread" },
-  { src: "/images/paniniinsalata.jpg",        alt: "Panini con insalata",                                    titleKey: "vicini" },
-  { src: "/images/gallery-paninivicini.jpg",  alt: "Cinque panini vicini con ripieni diversi",              titleKey: "vicini" },
-  { src: "/images/gallery-panino-castle.png", alt: "Panino davanti al Castel Sismondo di Rimini",           titleKey: "castle" },
-  { src: "/images/storefront.jpg",            alt: "Officina del Panino Storefront",                        titleKey: "workshop" },
-  { src: "/images/panini-trio.jpg",           alt: "Tre panini misti con lattuga e cheesesteak",            titleKey: "trio" },
-  { src: "/images/panini-wings.jpg",          alt: "Panini con onion rings e chicken wings",                titleKey: "wings" },
-  { src: "/images/sandwich1.jpg",             alt: "Loaded Sandwich with Rucola and Meatballs",             titleKey: "masterpiece" },
-  { src: "/images/panino-patate.jpg",         alt: "Panino con patate e scamorza filante",                  titleKey: "patate" },
-  { src: "/images/sala.jpg",                  alt: "Sala interna con pareti industrial e piante",           titleKey: "sala" },
-  { src: "/images/interno.jpg",               alt: "Interno del locale con lampadine Edison",               titleKey: "interno" },
-  { src: "/images/sandwiches-bag.jpg",        alt: "Sandwiches with Coca-Cola and Birra Moretti",           titleKey: "latenight" },
+  { src: "/images/creazioni-spread.webp",      alt: "Panini aperti con tutti gli ingredienti",               titleKey: "spread" },
+  { src: "/images/paniniinsalata.webp",        alt: "Panini con insalata",                                    titleKey: "vicini" },
+  { src: "/images/gallery-paninivicini.webp",  alt: "Cinque panini vicini con ripieni diversi",              titleKey: "vicini" },
+  { src: "/images/gallery-panino-castle.webp", alt: "Panino davanti al Castel Sismondo di Rimini",           titleKey: "castle" },
+  { src: "/images/storefront.webp",            alt: "Officina del Panino Storefront",                        titleKey: "workshop" },
+  { src: "/images/panini-trio.webp",           alt: "Tre panini misti con lattuga e cheesesteak",            titleKey: "trio" },
+  { src: "/images/panini-wings.webp",          alt: "Panini con onion rings e chicken wings",                titleKey: "wings" },
+  { src: "/images/sandwich1.webp",             alt: "Loaded Sandwich with Rucola and Meatballs",             titleKey: "masterpiece" },
+  { src: "/images/panino-patate.webp",         alt: "Panino con patate e scamorza filante",                  titleKey: "patate" },
+  { src: "/images/sala.webp",                  alt: "Sala interna con pareti industrial e piante",           titleKey: "sala" },
+  { src: "/images/interno.webp",               alt: "Interno del locale con lampadine Edison",               titleKey: "interno" },
+  { src: "/images/sandwiches-bag.webp",        alt: "Sandwiches with Coca-Cola and Birra Moretti",           titleKey: "latenight" },
   { src: "/images/panino-pollo.webp",         alt: "Panino con pollo croccante, lattuga e patate",          titleKey: "pollo" },
   { src: "/images/panino-rucola.webp",        alt: "Panino con rucola, parmigiano e pomodorini",            titleKey: "rucola" },
   { src: "/images/panino-verdure.webp",       alt: "Panino con verdure e patate al forno",                  titleKey: "verdure" },
   { src: "/images/panino-melanzane.webp",     alt: "Panino con melanzane grigliate",                        titleKey: "melanzane" },
-  { src: "/images/panino-heinz.jpg",          alt: "Panino con Heinz Classic Burger Sauce",                 titleKey: "heinz" },
-  { src: "/images/wings-cheesefries.jpg",     alt: "Chicken wings e cheesefries",                           titleKey: "wingsfries" },
+  { src: "/images/panino-heinz.webp",          alt: "Panino con Heinz Classic Burger Sauce",                 titleKey: "heinz" },
+  { src: "/images/wings-cheesefries.webp",     alt: "Chicken wings e cheesefries",                           titleKey: "wingsfries" },
 ];
 
 export default function Gallery() {
