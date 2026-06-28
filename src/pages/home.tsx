@@ -51,26 +51,35 @@ function getLiveStatus(days: { key: string; it: string; en: string; time: string
   const jsDay    = wdMap[wd] ?? 1;
   const todayIdx = jsDay === 0 ? 6 : jsDay - 1;
   const curMin   = hour * 60 + min;
+  const SOON     = 60; // minuti soglia "fra poco"
+
   const yestIdx  = (todayIdx - 1 + 7) % 7;
   const yestR    = parseTime(days[yestIdx].time);
   if (yestR && yestR.closeMin > 1440) {
     const closeToday = yestR.closeMin - 1440;
-    if (curMin < closeToday) return { isOpen: true, text: lang === "it" ? `Aperto · chiude alle ${fmtMin(closeToday)}` : `Open · closes at ${fmtMin(closeToday)}` };
+    if (curMin < closeToday) {
+      const closing = closeToday - curMin <= SOON;
+      return { isOpen: true, soon: closing ? "closing" as const : null, text: lang === "it" ? `Aperto · chiude alle ${fmtMin(closeToday)}` : `Open · closes at ${fmtMin(closeToday)}` };
+    }
   }
   const todayR = parseTime(days[todayIdx].time);
   if (todayR) {
-    if (curMin >= todayR.openMin) return { isOpen: true, text: lang === "it" ? `Aperto · chiude alle ${fmtMin(todayR.closeMin)}` : `Open · closes at ${fmtMin(todayR.closeMin)}` };
-    return { isOpen: false, text: lang === "it" ? `Chiuso · apre alle ${fmtMin(todayR.openMin)}` : `Closed · opens at ${fmtMin(todayR.openMin)}` };
+    if (curMin >= todayR.openMin) {
+      const closing = todayR.closeMin - curMin <= SOON;
+      return { isOpen: true, soon: closing ? "closing" as const : null, text: lang === "it" ? `Aperto · chiude alle ${fmtMin(todayR.closeMin)}` : `Open · closes at ${fmtMin(todayR.closeMin)}` };
+    }
+    const opening = todayR.openMin - curMin <= SOON;
+    return { isOpen: false, soon: opening ? "opening" as const : null, text: lang === "it" ? `Chiuso · apre alle ${fmtMin(todayR.openMin)}` : `Closed · opens at ${fmtMin(todayR.openMin)}` };
   }
   for (let i = 1; i <= 7; i++) {
     const ni = (todayIdx + i) % 7;
     const nr = parseTime(days[ni].time);
     if (nr) {
       const dn = lang === "it" ? days[ni].it : days[ni].en;
-      return { isOpen: false, text: lang === "it" ? `Chiuso · apre ${dn} alle ${fmtMin(nr.openMin)}` : `Closed · opens ${dn} at ${fmtMin(nr.openMin)}` };
+      return { isOpen: false, soon: null, text: lang === "it" ? `Chiuso · apre ${dn} alle ${fmtMin(nr.openMin)}` : `Closed · opens ${dn} at ${fmtMin(nr.openMin)}` };
     }
   }
-  return { isOpen: false, text: lang === "it" ? "Chiuso" : "Closed" };
+  return { isOpen: false, soon: null, text: lang === "it" ? "Chiuso" : "Closed" };
 }
 
 const creazioniImages = [
@@ -487,16 +496,23 @@ export default function Home() {
               { label: lang === "it" ? "OFFICINA DI SANTARCANGELO" : "OFFICINA DI SANTARCANGELO", days: santaDays },
             ].map(({ label, days }) => {
               const s = getLiveStatus(days, lang, now);
-              const openWord = lang === "it" ? "APERTO" : "OPEN";
-              const closedWord = lang === "it" ? "CHIUSO" : "CLOSED";
+              const dotColor = s.soon ? "bg-amber-400 animate-pulse" : s.isOpen ? "bg-green-400 animate-pulse" : "bg-red-500";
+              const textColor = s.soon ? "text-amber-400" : s.isOpen ? "text-green-400" : "text-red-400";
+              const statusWord = s.soon === "closing"
+                ? (lang === "it" ? "CHIUDE FRA POCO" : "CLOSING SOON")
+                : s.soon === "opening"
+                ? (lang === "it" ? "APRE FRA POCO" : "OPENING SOON")
+                : s.isOpen
+                ? (lang === "it" ? "APERTO" : "OPEN")
+                : (lang === "it" ? "CHIUSO" : "CLOSED");
               const detail = s.text.includes("·") ? s.text.split("·").slice(1).join("·").trim() : "";
               return (
                 <div key={label} className="flex items-center gap-2 md:gap-3 px-3 py-2 md:px-5 md:py-3 bg-black/60 backdrop-blur-sm border border-white/10">
-                  <span className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full flex-shrink-0 ${s.isOpen ? "bg-green-400 animate-pulse" : "bg-red-500"}`} />
+                  <span className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full flex-shrink-0 ${dotColor}`} />
                   <div className="flex flex-col leading-tight text-left">
                     <span className="text-white/50 text-[9px] md:text-[10px] font-display tracking-[0.15em] uppercase">{label}</span>
-                    <span className={`text-xs md:text-sm font-display tracking-[0.12em] ${s.isOpen ? "text-green-400" : "text-red-400"}`}>
-                      {s.isOpen ? openWord : closedWord}
+                    <span className={`text-xs md:text-sm font-display tracking-[0.12em] ${textColor}`}>
+                      {statusWord}
                       {detail ? <span className="text-white/40 font-mono text-[9px] md:text-[10px] ml-1.5 md:ml-2 normal-case tracking-normal">{detail}</span> : null}
                     </span>
                   </div>
