@@ -5,6 +5,17 @@ import { useLang } from "@/context/LanguageContext";
 
 type FormState = "idle" | "sending" | "sent" | "error";
 
+function GearSVG({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 100 100" fill="currentColor">
+      <path
+        fillRule="evenodd"
+        d="M57,4 L43,4 L40,14 C37,15 34,16 31,18 L22,14 L13,23 L17,32 C15,35 14,38 13,41 L3,44 L3,56 L13,59 C14,62 15,65 17,68 L13,77 L22,86 L31,82 C34,84 37,85 40,86 L43,96 L57,96 L60,86 C63,85 66,84 69,82 L78,86 L87,77 L83,68 C85,65 86,62 87,59 L97,56 L97,44 L87,41 C86,38 85,35 83,32 L87,23 L78,14 L69,18 C66,16 63,15 60,14 Z M65,50 A15,15 0 0,1 35,50 A15,15 0 0,1 65,50 Z"
+      />
+    </svg>
+  );
+}
+
 export default function Contatti() {
   const { lang } = useLang();
   const [form, setForm] = useState({ nome: "", cognome: "", indirizzo: "", messaggio: "" });
@@ -54,8 +65,11 @@ export default function Contatti() {
     "w-full bg-card border border-border px-4 py-3 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary transition-colors text-sm";
 
   return (
-    <div className="w-full pt-32 pb-24 min-h-screen">
-      <div className="max-w-2xl mx-auto px-6">
+    <div className="w-full pt-32 pb-24 min-h-screen relative overflow-hidden">
+      <GearSVG className="absolute -top-16 -right-16 w-80 h-80 text-white opacity-[0.05] gear-cw pointer-events-none select-none" aria-hidden="true" />
+      <GearSVG className="absolute -bottom-12 -left-12 w-60 h-60 text-white opacity-[0.04] gear-ccw pointer-events-none select-none" aria-hidden="true" />
+      <GearSVG className="absolute top-1/2 right-1/4 -translate-y-1/2 w-28 h-28 text-white opacity-[0.03] gear-cw-fast pointer-events-none select-none" aria-hidden="true" />
+      <div className="max-w-2xl mx-auto px-6 relative z-10">
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -167,3 +181,4 @@ export default function Contatti() {
     </div>
   );
 }
+
