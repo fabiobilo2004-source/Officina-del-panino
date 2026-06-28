@@ -20,7 +20,7 @@ function BestSellerCard({
         <motion.img
           src={imgSrc}
           alt={item.name}
-          className="h-[250px] w-auto max-w-[250px] object-contain drop-shadow-2xl"
+          className={`w-auto object-contain drop-shadow-2xl ${item.name === "Bullone" ? "h-[180px] max-w-[180px]" : "h-[250px] max-w-[250px]"}`}
           style={{ x, opacity }}
         />
       </div>
@@ -353,7 +353,7 @@ export default function Menu() {
                       <motion.img
                         src={imgSrc}
                         alt={item.name}
-                        className="h-[250px] w-auto max-w-[250px] object-contain drop-shadow-2xl"
+                        className={`w-auto object-contain drop-shadow-2xl ${item.name === "Bullone" ? "h-[180px] max-w-[180px]" : "h-[250px] max-w-[250px]"}`}
                         style={
                           i === 0 ? { x: s0x, rotate: s0rot, opacity: s0op } :
                           i === 1 ? { y: s1y, rotate: s1rot, opacity: s1op } :
