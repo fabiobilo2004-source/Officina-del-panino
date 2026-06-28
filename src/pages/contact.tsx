@@ -410,7 +410,7 @@ export default function Contact() {
                           className="absolute inset-0 w-full h-full object-cover cursor-pointer"
                           onClick={handlePlay}
                           onEnded={() => setVideoPlaying(false)}
-                          onLoadedMetadata={(e) => { (e.target as HTMLVideoElement).playbackRate = 0.35; }} />
+                          onLoadedMetadata={(e) => { (e.target as HTMLVideoElement).playbackRate = 0.5; }} />
                       ) : (
                         <video
                           ref={videoRef}
