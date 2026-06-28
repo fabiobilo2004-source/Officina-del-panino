@@ -166,16 +166,13 @@ function StoryImage() {
   );
 }
 
-function ParallaxCreazioneCard({ src, fromLeft, onClick }: { src: string; fromLeft: boolean; onClick: () => void }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
-  const x = useTransform(scrollYProgress, [0, 1], [fromLeft ? -300 : 300, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
-
+function ParallaxCreazioneCard({ src, onClick }: { src: string; fromLeft: boolean; onClick: () => void }) {
   return (
     <motion.div
-      ref={ref}
-      style={{ x, opacity }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="relative cursor-pointer group"
       onClick={onClick}
     >
