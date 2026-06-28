@@ -177,13 +177,13 @@ const menuData = {
     },
   ],
   bevande: [
-    { name: "Coca Cola in vetro",            price: "3€" },
-    { name: "Coca Cola in lattina",          price: "2,5€" },
-    { name: "Coca Cola Zero in lattina",     price: "2,5€" },
-    { name: "Fanta in lattina",              price: "2,5€" },
-    { name: "Sprite in lattina",             price: "2,5€" },
-    { name: "Fuze Tea in lattina",           price: "2,5€" },
-    { name: "Acqua Naturale / Frizzante 0.5L", price: "1,20€" },
+    { name: "Coca Cola in vetro",              nameEn: "Coca Cola (glass bottle)",     price: "3€" },
+    { name: "Coca Cola in lattina",            nameEn: "Coca Cola (can)",              price: "2,5€" },
+    { name: "Coca Cola Zero in lattina",       nameEn: "Coca Cola Zero (can)",         price: "2,5€" },
+    { name: "Fanta in lattina",                nameEn: "Fanta (can)",                  price: "2,5€" },
+    { name: "Sprite in lattina",               nameEn: "Sprite (can)",                 price: "2,5€" },
+    { name: "Fuze Tea in lattina",             nameEn: "Fuze Tea (can)",               price: "2,5€" },
+    { name: "Acqua Naturale / Frizzante 0.5L", nameEn: "Still / Sparkling Water 0.5L", price: "1,20€" },
   ],
   birre: [
     { name: "Moretti 33 CL",                 price: "3€" },
@@ -663,7 +663,7 @@ export default function Menu() {
             <div className="space-y-4">
               {menuData.bevande.map((item, i) => (
                 <div key={i} className="flex justify-between items-baseline">
-                  <span className="text-muted-foreground text-sm">{item.name}</span>
+                  <span className="text-muted-foreground text-sm">{lang === "en" && item.nameEn ? item.nameEn : item.name}</span>
                   <div className="flex-1 border-b border-dotted border-border mx-4 opacity-50 relative top-[-4px]" />
                   <span className="font-display text-primary">{item.price}</span>
                 </div>
