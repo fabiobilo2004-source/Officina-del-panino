@@ -175,6 +175,27 @@ function StoryImage() {
   );
 }
 
+function GearSVG({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 100 100" fill="currentColor">
+      <path
+        fillRule="evenodd"
+        d="M57,4 L43,4 L40,14 C37,15 34,16 31,18 L22,14 L13,23 L17,32 C15,35 14,38 13,41 L3,44 L3,56 L13,59 C14,62 15,65 17,68 L13,77 L22,86 L31,82 C34,84 37,85 40,86 L43,96 L57,96 L60,86 C63,85 66,84 69,82 L78,86 L87,77 L83,68 C85,65 86,62 87,59 L97,56 L97,44 L87,41 C86,38 85,35 83,32 L87,23 L78,14 L69,18 C66,16 63,15 60,14 Z M65,50 A15,15 0 0,1 35,50 A15,15 0 0,1 65,50 Z"
+      />
+    </svg>
+  );
+}
+
+function GearBackground() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
+      <GearSVG className="absolute -top-16 -right-16 w-80 h-80 text-white opacity-[0.05] gear-cw" />
+      <GearSVG className="absolute -bottom-12 -left-12 w-60 h-60 text-white opacity-[0.04] gear-ccw" />
+      <GearSVG className="absolute top-1/2 left-[38%] -translate-y-1/2 w-28 h-28 text-white opacity-[0.03] gear-cw-fast" />
+    </div>
+  );
+}
+
 function ParallaxCreazioneCard({ src, onClick }: { src: string; fromLeft: boolean; onClick: () => void }) {
   return (
     <motion.div
@@ -645,8 +666,9 @@ export default function Home() {
       </section>
 
       {/* Come prepariamo i tuoi panini — Video Section */}
-      <section ref={lavorazioneSectionRef} className="py-24 bg-background border-b border-border/30">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
+      <section ref={lavorazioneSectionRef} className="py-24 bg-background border-b border-border/30 relative overflow-hidden">
+        <GearBackground />
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16 relative z-10">
           {/* Testo sinistra */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -754,8 +776,9 @@ export default function Home() {
       </section>
 
       {/* ── Pane Giusto Section ── */}
-      <section ref={paneSectionRef} className="py-24 bg-background border-b border-border/30">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16">
+      <section ref={paneSectionRef} className="py-24 bg-background border-b border-border/30 relative overflow-hidden">
+        <GearBackground />
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-16 relative z-10">
           {/* Text — sinistra su desktop */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -817,8 +840,9 @@ export default function Home() {
       </section>
 
       {/* ── Late Night Section ── */}
-      <section className="py-0 bg-background border-b border-border/30 overflow-hidden">
-        <div className="grid md:grid-cols-2 min-h-[480px]">
+      <section className="py-0 bg-background border-b border-border/30 overflow-hidden relative">
+        <GearBackground />
+        <div className="grid md:grid-cols-2 min-h-[480px] relative z-10">
           {/* Text side */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -943,8 +967,9 @@ export default function Home() {
       </section>
 
       {/* ── Award Section ── */}
-      <section className="py-20 md:py-28 bg-background border-b border-border/30 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <section className="py-20 md:py-28 bg-background border-b border-border/30 overflow-hidden relative">
+        <GearBackground />
+        <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
           {/* Text */}
           <motion.p
             initial={{ opacity: 0, x: -40 }}
