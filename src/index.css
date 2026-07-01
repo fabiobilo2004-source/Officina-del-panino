@@ -208,9 +208,9 @@ html {
   0%, 100% { transform: rotate(-18deg); }
   50%       { transform: rotate(18deg); }
 }
-.gear-cw  { animation: gear-cw  18s linear infinite; transform-origin: center; }
-.gear-ccw { animation: gear-ccw 12s linear infinite; transform-origin: center; }
-.gear-cw-fast  { animation: gear-cw  8s linear infinite; transform-origin: center; }
+.gear-cw  { animation: gear-cw  60s linear infinite; transform-origin: center; }
+.gear-ccw { animation: gear-ccw 45s linear infinite; transform-origin: center; }
+.gear-cw-fast  { animation: gear-cw  30s linear infinite; transform-origin: center; }
 .wrench-swing  { animation: wrench-swing 3s ease-in-out infinite; transform-origin: 50% 80%; }
 
 @layer base {
