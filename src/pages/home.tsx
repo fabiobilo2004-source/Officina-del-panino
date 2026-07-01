@@ -51,7 +51,7 @@ function getLiveStatus(days: { key: string; it: string; en: string; time: string
   const jsDay    = wdMap[wd] ?? 1;
   const todayIdx = jsDay === 0 ? 6 : jsDay - 1;
   const curMin   = hour * 60 + min;
-  const SOON     = 60; // minuti soglia "fra poco"
+  const SOON     = 30; // minuti soglia "fra poco"
 
   const yestIdx  = (todayIdx - 1 + 7) % 7;
   const yestR    = parseTime(days[yestIdx].time);
