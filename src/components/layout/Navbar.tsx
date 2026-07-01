@@ -3,13 +3,20 @@ import { Link, useLocation } from "wouter";
 import { Menu as MenuIcon, X } from "lucide-react";
 import { SiInstagram, SiFacebook, SiTiktok } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
+import { isAnyLocationOpen } from "@/lib/live-status";
 
 export function Navbar() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
+  const [anyOpen, setAnyOpen] = useState(() => isAnyLocationOpen(new Date()));
   const { lang, setLang } = useLang();
+
+  useEffect(() => {
+    const id = setInterval(() => setAnyOpen(isAnyLocationOpen(new Date())), 60_000);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -46,7 +53,7 @@ export function Navbar() {
             className="h-[68px] md:h-20 w-auto"
             onLoad={() => setLogoLoaded(true)}
             style={{
-              filter: logoLoaded ? "drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 4px #fff5cc) drop-shadow(0 0 6px #ffd060) drop-shadow(0 0 8px #ffaa20)" : "none",
+              filter: logoLoaded && anyOpen ? "drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 4px #fff5cc) drop-shadow(0 0 6px #ffd060) drop-shadow(0 0 8px #ffaa20)" : "none",
               overflow: "visible",
               transition: "filter 0.4s ease",
             }}

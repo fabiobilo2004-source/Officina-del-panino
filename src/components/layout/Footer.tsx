@@ -1,8 +1,16 @@
+import { useState, useEffect } from "react";
 import { SiInstagram, SiFacebook, SiTiktok } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
+import { isAnyLocationOpen } from "@/lib/live-status";
 
 export function Footer() {
   const { lang } = useLang();
+  const [anyOpen, setAnyOpen] = useState(() => isAnyLocationOpen(new Date()));
+
+  useEffect(() => {
+    const id = setInterval(() => setAnyOpen(isAnyLocationOpen(new Date())), 60_000);
+    return () => clearInterval(id);
+  }, []);
 
   const t = {
     tagline: {
@@ -33,7 +41,7 @@ export function Footer() {
               src="/images/logo-transparent.webp"
               alt="Officina del Panino"
               className="w-52 h-auto"
-              style={{ filter: "drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 4px #fff5cc) drop-shadow(0 0 6px #ffd060) drop-shadow(0 0 8px #ffaa20)" }}
+              style={{ filter: anyOpen ? "drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 4px #fff5cc) drop-shadow(0 0 6px #ffd060) drop-shadow(0 0 8px #ffaa20)" : "none", transition: "filter 0.4s ease" }}
             />
           </a>
           <p className="text-primary font-display text-sm tracking-widest mt-3 mb-2 uppercase">Dal 2019</p>
