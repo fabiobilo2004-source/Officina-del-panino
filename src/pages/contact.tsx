@@ -404,8 +404,9 @@ export default function Contact() {
                       {isRimini ? (
                         <video
                           ref={videoRef}
-                          playsInline preload="auto"
+                          playsInline preload="metadata"
                           muted
+                          poster="/images/storefront.webp"
                           src="/videos/rimini.mp4"
                           className="absolute inset-0 w-full h-full object-cover cursor-pointer"
                           onClick={handlePlay}
@@ -414,8 +415,9 @@ export default function Contact() {
                       ) : (
                         <video
                           ref={videoRef}
-                          playsInline preload="auto"
+                          playsInline preload="metadata"
                           muted={videoMuted}
+                          poster="/images/santarcangelo.webp"
                           src="/videos/santarcangelo.mp4"
                           className="absolute inset-0 w-full h-full object-cover cursor-pointer"
                           onClick={handlePlay}

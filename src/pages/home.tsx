@@ -339,7 +339,10 @@ export default function Home() {
           if (!v) return;
           if (e.isIntersecting) {
             v.currentTime = 0;
-            v.play().catch(() => {});
+            const p = v.play();
+            if (p) p.catch(() => {
+              v.addEventListener("canplay", () => v.play().catch(() => {}), { once: true });
+            });
             setSt(true);
           } else {
             v.pause();
