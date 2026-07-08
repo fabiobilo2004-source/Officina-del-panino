@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Phone, Clock, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { SiInstagram, SiFacebook, SiJusteat, SiTiktok } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
+import { FERIE } from "@/lib/live-status";
 
 type LocationKey = "rimini" | "santarcangelo";
 
@@ -338,15 +339,20 @@ export default function Contact() {
                         )}
                       </div>
                       {(() => {
+                        const ferie = activeLocation === "santarcangelo" ? FERIE.santarcangelo : FERIE.rimini;
                         const status = getLiveStatus(loc.days, lang, now);
+                        const isOpen = !ferie && status.isOpen;
+                        const badgeText = ferie
+                          ? (lang === "it" ? "Chiuso per ferie" : "Closed for holidays")
+                          : status.text;
                         return (
                           <div className={`inline-flex items-center gap-2 px-3 py-1.5 mb-5 text-xs font-display tracking-wider uppercase border ${
-                            status.isOpen
+                            isOpen
                               ? "border-green-500/40 bg-green-500/10 text-green-400"
                               : "border-red-500/40 bg-red-500/10 text-red-400"
                           }`}>
-                            <span className={`w-2 h-2 rounded-full animate-pulse ${status.isOpen ? "bg-green-400" : "bg-red-400"}`} />
-                            {status.text}
+                            <span className={`w-2 h-2 rounded-full ${isOpen ? "bg-green-400 animate-pulse" : "bg-red-400"}`} />
+                            {badgeText}
                           </div>
                         );
                       })()}

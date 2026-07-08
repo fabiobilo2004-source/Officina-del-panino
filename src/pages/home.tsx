@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, ChevronDown, X, ZoomIn, Phone, Play, Pause, 
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { SiTripadvisor, SiGoogle, SiJusteat } from "react-icons/si";
+import { FERIE } from "@/lib/live-status";
 
 const riminiDays = [
   { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 05:00" },
@@ -516,20 +517,22 @@ export default function Home() {
             className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mt-4 md:mt-8"
           >
             {[
-              { label: lang === "it" ? "OFFICINA DI RIMINI" : "OFFICINA DI RIMINI", days: riminiDays },
-              { label: lang === "it" ? "OFFICINA DI SANTARCANGELO" : "OFFICINA DI SANTARCANGELO", days: santaDays },
-            ].map(({ label, days }) => {
+              { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini },
+              { label: "OFFICINA DI SANTARCANGELO",  days: santaDays,  ferie: FERIE.santarcangelo },
+            ].map(({ label, days, ferie }) => {
               const s = getLiveStatus(days, lang, now);
-              const dotColor = s.soon ? "bg-amber-400 animate-pulse" : s.isOpen ? "bg-green-400 animate-pulse" : "bg-red-500";
-              const textColor = s.soon ? "text-amber-400" : s.isOpen ? "text-green-400" : "text-red-400";
-              const statusWord = s.soon === "closing"
+              const dotColor = ferie ? "bg-red-500" : s.soon ? "bg-amber-400 animate-pulse" : s.isOpen ? "bg-green-400 animate-pulse" : "bg-red-500";
+              const textColor = ferie ? "text-red-400" : s.soon ? "text-amber-400" : s.isOpen ? "text-green-400" : "text-red-400";
+              const statusWord = ferie
+                ? (lang === "it" ? "CHIUSO PER FERIE" : "CLOSED FOR HOLIDAYS")
+                : s.soon === "closing"
                 ? (lang === "it" ? "CHIUDE FRA POCO" : "CLOSING SOON")
                 : s.soon === "opening"
                 ? (lang === "it" ? "APRE FRA POCO" : "OPENING SOON")
                 : s.isOpen
                 ? (lang === "it" ? "APERTO" : "OPEN")
                 : (lang === "it" ? "CHIUSO" : "CLOSED");
-              const detail = s.text.includes("·") ? s.text.split("·").slice(1).join("·").trim() : "";
+              const detail = ferie ? "" : s.text.includes("·") ? s.text.split("·").slice(1).join("·").trim() : "";
               return (
                 <div key={label} className="flex items-center gap-2 md:gap-3 px-3 py-2 md:px-5 md:py-3 bg-black/60 backdrop-blur-sm border border-white/10">
                   <span className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full flex-shrink-0 ${dotColor}`} />

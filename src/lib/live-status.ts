@@ -1,3 +1,9 @@
+// ── Ferie / Holiday closures ── set to true to override live status ──
+export const FERIE = {
+  rimini:         false,
+  santarcangelo:  true,   // ← rimetti false quando riaprono
+};
+
 // Rimini: every day 18:00–05:00 (next day)
 const RIMINI: string[] = ["18:00–05:00", "18:00–05:00", "18:00–05:00", "18:00–05:00", "18:00–05:00", "18:00–05:00", "18:00–05:00"];
 
@@ -46,5 +52,7 @@ export function isAnyLocationOpen(now: Date): boolean {
   const todayIdx = jsDay === 0 ? 6 : jsDay - 1; // 0=Mon…6=Sun
   const curMin = hour * 60 + min;
 
-  return isOpenAt(RIMINI, curMin, todayIdx) || isOpenAt(SANTA, curMin, todayIdx);
+  const riminiOpen = !FERIE.rimini && isOpenAt(RIMINI, curMin, todayIdx);
+  const santaOpen  = !FERIE.santarcangelo && isOpenAt(SANTA, curMin, todayIdx);
+  return riminiOpen || santaOpen;
 }
