@@ -123,7 +123,7 @@ export function Footer() {
           className="group flex items-center gap-2 text-muted-foreground/60 hover:text-primary transition-colors duration-300"
         >
           <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
-          <span className="font-display text-[10px] tracking-[0.25em] uppercase">Website Designed by Fabio Shkurta</span>
+          <span className="font-display text-[10px] tracking-[0.25em] uppercase">Powered by Fabio Shkurta</span>
           <span className="w-4 h-px bg-current transition-all duration-300 group-hover:w-6" />
         </a>
       </div>
