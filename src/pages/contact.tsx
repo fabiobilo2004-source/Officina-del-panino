@@ -398,7 +398,8 @@ export default function Contact() {
                       style={{ border: 0 }}
                       allowFullScreen={false}
                       loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
+                      referrerPolicy="no-referrer"
+                      sandbox="allow-scripts allow-same-origin"
                       data-testid="contact-map"
                       title={`Google Maps – Officina del Panino ${lang === "it" ? loc.nameIt : loc.nameEn}`}
                     />
