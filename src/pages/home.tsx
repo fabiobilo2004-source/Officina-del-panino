@@ -701,7 +701,7 @@ export default function Home() {
               ref={lavorazioneVideoRef}
               playsInline
               preload="auto"
-              muted
+              muted={lavorazioneMuted}
               poster="/images/panini-trio.webp"
               src="/videos/lavorazione-web.mp4"
               className="w-full h-full object-cover"
@@ -715,6 +715,12 @@ export default function Home() {
                 ? <Pause size={48} className="text-white drop-shadow-lg" fill="white" />
                 : <Play size={48} className="text-white drop-shadow-lg ml-1" fill="white" />
               }
+            </button>
+            <button
+              onClick={() => setLavorazioneMuted(m => !m)}
+              className="absolute bottom-3 right-3 z-20 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
+            >
+              {lavorazioneMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
             </button>
           </motion.div>
         </div>
