@@ -127,12 +127,12 @@ export function Footer() {
             <a
               href="tel:+390541419757"
               aria-label="Chiama Rimini"
-              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center p-1"
+              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center overflow-hidden"
             >
               <img
                 src="/images/logo-transparent.webp"
                 alt="Rimini"
-                className="w-full h-full object-contain"
+                className="w-24 h-24 object-contain scale-150"
               />
             </a>
             <a
