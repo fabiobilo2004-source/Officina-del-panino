@@ -138,12 +138,12 @@ export function Footer() {
             <a
               href="tel:+390541840930"
               aria-label="Chiama Santarcangelo"
-              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center p-1"
+              className="w-14 h-14 border border-border hover:border-primary transition-colors flex items-center justify-center overflow-hidden rounded-full"
             >
               <img
                 src="/images/logo-santarcangelo.png"
                 alt="Santarcangelo"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover"
               />
             </a>
           </div>
