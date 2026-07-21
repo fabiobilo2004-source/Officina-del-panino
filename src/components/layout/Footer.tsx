@@ -138,7 +138,7 @@ export function Footer() {
             <a
               href="tel:+390541840930"
               aria-label="Chiama Santarcangelo"
-              className="w-14 h-14 border border-border hover:border-primary transition-colors flex items-center justify-center overflow-hidden rounded-full"
+              className="w-14 h-14 border border-border hover:border-primary transition-colors flex items-center justify-center overflow-hidden"
             >
               <img
                 src="/images/logo-santarcangelo.png"
