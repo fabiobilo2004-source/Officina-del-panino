@@ -268,7 +268,7 @@ export default function Home() {
   }, []);
 
   const [lavorazionePlaying, setLavorazionePlaying] = useState(false);
-  const [lavorazioneMuted, setLavorazioneMuted] = useState(false);
+  const [lavorazioneMuted, setLavorazioneMuted] = useState(true);
   const lavorazioneSectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress: lavorazioneScrollY } = useScroll({ target: lavorazioneSectionRef, offset: ["start end", "end start"] });
 
@@ -290,7 +290,7 @@ export default function Home() {
 
   const estateVideoRef = useRef<HTMLVideoElement>(null);
   const [estatePlaying, setEstatePlaying] = useState(false);
-  const [estateMuted, setEstateMuted] = useState(false);
+  const [estateMuted, setEstateMuted] = useState(true);
   const handleEstatePlay = () => {
     const v = estateVideoRef.current;
     if (!v) return;
