@@ -700,6 +700,8 @@ export default function Home() {
             <video
               ref={lavorazioneVideoRef}
               playsInline
+              autoPlay
+              loop
               preload="auto"
               muted
               poster="/images/panini-trio.webp"
@@ -756,6 +758,7 @@ export default function Home() {
               src="/videos/estate.mp4"
               preload="auto"
               playsInline
+              autoPlay
               poster="/images/notte.webp"
               muted={estateMuted}
               loop
