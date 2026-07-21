@@ -136,7 +136,7 @@ export function Footer() {
               aria-label="Chiama Santarcangelo"
               className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center overflow-hidden"
             >
-              <img src="/images/logo-santarcangelo.png" alt="Santarcangelo" className="w-11 h-11 object-contain" />
+              <img src="/images/logo-santarcangelo.png" alt="Santarcangelo" className="w-14 h-14 object-contain" />
             </a>
           </div>
         </div>
