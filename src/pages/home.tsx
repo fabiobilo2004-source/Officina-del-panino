@@ -955,7 +955,9 @@ export default function Home() {
                   href="tel:+390541419757"
                   className="flex items-center gap-4 px-6 py-4 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
                 >
-                  <img src="/images/logo-transparent.webp" alt="Rimini" className="w-8 h-8 object-contain scale-150" />
+                  <span className="w-10 h-10 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                    <img src="/images/logo-transparent.webp" alt="Rimini" className="w-20 h-20 object-contain scale-[2.5]" />
+                  </span>
                   Rimini — 0541 141 9757
                 </a>
                 <a
