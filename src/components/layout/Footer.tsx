@@ -143,7 +143,7 @@ export function Footer() {
               <img
                 src="/images/logo-santarcangelo.png"
                 alt="Santarcangelo"
-                className="w-full h-full object-cover"
+                className="w-10 h-10 object-contain"
               />
             </a>
           </div>
