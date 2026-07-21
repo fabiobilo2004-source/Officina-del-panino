@@ -130,9 +130,9 @@ export function Footer() {
               className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center overflow-hidden"
             >
               <img
-                src="/images/logo-transparent.webp"
+                src="/images/logo-rimini-cropped.webp"
                 alt="Rimini"
-                className="w-24 h-24 object-contain scale-150"
+                className="w-10 h-10 object-contain"
               />
             </a>
             <a
