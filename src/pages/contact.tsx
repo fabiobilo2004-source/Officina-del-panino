@@ -539,50 +539,8 @@ export default function Contact() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-20 pt-16 border-t border-border grid sm:grid-cols-2 gap-12"
+          className="mt-20 pt-16 border-t border-border"
         >
-          <div>
-            <h3 className="font-display text-2xl mb-6 text-foreground uppercase tracking-wider">
-              {lang === "it" ? "SEGUICI" : "FOLLOW US"}
-            </h3>
-            <div className="flex flex-col gap-3">
-              {[
-                { href: "https://www.instagram.com/officinadelpanino.rimini/", icon: <SiInstagram size={16} />, label: "Instagram", testId: "contact-instagram" },
-                { href: "https://www.facebook.com/officinadelpaninorimini/",   icon: <SiFacebook size={16} />,  label: "Facebook",  testId: "contact-facebook" },
-                { href: "https://www.tiktok.com/@officinadelpanino",            icon: <SiTiktok size={16} />,   label: "TikTok",    testId: "contact-tiktok" },
-              ].map(({ href, icon, label, testId }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-testid={testId}
-                  className="flex items-center gap-3 px-5 py-3.5 border border-border bg-card hover:border-primary hover:text-primary text-muted-foreground transition-colors"
-                >
-                  {icon}
-                  <span className="font-display tracking-wider uppercase text-sm">{label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="font-display text-2xl mb-6 text-foreground uppercase tracking-wider">
-              {lang === "it" ? "ORDINA ONLINE" : "ORDER ONLINE"}
-            </h3>
-            <div className="flex gap-4">
-              <a
-                href="https://www.justeat.it/restaurants-officina-del-panino-rimini-47923/menu"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-testid="contact-justeat"
-                className="flex items-center gap-3 px-5 py-3 border border-border bg-card hover:border-orange-500 hover:text-orange-500 text-muted-foreground transition-colors text-sm font-display tracking-wider uppercase"
-              >
-                <SiJusteat size={18} className="text-orange-500" />
-                Just Eat
-              </a>
-            </div>
-          </div>
         </motion.div>
 
       </div>
