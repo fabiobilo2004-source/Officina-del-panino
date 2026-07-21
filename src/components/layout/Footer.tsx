@@ -122,29 +122,21 @@ export function Footer() {
               aria-label="Just Eat"
               className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center"
             >
-              <SiJusteat size={28} className="text-orange-500" />
+              <SiJusteat size={32} className="text-orange-500" />
             </a>
             <a
               href="tel:+390541419757"
               aria-label="Chiama Rimini"
               className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center overflow-hidden"
             >
-              <img
-                src="/images/logo-rimini-cropped.webp"
-                alt="Rimini"
-                className="w-10 h-10 object-contain"
-              />
+              <img src="/images/logo-rimini-cropped.webp" alt="Rimini" className="w-11 h-11 object-contain" />
             </a>
             <a
               href="tel:+390541840930"
               aria-label="Chiama Santarcangelo"
-              className="w-14 h-14 border border-border hover:border-primary transition-colors flex items-center justify-center overflow-hidden"
+              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center overflow-hidden"
             >
-              <img
-                src="/images/logo-santarcangelo.png"
-                alt="Santarcangelo"
-                className="w-12 h-12 object-contain"
-              />
+              <img src="/images/logo-santarcangelo.png" alt="Santarcangelo" className="w-11 h-11 object-contain" />
             </a>
           </div>
         </div>
