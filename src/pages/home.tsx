@@ -955,14 +955,14 @@ export default function Home() {
                   href="tel:+390541419757"
                   className="flex items-center gap-4 px-6 py-4 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
                 >
-                  <span className="text-primary">☎</span>
+                  <img src="/images/logo-transparent.webp" alt="Rimini" className="w-8 h-8 object-contain" />
                   Rimini — 0541 141 9757
                 </a>
                 <a
                   href="tel:+3905411840930"
                   className="flex items-center gap-4 px-6 py-4 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
                 >
-                  <span className="text-primary">☎</span>
+                  <img src="/images/logo-santarcangelo.png" alt="Santarcangelo" className="w-8 h-8 object-contain" />
                   Santarcangelo — 0541 184 0930
                 </a>
               </div>
