@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { SiInstagram, SiFacebook, SiTiktok } from "react-icons/si";
+import { SiInstagram, SiFacebook, SiTiktok, SiJusteat } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
 import { isAnyLocationOpen } from "@/lib/live-status";
 
@@ -76,7 +76,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Social & Order */}
+        {/* Social */}
         <div>
           <h4 className="font-display text-base mb-4 uppercase tracking-wider">{lang === "it" ? "SEGUICI" : "FOLLOW US"}</h4>
           <div className="flex gap-4 mb-6">
@@ -109,6 +109,51 @@ export function Footer() {
               className="w-10 h-10 bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
             >
               <SiTiktok size={18} />
+            </a>
+          </div>
+
+          {/* Ordina Ora */}
+          <h4 className="font-display text-base mb-4 uppercase tracking-wider">{lang === "it" ? "ORDINA ORA" : "ORDER NOW"}</h4>
+          <div className="flex flex-col gap-3">
+            <a
+              href="https://www.justeat.it/restaurants-officina-del-panino-rimini-47923/menu"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Just Eat"
+              className="flex items-center gap-3 px-3 py-2 border border-border bg-card hover:border-primary hover:text-primary text-muted-foreground transition-colors text-sm"
+            >
+              <SiJusteat size={18} className="text-orange-500 flex-shrink-0" />
+              <span className="font-medium">Just Eat</span>
+            </a>
+            <a
+              href="tel:+390541419757"
+              aria-label="Chiama Rimini"
+              className="flex items-center gap-3 px-3 py-2 border border-border bg-card hover:border-primary transition-colors group"
+            >
+              <img
+                src="/images/logo-transparent.webp"
+                alt="Officina del Panino Rimini"
+                className="w-8 h-8 object-contain flex-shrink-0"
+              />
+              <div className="flex flex-col">
+                <span className="text-xs font-display uppercase tracking-wider text-primary">Rimini</span>
+                <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors font-mono">0541 141 9757</span>
+              </div>
+            </a>
+            <a
+              href="tel:+390541840930"
+              aria-label="Chiama Santarcangelo"
+              className="flex items-center gap-3 px-3 py-2 border border-border bg-card hover:border-primary transition-colors group"
+            >
+              <img
+                src="/images/logo-santarcangelo.png"
+                alt="Officina del Panino Santarcangelo"
+                className="w-8 h-8 object-contain flex-shrink-0"
+              />
+              <div className="flex flex-col">
+                <span className="text-xs font-display uppercase tracking-wider text-primary">Santarcangelo</span>
+                <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors font-mono">0541 184 0930</span>
+              </div>
             </a>
           </div>
         </div>
