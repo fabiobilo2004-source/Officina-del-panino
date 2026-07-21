@@ -114,46 +114,37 @@ export function Footer() {
 
           {/* Ordina Ora */}
           <h4 className="font-display text-base mb-4 uppercase tracking-wider">{lang === "it" ? "ORDINA ORA" : "ORDER NOW"}</h4>
-          <div className="flex flex-col gap-3">
+          <div className="flex gap-3">
             <a
               href="https://www.justeat.it/restaurants-officina-del-panino-rimini-47923/menu"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Just Eat"
-              className="flex items-center gap-3 px-3 py-2 border border-border bg-card hover:border-primary hover:text-primary text-muted-foreground transition-colors text-sm"
+              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center"
             >
-              <SiJusteat size={18} className="text-orange-500 flex-shrink-0" />
-              <span className="font-medium">Just Eat</span>
+              <SiJusteat size={28} className="text-orange-500" />
             </a>
             <a
               href="tel:+390541419757"
               aria-label="Chiama Rimini"
-              className="flex items-center gap-3 px-3 py-2 border border-border bg-card hover:border-primary transition-colors group"
+              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center p-1"
             >
               <img
                 src="/images/logo-transparent.webp"
-                alt="Officina del Panino Rimini"
-                className="w-8 h-8 object-contain flex-shrink-0"
+                alt="Rimini"
+                className="w-full h-full object-contain"
               />
-              <div className="flex flex-col">
-                <span className="text-xs font-display uppercase tracking-wider text-primary">Rimini</span>
-                <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors font-mono">0541 141 9757</span>
-              </div>
             </a>
             <a
               href="tel:+390541840930"
               aria-label="Chiama Santarcangelo"
-              className="flex items-center gap-3 px-3 py-2 border border-border bg-card hover:border-primary transition-colors group"
+              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center p-1"
             >
               <img
                 src="/images/logo-santarcangelo.png"
-                alt="Officina del Panino Santarcangelo"
-                className="w-8 h-8 object-contain flex-shrink-0"
+                alt="Santarcangelo"
+                className="w-full h-full object-contain"
               />
-              <div className="flex flex-col">
-                <span className="text-xs font-display uppercase tracking-wider text-primary">Santarcangelo</span>
-                <span className="text-xs text-muted-foreground group-hover:text-primary transition-colors font-mono">0541 184 0930</span>
-              </div>
             </a>
           </div>
         </div>
