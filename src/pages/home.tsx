@@ -968,7 +968,7 @@ export default function Home() {
                   href="tel:+3905411840930"
                   className="flex items-center gap-4 px-6 py-5 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
                 >
-                  <img src="/images/logo-santarcangelo.png" alt="Santarcangelo" className="w-12 h-12 object-contain flex-shrink-0" />
+                  <img src="/images/logo-santarcangelo.png" alt="Santarcangelo" className="w-16 h-16 object-contain flex-shrink-0" />
                   Santarcangelo — 0541 184 0930
                 </a>
               </div>
