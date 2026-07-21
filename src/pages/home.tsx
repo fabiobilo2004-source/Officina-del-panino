@@ -948,21 +948,21 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 px-6 py-5 bg-orange-500 text-white font-display uppercase tracking-widest text-sm hover:bg-orange-600 transition-colors"
                 >
-                  <SiJusteat size={28} className="flex-shrink-0" />
+                  <span className="w-10 flex justify-center flex-shrink-0"><SiJusteat size={28} /></span>
                   {lang === "it" ? "Ordina su Just Eat" : "Order on Just Eat"}
                 </a>
                 <a
                   href="tel:+390541419757"
                   className="flex items-center gap-4 px-6 py-5 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
                 >
-                  <img src="/images/logo-rimini-cropped.webp" alt="Rimini" className="w-12 h-12 object-contain flex-shrink-0" />
+                  <span className="w-10 flex justify-center flex-shrink-0"><img src="/images/logo-rimini-cropped.webp" alt="Rimini" className="w-10 h-10 object-contain" /></span>
                   Rimini — 0541 141 9757
                 </a>
                 <a
                   href="tel:+3905411840930"
                   className="flex items-center gap-4 px-6 py-5 border border-border bg-background font-display uppercase tracking-widest text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
                 >
-                  <img src="/images/logo-santarcangelo.png" alt="Santarcangelo" className="w-14 h-14 object-contain flex-shrink-0" />
+                  <span className="w-10 flex justify-center flex-shrink-0"><img src="/images/logo-santarcangelo.png" alt="Santarcangelo" className="w-10 h-10 object-contain" /></span>
                   Santarcangelo — 0541 184 0930
                 </a>
               </div>
