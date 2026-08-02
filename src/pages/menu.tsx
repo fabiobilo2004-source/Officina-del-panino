@@ -16,12 +16,12 @@ function BestSellerCard({
   const opacity = useTransform(scrollYProgress, [0, 0.6], [0, 1]);
   return (
     <div ref={ref} className="flex flex-col">
-      <div className="relative h-64 flex items-center justify-center" style={{ isolation: "isolate" }}>
+      <div className="relative h-64 flex items-center justify-center overflow-hidden" style={{ isolation: "isolate" }}>
         <motion.img
           src={imgSrc}
           alt={item.name}
           className="h-[220px] w-auto max-w-[220px] object-contain drop-shadow-2xl"
-          style={{ x, opacity }}
+          style={{ x, opacity, willChange: "transform" }}
         />
       </div>
       <div className="pt-5 mt-2 border-t border-primary/50">
@@ -349,15 +349,15 @@ export default function Menu() {
                              : "/images/panino-chiave.webp";
                 return (
                   <div key={i} className="flex flex-col">
-                    <div className="relative h-64 flex items-center justify-center" style={{ isolation: "isolate" }}>
+                    <div className="relative h-64 flex items-center justify-center overflow-hidden" style={{ isolation: "isolate" }}>
                       <motion.img
                         src={imgSrc}
                         alt={item.name}
                         className="h-[220px] w-auto max-w-[220px] object-contain drop-shadow-2xl"
                         style={
-                          i === 0 ? { x: s0x, rotate: s0rot, opacity: s0op } :
-                          i === 1 ? { y: s1y, rotate: s1rot, opacity: s1op } :
-                                    { x: s2x, rotate: s2rot, opacity: s2op }
+                          i === 0 ? { x: s0x, rotate: s0rot, opacity: s0op, willChange: "transform" } :
+                          i === 1 ? { y: s1y, rotate: s1rot, opacity: s1op, willChange: "transform" } :
+                                    { x: s2x, rotate: s2rot, opacity: s2op, willChange: "transform" }
                         }
                       />
                     </div>
