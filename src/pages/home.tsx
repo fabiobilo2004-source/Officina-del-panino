@@ -534,14 +534,11 @@ export default function Home() {
                 : (lang === "it" ? "CHIUSO" : "CLOSED");
               const detail = ferie ? "" : s.text.includes("·") ? s.text.split("·").slice(1).join("·").trim() : "";
               return (
-                <div key={label} className="flex items-center gap-2 md:gap-3 px-3 py-2 md:px-5 md:py-3 bg-black/60 backdrop-blur-sm border border-white/10">
-                  <span className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full flex-shrink-0 ${dotColor}`} />
-                  <div className="flex flex-col leading-tight text-left">
-                    <span className="text-white/50 text-[9px] md:text-[10px] font-display tracking-[0.15em] uppercase">{label}</span>
-                    <span className={`text-xs md:text-sm font-display tracking-[0.12em] ${textColor}`}>
-                      {statusWord}
-                      {detail ? <span className="text-white/40 font-mono text-[9px] md:text-[10px] ml-1.5 md:ml-2 normal-case tracking-normal">{detail}</span> : null}
-                    </span>
+                <div key={label} className="flex items-center gap-2 px-3 py-1.5 bg-black/60 backdrop-blur-sm border border-white/10">
+                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dotColor}`} />
+                  <div className="flex flex-col leading-tight text-center">
+                    <span className="text-white/50 text-[8px] font-display tracking-[0.15em] uppercase">{label}</span>
+                    <span className={`text-[10px] font-display tracking-[0.12em] ${textColor}`}>{statusWord}</span>
                   </div>
                 </div>
               );
