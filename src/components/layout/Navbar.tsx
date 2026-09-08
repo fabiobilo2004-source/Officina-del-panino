@@ -46,7 +46,18 @@ export function Navbar() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 navbar-wood border-b border-[#3a1a08] transition-shadow duration-300 ${scrolled ? "shadow-[0_4px_30px_rgba(0,0,0,0.75)]" : ""}`}>
       <div className="max-w-7xl mx-auto px-6 h-[68px] md:h-20 flex items-center justify-between">
-        <Link href="/" className="hover:opacity-90 transition-opacity block" style={{ overflow: "visible" }} data-testid="nav-logo">
+        <Link
+          href="/"
+          onClick={(e) => {
+            if (location === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
+          className="hover:opacity-90 transition-opacity block"
+          style={{ overflow: "visible" }}
+          data-testid="nav-logo"
+        >
           <img
             src="/images/logo-transparent.webp"
             alt="Officina del Panino"
