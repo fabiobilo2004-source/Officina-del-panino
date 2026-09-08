@@ -1137,7 +1137,11 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-          <div className="mt-6 flex justify-end">
+          <div className="mt-6 flex flex-wrap items-center justify-end gap-4">
+            <a href="https://www.tripadvisor.it/UserReviewEdit-g187807-d19138912-Officina_Del_Panino-Rimini_Province_of_Rimini_Emilia_Romagna.html" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-display tracking-wider uppercase px-4 py-2 border border-green-500/50 text-green-500 hover:bg-green-500 hover:text-primary-foreground transition-colors">
+              <SiTripadvisor size={16} />
+              {lang === "it" ? "Aggiungi una recensione" : "Add a review"}
+            </a>
             <a href="https://www.tripadvisor.it/Restaurant_Review-g187807-d19138912-Reviews-Officina_Del_Panino-Rimini_Province_of_Rimini_Emilia_Romagna.html" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-green-500 transition-colors font-display tracking-wider uppercase">
               <SiTripadvisor size={16} />
               {lang === "it" ? "Leggi tutte le recensioni su TripAdvisor" : "Read all reviews on TripAdvisor"}
