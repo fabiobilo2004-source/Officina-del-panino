@@ -514,7 +514,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mt-4 md:mt-8"
+            className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 justify-center mt-4 md:mt-8"
           >
             {[
               { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini, ferieText: { it: "CHIUSO FINO AL 16 SETTEMBRE", en: "CLOSED UNTIL SEPT 16" } },
@@ -537,8 +537,8 @@ export default function Home() {
                 <div key={label} className="flex items-center gap-2 px-3 py-1.5 bg-black/60 backdrop-blur-sm border border-white/10">
                   <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dotColor}`} />
                   <div className="flex flex-col leading-tight text-center">
-                    <span className="text-white/50 text-[8px] font-display tracking-[0.15em] uppercase">{label}</span>
-                    <span className={`text-[10px] font-display tracking-[0.12em] ${textColor}`}>{statusWord}</span>
+                    <span className="text-white/50 text-[11px] font-display tracking-[0.15em] uppercase">{label}</span>
+                    <span className={`text-xs font-display tracking-[0.12em] ${textColor}`}>{statusWord}</span>
                   </div>
                 </div>
               );
