@@ -1077,8 +1077,14 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-6 flex flex-wrap items-center justify-end gap-4">
-            <a href="https://www.google.com/maps/place/Officina+Del+Panino+-+Rimini/@44.0592474,12.5627166,17z/data=!4m8!3m7!1s0x132cc3400c5cc94b:0xc915d079235ec43e!8m2!3d44.0592474!4d12.5627166!9m1!1b1!16s%2Fg%2F11h_wy233j?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-display tracking-wider uppercase px-4 py-2 border border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-colors">
-              <SiGoogle size={14} />
+            <a
+              href="https://www.google.com/maps/place/Officina+Del+Panino+-+Rimini/@44.0592474,12.5627166,17z/data=!4m8!3m7!1s0x132cc3400c5cc94b:0xc915d079235ec43e!8m2!3d44.0592474!4d12.5627166!9m1!1b1!16s%2Fg%2F11h_wy233j?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm font-display tracking-wider uppercase px-4 py-2 text-foreground hover:bg-foreground/5 transition-colors"
+              style={{ border: "1px solid transparent", borderImage: "linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853) 1" }}
+            >
+              <img src="/images/google-logo.webp" alt="" className="w-4 h-4 object-contain" />
               {lang === "it" ? "Aggiungi una recensione" : "Add a review"}
             </a>
             <a href="https://www.google.com/search?sa=X&sca_esv=cad9ccf7e46fcafa&sxsrf=ANbL-n7Szwe97uBfWHO7XX8Y4hEeD-2cag:1781785239964&q=Officina+Del+Panino+-+Rimini+Reviews&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxIxNDGxsDQ3NDO1NLEwNjcxNzI2tNjAyPiKUcU_LS0zOTMvUcElNUchIDEvMy9fQVchKDM3My9TISi1LDO1vHgRK1HKAJCvlhlpAAAA&rldimm=14489716594837472318&tbm=lcl&hl=en-IT&ved=2ahUKEwjw4qyi45CVAxWYxQIHHTBjAOwQ9fQKegQIUhAG&biw=1470&bih=774&dpr=2#lkt=LocalPoiReviews" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-blue-400 transition-colors font-display tracking-wider uppercase">
