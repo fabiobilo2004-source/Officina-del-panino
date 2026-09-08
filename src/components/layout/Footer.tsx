@@ -21,6 +21,10 @@ export function Footer() {
     hours:     { it: "ORARI",    en: "HOURS" },
     contact:   { it: "CONTATTI", en: "CONTACT" },
     rights:    { it: "Tutti i diritti riservati.", en: "All rights reserved." },
+    rimini_closure: {
+      it: "Chiuso fino al 16 settembre",
+      en: "Closed until September 16",
+    },
     rimini_hours: {
       it: "Lun: 18:00 – 05:00\nMar: 18:00 – 05:00\nMer: 18:00 – 05:00\nGio: 18:00 – 05:00\nVen: 18:00 – 05:00\nSab: 18:00 – 05:00\nDom: 18:00 – 05:00",
       en: "Mon: 6 pm – 5 am\nTue: 6 pm – 5 am\nWed: 6 pm – 5 am\nThu: 6 pm – 5 am\nFri: 6 pm – 5 am\nSat: 6 pm – 5 am\nSun: 6 pm – 5 am",
@@ -55,10 +59,13 @@ export function Footer() {
             <a href="https://www.google.com/maps/place/Officina+Del+Panino+-+Rimini/@44.0592474,12.5601417,17z/data=!3m1!4b1!4m6!3m5!1s0x132cc3400c5cc94b:0xc915d079235ec43e!8m2!3d44.0592474!4d12.5627166!16s%2Fg%2F11h_wy233j" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors underline underline-offset-2">Via Circonvallazione Occ. 70</a>
             <p className="pt-1">Tel: 0541 141 9757</p>
           </address>
-          <div className="mt-4 text-sm text-muted-foreground space-y-1">
-            {t.rimini_hours[lang].split("\n").map((line, i) => (
-              <p key={i}>{line}</p>
-            ))}
+          <div className="mt-4 text-sm space-y-1">
+            <p className="text-red-500 font-semibold">{t.rimini_closure[lang]}</p>
+            <div className="text-muted-foreground">
+              {t.rimini_hours[lang].split("\n").map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </div>
           </div>
         </div>
 
