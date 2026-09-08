@@ -517,14 +517,14 @@ export default function Home() {
             className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mt-4 md:mt-8"
           >
             {[
-              { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini },
-              { label: "OFFICINA DI SANTARCANGELO",  days: santaDays,  ferie: FERIE.santarcangelo },
-            ].map(({ label, days, ferie }) => {
+              { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini, ferieText: { it: "CHIUSO FINO AL 16 SETTEMBRE", en: "CLOSED UNTIL SEPT 16" } },
+              { label: "OFFICINA DI SANTARCANGELO",  days: santaDays,  ferie: FERIE.santarcangelo, ferieText: null },
+            ].map(({ label, days, ferie, ferieText }) => {
               const s = getLiveStatus(days, lang, now);
               const dotColor = ferie ? "bg-red-500" : s.soon ? "bg-amber-400 animate-pulse" : s.isOpen ? "bg-green-400 animate-pulse" : "bg-red-500";
               const textColor = ferie ? "text-red-400" : s.soon ? "text-amber-400" : s.isOpen ? "text-green-400" : "text-red-400";
               const statusWord = ferie
-                ? (lang === "it" ? "CHIUSO PER FERIE" : "CLOSED FOR HOLIDAYS")
+                ? (ferieText ? ferieText[lang] : (lang === "it" ? "CHIUSO PER FERIE" : "CLOSED FOR HOLIDAYS"))
                 : s.soon === "closing"
                 ? (lang === "it" ? "CHIUDE FRA POCO" : "CLOSING SOON")
                 : s.soon === "opening"

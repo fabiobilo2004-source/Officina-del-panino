@@ -343,7 +343,9 @@ export default function Contact() {
                         const status = getLiveStatus(loc.days, lang, now);
                         const isOpen = !ferie && status.isOpen;
                         const badgeText = ferie
-                          ? (lang === "it" ? "Chiuso per ferie" : "Closed for holidays")
+                          ? (activeLocation === "rimini"
+                              ? (lang === "it" ? "Chiuso fino al 16 settembre" : "Closed until September 16")
+                              : (lang === "it" ? "Chiuso per ferie" : "Closed for holidays"))
                           : status.text;
                         return (
                           <div className={`inline-flex items-center gap-2 px-3 py-1.5 mb-5 text-xs font-display tracking-wider uppercase border ${
