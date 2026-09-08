@@ -262,8 +262,10 @@ export default function Home() {
     v.muted = true;
     v.playsInline = true;
     v.load();
+    v.playbackRate = 0.5;
+    v.addEventListener("loadedmetadata", () => { v.playbackRate = 0.5; });
     v.play().catch(() => {
-      v.addEventListener("canplay", () => v.play().catch(() => {}), { once: true });
+      v.addEventListener("canplay", () => { v.playbackRate = 0.5; v.play().catch(() => {}); }, { once: true });
     });
   }, []);
 
