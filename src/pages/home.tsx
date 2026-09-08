@@ -302,7 +302,7 @@ export default function Home() {
 
   const panegiustoVideoRef = useRef<HTMLVideoElement>(null);
   const [panegiustoPlaying, setPanegiustoPlaying] = useState(false);
-  const [panegiustoMuted, setPanegiustoMuted] = useState(false);
+  const [panegiustoMuted, setPanegiustoMuted] = useState(true);
 
   const handlePanegiustoPlay = () => {
     const v = panegiustoVideoRef.current;
