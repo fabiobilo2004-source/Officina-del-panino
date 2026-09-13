@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect } from "react";
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Navbar } from "@/components/layout/Navbar";
@@ -71,6 +72,7 @@ function App() {
             <Router />
           </WouterRouter>
           <Toaster />
+          <Analytics />
         </TooltipProvider>
       </LanguageProvider>
     </QueryClientProvider>
