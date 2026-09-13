@@ -35,14 +35,14 @@ export function DailyMenuCombo() {
           <div
             ref={scrollRef}
             className="flex-1 overflow-x-auto scroll-smooth snap-x snap-mandatory flex gap-12 md:gap-16 pb-2"
-            style={{ scrollBehavior: "smooth" }}
+            style={{ scrollBehavior: "smooth", scrollSnapType: "x mandatory" }}
           >
             {combosToShow.map((combo, idx) => {
               const total = combo.sandwich.price + combo.drink.price + combo.side.price;
               return (
                 <div
                   key={idx}
-                  className="flex-shrink-0 snap-center"
+                  className="flex-shrink-0 w-full snap-center"
                 >
                   <div className="flex flex-col items-center justify-center gap-4 md:gap-6">
                     {/* First row: items */}
