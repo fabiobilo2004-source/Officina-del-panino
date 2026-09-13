@@ -51,15 +51,12 @@ export function DailyMenuCombo() {
             </div>
           </div>
 
-          {/* Second row: equals and total */}
+          {/* Second row: total price */}
           <div className="flex items-center justify-center gap-2 md:gap-4">
-            {/* Equals Sign */}
-            <div className="text-lg md:text-2xl font-light text-primary/50">=</div>
-
             {/* Total Price */}
             <div className="flex flex-col items-center">
               <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
-                {lang === "it" ? "Prezzo" : "Price"}
+                =
               </p>
               <p className="text-xl md:text-4xl font-display font-bold text-primary">
                 {total.toFixed(2)}€
