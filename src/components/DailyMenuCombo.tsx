@@ -17,7 +17,20 @@ export function DailyMenuCombo() {
   };
 
   const combo = combosToShow[currentIdx];
-  const total = combo.sandwich.price + combo.drink.price + combo.side.price;
+  const total = combo.items.reduce((sum, item) => sum + item.price, 0);
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case "sandwich":
+        return lang === "it" ? "Panino" : "Sandwich";
+      case "drink":
+        return lang === "it" ? "Bevanda" : "Drink";
+      case "side":
+        return lang === "it" ? "Contorno" : "Side";
+      default:
+        return "";
+    }
+  };
 
   return (
     <div className="py-8 px-4 md:py-12 md:px-6 bg-background">
@@ -36,43 +49,19 @@ export function DailyMenuCombo() {
           <div className="flex-1">
             <div className="flex flex-col items-center justify-center gap-4 md:gap-6">
               {/* First row: items */}
-              <div className="flex items-center justify-center gap-1 md:gap-8">
-                {/* Sandwich */}
-                <div className="flex flex-col items-center">
-                  <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
-                    {lang === "it" ? "Panino" : "Sandwich"}
-                  </p>
-                  <p className="text-sm md:text-lg font-display font-bold text-foreground">{combo.sandwich.name}</p>
-                  <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{combo.sandwich.price}€</p>
-                </div>
-
-                {/* Plus Sign */}
-                <div className="text-lg md:text-2xl font-light text-primary/50">+</div>
-
-                {/* Drink */}
-                <div className="flex flex-col items-center">
-                  <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
-                    {lang === "it" ? "Bevanda" : "Drink"}
-                  </p>
-                  <p className="text-sm md:text-lg font-display font-bold text-foreground">
-                    {lang === "it" ? combo.drink.name : combo.drink.nameEn}
-                  </p>
-                  <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{combo.drink.price}€</p>
-                </div>
-
-                {/* Plus Sign */}
-                <div className="text-lg md:text-2xl font-light text-primary/50">+</div>
-
-                {/* Side */}
-                <div className="flex flex-col items-center">
-                  <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
-                    {lang === "it" ? "Contorno" : "Side"}
-                  </p>
-                  <p className="text-sm md:text-lg font-display font-bold text-foreground">
-                    {lang === "it" ? combo.side.name : combo.side.nameEn}
-                  </p>
-                  <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{combo.side.price}€</p>
-                </div>
+              <div className="flex items-center justify-center gap-1 md:gap-8 flex-wrap">
+                {combo.items.map((item, idx) => (
+                  <div key={idx}>
+                    {idx > 0 && <div className="text-lg md:text-2xl font-light text-primary/50 mb-6">+</div>}
+                    <div className="flex flex-col items-center">
+                      <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
+                        {getTypeLabel(item.type)}
+                      </p>
+                      <p className="text-sm md:text-lg font-display font-bold text-foreground">{item.name}</p>
+                      <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{item.price}€</p>
+                    </div>
+                  </div>
+                ))}
               </div>
 
               {/* Second row: total price */}
@@ -81,7 +70,7 @@ export function DailyMenuCombo() {
                   <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
                     =
                   </p>
-                  <p className="text-xl md:text-4xl font-display font-bold text-primary">
+                  <p className="text-xl md:text-4xl font-display font-bold text-foreground">
                     {total.toFixed(2)}€
                   </p>
                 </div>
