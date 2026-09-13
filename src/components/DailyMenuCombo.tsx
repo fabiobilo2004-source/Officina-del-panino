@@ -1,22 +1,23 @@
-import { useRef } from "react";
+import { useState } from "react";
 import { dailyCombos } from "@/lib/daily-combos";
 import { useLang } from "@/context/LanguageContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export function DailyMenuCombo() {
   const { lang } = useLang();
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [currentIdx, setCurrentIdx] = useState(0);
   const combosToShow = dailyCombos.slice(0, 10);
 
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = 340;
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
+  const navigate = (direction: "left" | "right") => {
+    if (direction === "left") {
+      setCurrentIdx((prev) => (prev === 0 ? combosToShow.length - 1 : prev - 1));
+    } else {
+      setCurrentIdx((prev) => (prev === combosToShow.length - 1 ? 0 : prev + 1));
     }
   };
+
+  const combo = combosToShow[currentIdx];
+  const total = combo.sandwich.price + combo.drink.price + combo.side.price;
 
   return (
     <div className="py-8 px-4 md:py-12 md:px-6 bg-background">
@@ -24,89 +25,75 @@ export function DailyMenuCombo() {
         <div className="flex items-center gap-3 md:gap-4">
           {/* Left Arrow */}
           <button
-            onClick={() => scroll("left")}
+            onClick={() => navigate("left")}
             className="flex-shrink-0 p-2 hover:bg-primary/10 rounded transition-colors"
-            aria-label="Scroll left"
+            aria-label="Previous combo"
           >
             <ChevronLeft size={20} className="text-primary" />
           </button>
 
-          {/* Carousel */}
-          <div
-            ref={scrollRef}
-            className="flex-1 overflow-x-auto scroll-smooth snap-x snap-mandatory flex gap-12 md:gap-16 pb-2"
-            style={{ scrollBehavior: "smooth", scrollSnapType: "x mandatory" }}
-          >
-            {combosToShow.map((combo, idx) => {
-              const total = combo.sandwich.price + combo.drink.price + combo.side.price;
-              return (
-                <div
-                  key={idx}
-                  className="flex-shrink-0 w-full snap-center"
-                >
-                  <div className="flex flex-col items-center justify-center gap-4 md:gap-6">
-                    {/* First row: items */}
-                    <div className="flex items-center justify-center gap-1 md:gap-8">
-                      {/* Sandwich */}
-                      <div className="flex flex-col items-center">
-                        <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
-                          {lang === "it" ? "Panino" : "Sandwich"}
-                        </p>
-                        <p className="text-sm md:text-lg font-display font-bold text-foreground">{combo.sandwich.name}</p>
-                        <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{combo.sandwich.price}€</p>
-                      </div>
-
-                      {/* Plus Sign */}
-                      <div className="text-lg md:text-2xl font-light text-primary/50">+</div>
-
-                      {/* Drink */}
-                      <div className="flex flex-col items-center">
-                        <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
-                          {lang === "it" ? "Bevanda" : "Drink"}
-                        </p>
-                        <p className="text-sm md:text-lg font-display font-bold text-foreground">
-                          {lang === "it" ? combo.drink.name : combo.drink.nameEn}
-                        </p>
-                        <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{combo.drink.price}€</p>
-                      </div>
-
-                      {/* Plus Sign */}
-                      <div className="text-lg md:text-2xl font-light text-primary/50">+</div>
-
-                      {/* Side */}
-                      <div className="flex flex-col items-center">
-                        <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
-                          {lang === "it" ? "Contorno" : "Side"}
-                        </p>
-                        <p className="text-sm md:text-lg font-display font-bold text-foreground">
-                          {lang === "it" ? combo.side.name : combo.side.nameEn}
-                        </p>
-                        <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{combo.side.price}€</p>
-                      </div>
-                    </div>
-
-                    {/* Second row: total price */}
-                    <div className="flex items-center justify-center gap-2 md:gap-4">
-                      <div className="flex flex-col items-center">
-                        <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
-                          =
-                        </p>
-                        <p className="text-xl md:text-4xl font-display font-bold text-primary">
-                          {total.toFixed(2)}€
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+          {/* Combo Display */}
+          <div className="flex-1">
+            <div className="flex flex-col items-center justify-center gap-4 md:gap-6">
+              {/* First row: items */}
+              <div className="flex items-center justify-center gap-1 md:gap-8">
+                {/* Sandwich */}
+                <div className="flex flex-col items-center">
+                  <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
+                    {lang === "it" ? "Panino" : "Sandwich"}
+                  </p>
+                  <p className="text-sm md:text-lg font-display font-bold text-foreground">{combo.sandwich.name}</p>
+                  <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{combo.sandwich.price}€</p>
                 </div>
-              );
-            })}
+
+                {/* Plus Sign */}
+                <div className="text-lg md:text-2xl font-light text-primary/50">+</div>
+
+                {/* Drink */}
+                <div className="flex flex-col items-center">
+                  <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
+                    {lang === "it" ? "Bevanda" : "Drink"}
+                  </p>
+                  <p className="text-sm md:text-lg font-display font-bold text-foreground">
+                    {lang === "it" ? combo.drink.name : combo.drink.nameEn}
+                  </p>
+                  <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{combo.drink.price}€</p>
+                </div>
+
+                {/* Plus Sign */}
+                <div className="text-lg md:text-2xl font-light text-primary/50">+</div>
+
+                {/* Side */}
+                <div className="flex flex-col items-center">
+                  <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
+                    {lang === "it" ? "Contorno" : "Side"}
+                  </p>
+                  <p className="text-sm md:text-lg font-display font-bold text-foreground">
+                    {lang === "it" ? combo.side.name : combo.side.nameEn}
+                  </p>
+                  <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{combo.side.price}€</p>
+                </div>
+              </div>
+
+              {/* Second row: total price */}
+              <div className="flex items-center justify-center gap-2 md:gap-4">
+                <div className="flex flex-col items-center">
+                  <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
+                    =
+                  </p>
+                  <p className="text-xl md:text-4xl font-display font-bold text-primary">
+                    {total.toFixed(2)}€
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Right Arrow */}
           <button
-            onClick={() => scroll("right")}
+            onClick={() => navigate("right")}
             className="flex-shrink-0 p-2 hover:bg-primary/10 rounded transition-colors"
-            aria-label="Scroll right"
+            aria-label="Next combo"
           >
             <ChevronRight size={20} className="text-primary" />
           </button>
