@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { SiTripadvisor, SiGoogle, SiJusteat } from "react-icons/si";
 import { FERIE } from "@/lib/live-status";
+import { DailyMenuCombo } from "@/components/DailyMenuCombo";
 
 const riminiDays = [
   { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 05:00" },
@@ -566,6 +567,12 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* ── Daily Menu Combo ── */}
+      <section className="py-16 px-6 bg-background border-b border-border/30">
+        <div className="max-w-5xl mx-auto">
+          <DailyMenuCombo />
+        </div>
+      </section>
 
       {/* Featured Items — Parallax Scroll */}
       <section className="py-24 bg-card border-b border-border/30">
