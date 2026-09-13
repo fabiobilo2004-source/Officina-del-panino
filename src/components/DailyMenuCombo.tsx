@@ -49,15 +49,15 @@ export function DailyMenuCombo() {
           <div className="flex-1">
             <div className="flex flex-col items-center justify-center gap-4 md:gap-6">
               {/* First row: items */}
-              <div className="flex items-center justify-center gap-1 md:gap-8 flex-wrap">
+              <div className="flex items-center justify-center gap-1 md:gap-6 overflow-x-auto pb-2">
                 {combo.items.map((item, idx) => (
-                  <div key={idx}>
-                    {idx > 0 && <div className="text-lg md:text-2xl font-light text-primary/50 mb-6">+</div>}
+                  <div key={idx} className="flex items-center gap-1 md:gap-6">
+                    {idx > 0 && <div className="text-lg md:text-2xl font-light text-primary/50 flex-shrink-0">+</div>}
                     <div className="flex flex-col items-center">
                       <p className="text-[10px] md:text-xs tracking-widest uppercase text-muted-foreground mb-1 font-semibold">
                         {getTypeLabel(item.type)}
                       </p>
-                      <p className="text-sm md:text-lg font-display font-bold text-foreground">{item.name}</p>
+                      <p className="text-sm md:text-lg font-display font-bold text-foreground whitespace-nowrap">{item.name}</p>
                       <p className="text-muted-foreground text-xs md:text-sm mt-0.5">{item.price}€</p>
                     </div>
                   </div>
