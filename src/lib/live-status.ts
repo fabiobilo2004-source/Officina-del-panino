@@ -1,6 +1,6 @@
 // ── Ferie / Holiday closures ── set to true to override live status ──
 export const FERIE = {
-  rimini:         true,   // ← rimetti false quando riapre (16 settembre)
+  rimini:         false,   // ← riapertà 16 settembre
   santarcangelo:  true,   // ← rimetti false quando riaprono
 };
 
