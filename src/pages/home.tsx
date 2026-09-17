@@ -536,10 +536,10 @@ export default function Home() {
                 : (lang === "it" ? "CHIUSO" : "CLOSED");
               const detail = ferie ? "" : s.text.includes("·") ? s.text.split("·").slice(1).join("·").trim() : "";
               return (
-                <div key={label} className="flex items-center gap-2 px-3 py-1.5 bg-black/60 backdrop-blur-sm border border-white/10">
-                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dotColor}`} />
-                  <div className="flex flex-col leading-tight text-center">
-                    <span className="text-white/50 text-[11px] font-display tracking-[0.15em] uppercase">{label}</span>
+                <div key={label} className="flex flex-col items-center gap-1 px-3 py-1.5 bg-black/60 backdrop-blur-sm border border-white/10">
+                  <span className="text-white/50 text-[11px] font-display tracking-[0.15em] uppercase leading-tight">{label}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dotColor}`} />
                     <span className={`text-xs font-display tracking-[0.12em] ${textColor}`}>{statusWord}</span>
                   </div>
                 </div>
