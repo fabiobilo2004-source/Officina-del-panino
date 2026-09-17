@@ -532,8 +532,8 @@ export default function Home() {
                 : s.soon === "opening"
                 ? (lang === "it" ? "APRE FRA POCO" : "OPENING SOON")
                 : s.isOpen
-                ? (lang === "it" ? "APERTO" : "OPEN")
-                : (lang === "it" ? "CHIUSO" : "CLOSED");
+                ? (lang === "it" ? "APERTO ORA" : "OPEN NOW")
+                : (lang === "it" ? "CHIUSO ORA" : "CLOSED NOW");
               const detail = ferie ? "" : s.text.includes("·") ? s.text.split("·").slice(1).join("·").trim() : "";
               return (
                 <div key={label} className="flex flex-col items-center gap-1 px-3 py-1.5 bg-black/60 backdrop-blur-sm border border-white/10">
