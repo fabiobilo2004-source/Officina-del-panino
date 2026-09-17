@@ -520,7 +520,7 @@ export default function Home() {
             className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 justify-center mt-4 md:mt-8"
           >
             {[
-              { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini, ferieText: { it: "CHIUSO FINO AL 16 SETTEMBRE", en: "CLOSED UNTIL SEPT 16" } },
+              { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini, ferieText: null },
               { label: "OFFICINA DI SANTARCANGELO",  days: santaDays,  ferie: FERIE.santarcangelo, ferieText: null },
             ].map(({ label, days, ferie, ferieText }) => {
               const s = getLiveStatus(days, lang, now);

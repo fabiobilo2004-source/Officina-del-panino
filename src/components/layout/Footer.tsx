@@ -60,7 +60,6 @@ export function Footer() {
             <p className="pt-1">Tel: 0541 141 9757</p>
           </address>
           <div className="mt-4 text-sm space-y-1">
-            <p className="text-red-500 font-semibold">{t.rimini_closure[lang]}</p>
             <div className="text-muted-foreground">
               {t.rimini_hours[lang].split("\n").map((line, i) => (
                 <p key={i}>{line}</p>
