@@ -4,8 +4,8 @@ export const FERIE = {
   santarcangelo:  true,   // ← rimetti false quando riaprono
 };
 
-// Rimini: every day 18:00–05:00 (next day)
-const RIMINI: string[] = ["18:00–05:00", "18:00–05:00", "18:00–05:00", "18:00–05:00", "18:00–05:00", "18:00–05:00", "18:00–05:00"];
+// Rimini Mon–Sun (Mon=0): 18:00–02:30, except Fri/Sat 18:00–05:00
+const RIMINI: string[] = ["18:00–02:30", "18:00–02:30", "18:00–02:30", "18:00–02:30", "18:00–05:00", "18:00–05:00", "18:00–02:30"];
 
 // Santarcangelo Mon–Sun (Mon=0)
 const SANTA: (string | null)[] = [

@@ -20,13 +20,13 @@ const locations = {
     mapSrc:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2856.123!2d12.565!3d44.059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132cba!2sVia+Circonvallazione+Occidentale+70+Rimini!5e0!3m2!1sen!2sit!4v1",
     days: [
-      { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 05:00", timeEn: "6 pm – 5 am", highlight: true },
-      { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: "18:00 – 05:00", timeEn: "6 pm – 5 am", highlight: true },
-      { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 05:00", timeEn: "6 pm – 5 am", highlight: true },
-      { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 05:00", timeEn: "6 pm – 5 am", highlight: true },
+      { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
+      { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
+      { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
+      { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
       { key: "friday",    it: "Venerdì",   en: "Friday",    time: "18:00 – 05:00", timeEn: "6 pm – 5 am", highlight: true },
       { key: "saturday",  it: "Sabato",    en: "Saturday",  time: "18:00 – 05:00", timeEn: "6 pm – 5 am", highlight: true },
-      { key: "sunday",    it: "Domenica",  en: "Sunday",    time: "18:00 – 05:00", timeEn: "6 pm – 5 am", highlight: true },
+      { key: "sunday",    it: "Domenica",  en: "Sunday",    time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
     ],
   },
   santarcangelo: {

@@ -26,8 +26,8 @@ export function Footer() {
       en: "Closed until September 16",
     },
     rimini_hours: {
-      it: "Lun: 18:00 – 05:00\nMar: 18:00 – 05:00\nMer: 18:00 – 05:00\nGio: 18:00 – 05:00\nVen: 18:00 – 05:00\nSab: 18:00 – 05:00\nDom: 18:00 – 05:00",
-      en: "Mon: 6 pm – 5 am\nTue: 6 pm – 5 am\nWed: 6 pm – 5 am\nThu: 6 pm – 5 am\nFri: 6 pm – 5 am\nSat: 6 pm – 5 am\nSun: 6 pm – 5 am",
+      it: "Lun: 18:00 – 02:30\nMar: 18:00 – 02:30\nMer: 18:00 – 02:30\nGio: 18:00 – 02:30\nVen: 18:00 – 05:00\nSab: 18:00 – 05:00\nDom: 18:00 – 02:30",
+      en: "Mon: 6 pm – 2:30 am\nTue: 6 pm – 2:30 am\nWed: 6 pm – 2:30 am\nThu: 6 pm – 2:30 am\nFri: 6 pm – 5 am\nSat: 6 pm – 5 am\nSun: 6 pm – 2:30 am",
     },
     santa_hours: {
       it: "Lun: 18:00 – 23:30\nMar: Chiuso\nMer: 18:00 – 23:30\nGio: 18:00 – 23:30\nVen: 18:00 – 02:30\nSab: 18:00 – 02:30\nDom: 18:00 – 23:30",

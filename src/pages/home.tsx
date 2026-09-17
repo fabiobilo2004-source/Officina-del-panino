@@ -8,13 +8,13 @@ import { SiTripadvisor, SiGoogle, SiJusteat } from "react-icons/si";
 import { FERIE } from "@/lib/live-status";
 
 const riminiDays = [
-  { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 05:00" },
-  { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: "18:00 – 05:00" },
-  { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 05:00" },
-  { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 05:00" },
+  { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 02:30" },
+  { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: "18:00 – 02:30" },
+  { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 02:30" },
+  { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 02:30" },
   { key: "friday",    it: "Venerdì",   en: "Friday",    time: "18:00 – 05:00" },
   { key: "saturday",  it: "Sabato",    en: "Saturday",  time: "18:00 – 05:00" },
-  { key: "sunday",    it: "Domenica",  en: "Sunday",    time: "18:00 – 05:00" },
+  { key: "sunday",    it: "Domenica",  en: "Sunday",    time: "18:00 – 02:30" },
 ];
 
 const santaDays = [
