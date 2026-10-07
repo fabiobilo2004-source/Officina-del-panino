@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { SiTripadvisor, SiGoogle, SiJusteat } from "react-icons/si";
 import { FERIE } from "@/lib/live-status";
+import { AppStoreButtons } from "@/components/AppStoreButtons";
+import { AppDownloadSection } from "@/components/AppDownloadSection";
 
 const riminiDays = [
   { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 02:30" },
@@ -442,7 +444,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-[2.75rem] md:text-7xl lg:text-8xl text-white mb-3 md:mb-6 leading-tight"
+            className="text-[2.5rem] md:text-7xl lg:text-8xl text-white mb-2 md:mb-6 leading-tight"
             style={{ fontFamily: "'Rubik Dirt', sans-serif", textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}
           >
             {t.hero_title_1[lang]}<br /><span className="text-primary">{t.hero_title_2[lang]}</span>
@@ -452,7 +454,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-2xl md:text-3xl text-white mb-5 md:mb-10 max-w-md mx-auto uppercase tracking-widest"
+            className="text-lg md:text-3xl text-white mb-4 md:mb-10 max-w-md mx-auto uppercase tracking-widest"
             style={{
               fontFamily: "'Abril Fatface', serif",
               textShadow: "2px 2px 0px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.8)",
@@ -467,7 +469,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center"
           >
-            <Button size="lg" asChild className="rounded-none font-display uppercase tracking-[0.18em] text-sm h-11 md:h-14 px-8 md:px-10 w-full sm:w-auto" data-testid="hero-menu-btn">
+            <Button size="lg" asChild className="rounded-none font-display uppercase tracking-[0.18em] text-xs md:text-sm h-10 md:h-14 px-8 md:px-10 w-full sm:w-auto" data-testid="hero-menu-btn">
               <Link href="/menu">{t.hero_menu[lang]}</Link>
             </Button>
             <div className="relative w-full sm:w-auto">
@@ -475,7 +477,7 @@ export default function Home() {
                 size="lg"
                 variant="outline"
                 onClick={() => setOrderOpen(o => !o)}
-                className="rounded-none font-display uppercase tracking-[0.18em] text-sm h-11 md:h-14 px-8 md:px-10 w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground flex items-center gap-2"
+                className="rounded-none font-display uppercase tracking-[0.18em] text-xs md:text-sm h-10 md:h-14 px-8 md:px-10 w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground flex items-center gap-2"
                 data-testid="hero-contact-btn"
               >
                 {t.hero_order[lang]}
@@ -511,40 +513,54 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Live status badges */}
+          {/* App download CTA + Live status badges, stacked rows, both centered */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 justify-center mt-4 md:mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.55, ease: "easeOut" }}
+            className="flex flex-col items-center gap-4 md:gap-6 mt-4 md:mt-8"
           >
-            {[
-              { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini, ferieText: null },
-              { label: "OFFICINA DI SANTARCANGELO",  days: santaDays,  ferie: FERIE.santarcangelo, ferieText: null },
-            ].map(({ label, days, ferie, ferieText }) => {
-              const s = getLiveStatus(days, lang, now);
-              const dotColor = ferie ? "bg-red-500" : s.soon ? "bg-amber-400 animate-pulse" : s.isOpen ? "bg-green-400 animate-pulse" : "bg-red-500";
-              const textColor = ferie ? "text-red-400" : s.soon ? "text-amber-400" : s.isOpen ? "text-green-400" : "text-red-400";
-              const statusWord = ferie
-                ? (ferieText ? ferieText[lang] : (lang === "it" ? "CHIUSO PER FERIE" : "CLOSED FOR HOLIDAYS"))
-                : s.soon === "closing"
-                ? (lang === "it" ? "CHIUDE FRA POCO" : "CLOSING SOON")
-                : s.soon === "opening"
-                ? (lang === "it" ? "APRE FRA POCO" : "OPENING SOON")
-                : s.isOpen
-                ? (lang === "it" ? "APERTO ORA" : "OPEN NOW")
-                : (lang === "it" ? "CHIUSO ORA" : "CLOSED NOW");
-              const detail = ferie ? "" : s.text.includes("·") ? s.text.split("·").slice(1).join("·").trim() : "";
-              return (
-                <div key={label} className="flex flex-col items-center gap-1 px-3 py-1.5 bg-black/60 backdrop-blur-sm border border-white/10">
-                  <span className="text-white/50 text-[11px] font-display tracking-[0.15em] uppercase leading-tight">{label}</span>
-                  <div className="flex items-center gap-1.5">
-                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dotColor}`} />
-                    <span className={`text-xs font-display tracking-[0.12em] ${textColor}`}>{statusWord}</span>
+            {/* App download CTA */}
+            <div className="flex flex-col items-center gap-2 md:gap-3">
+              <span
+                className="text-white/80 text-[10px] md:text-sm font-display tracking-[0.15em] md:tracking-[0.18em] uppercase text-center"
+                style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}
+              >
+                {lang === "it" ? "Ordina più veloce con l'app" : "Order faster with the app"}
+              </span>
+              <AppStoreButtons layout="row" />
+            </div>
+
+            {/* Live status badges */}
+            <div className="flex flex-col items-center justify-center gap-1.5 md:gap-2">
+              {[
+                { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini, ferieText: null },
+                { label: "OFFICINA DI SANTARCANGELO",  days: santaDays,  ferie: FERIE.santarcangelo, ferieText: null },
+              ].map(({ label, days, ferie, ferieText }) => {
+                const s = getLiveStatus(days, lang, now);
+                const dotColor = ferie ? "bg-red-500" : s.soon ? "bg-amber-400 animate-pulse" : s.isOpen ? "bg-green-400 animate-pulse" : "bg-red-500";
+                const textColor = ferie ? "text-red-400" : s.soon ? "text-amber-400" : s.isOpen ? "text-green-400" : "text-red-400";
+                const statusWord = ferie
+                  ? (ferieText ? ferieText[lang] : (lang === "it" ? "CHIUSO PER FERIE" : "CLOSED FOR HOLIDAYS"))
+                  : s.soon === "closing"
+                  ? (lang === "it" ? "CHIUDE FRA POCO" : "CLOSING SOON")
+                  : s.soon === "opening"
+                  ? (lang === "it" ? "APRE FRA POCO" : "OPENING SOON")
+                  : s.isOpen
+                  ? (lang === "it" ? "APERTO ORA" : "OPEN NOW")
+                  : (lang === "it" ? "CHIUSO ORA" : "CLOSED NOW");
+                const detail = ferie ? "" : s.text.includes("·") ? s.text.split("·").slice(1).join("·").trim() : "";
+                return (
+                  <div key={label} className="flex flex-col items-center gap-0.5 w-[130px] md:w-40 px-1.5 py-1 bg-black/60 backdrop-blur-sm border border-white/10">
+                    <span className="text-white/50 text-[8px] md:text-[10px] font-display tracking-[0.05em] md:tracking-[0.1em] uppercase leading-tight text-center">{label}</span>
+                    <div className="flex items-center gap-1">
+                      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dotColor}`} />
+                      <span className={`text-[9px] md:text-[11px] font-display tracking-[0.08em] ${textColor}`}>{statusWord}</span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </motion.div>
         </motion.div>
 
@@ -565,6 +581,8 @@ export default function Home() {
           </motion.div>
         </motion.div>
       </section>
+
+      <AppDownloadSection />
 
       {/* Featured Items — Parallax Scroll */}
       <section className="py-24 bg-card border-b border-border/30">
