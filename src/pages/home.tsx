@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { ChevronLeft, ChevronRight, ChevronDown, X, ZoomIn, Phone, Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronDown, X, ZoomIn, Phone, Play, Pause, Volume2, VolumeX, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { SiTripadvisor, SiGoogle, SiJusteat } from "react-icons/si";
+import { getSmartAppLink } from "@/lib/app-store";
 import { FERIE } from "@/lib/live-status";
 import { AppStoreButtons } from "@/components/AppStoreButtons";
 import { AppDownloadSection } from "@/components/AppDownloadSection";
@@ -961,6 +962,15 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col gap-3">
+                <a
+                  href={getSmartAppLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 px-6 py-5 bg-black text-white font-display uppercase tracking-widest text-sm hover:bg-black/80 transition-colors"
+                >
+                  <span className="w-10 flex justify-center flex-shrink-0"><Download size={26} /></span>
+                  {lang === "it" ? "Scarica l'app" : "Download the app"}
+                </a>
                 <a
                   href="https://www.justeat.it/restaurants-officina-del-panino-rimini-47923/menu"
                   target="_blank"
