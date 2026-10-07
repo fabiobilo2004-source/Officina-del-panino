@@ -97,6 +97,9 @@ export function AppDownloadSection() {
                 ? "Il tempo è prezioso, soprattutto in pausa pranzo: ottimizza ogni minuto senza rinunciare al gusto inconfondibile di Officina del Panino."
                 : "Time is precious, especially on your lunch break: make every minute count without giving up Officina del Panino's unmistakable flavor."}
             </p>
+            <div className="hidden lg:flex justify-start">
+              <AppStoreButtons variant="outline" layout="row" />
+            </div>
           </motion.div>
 
           <motion.div
@@ -122,10 +125,12 @@ export function AppDownloadSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.6 }}
-          className="flex justify-center mt-10 mb-20 md:mb-28"
+          className="flex lg:hidden justify-center mt-10 mb-20 md:mb-28"
         >
           <AppStoreButtons variant="outline" />
         </motion.div>
+
+        <div className="hidden lg:block mb-20 lg:mb-28" />
 
         {/* Feature grid */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mb-20 md:mb-24">

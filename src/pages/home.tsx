@@ -532,7 +532,7 @@ export default function Home() {
             </div>
 
             {/* Live status badges */}
-            <div className="flex flex-col items-center justify-center gap-1.5 md:gap-2">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-1.5 md:gap-3">
               {[
                 { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini, ferieText: null },
                 { label: "OFFICINA DI SANTARCANGELO",  days: santaDays,  ferie: FERIE.santarcangelo, ferieText: null },
