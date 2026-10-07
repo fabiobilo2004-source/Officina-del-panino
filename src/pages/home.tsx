@@ -956,8 +956,8 @@ export default function Home() {
                 <div className="w-12 h-px bg-primary mb-5" />
                 <p className="text-muted-foreground text-lg leading-relaxed">
                   {lang === "it"
-                    ? "Ordina comodamente da Just Eat oppure chiamaci direttamente — i nostri panini ti aspettano."
-                    : "Order easily on Just Eat or call us directly — our sandwiches are waiting for you."}
+                    ? "Ordina dalla nostra app: salta la fila, personalizza il tuo panino e ritira senza attese. In alternativa, ordina da Just Eat oppure chiamaci direttamente."
+                    : "Order from our app: skip the line, customize your sandwich and pick up with no waiting. Or order on Just Eat or call us directly."}
                 </p>
               </div>
 
