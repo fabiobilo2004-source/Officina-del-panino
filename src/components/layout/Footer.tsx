@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { SiInstagram, SiFacebook, SiTiktok, SiJusteat, SiApple } from "react-icons/si";
-import { PiAndroidLogoFill } from "react-icons/pi";
+import { SiInstagram, SiFacebook, SiTiktok, SiJusteat } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
 import { isAnyLocationOpen } from "@/lib/live-status";
 
@@ -150,18 +149,18 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="App Store"
-              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center"
+              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center overflow-hidden"
             >
-              <SiApple size={26} className="text-foreground" />
+              <img src="/images/app-store-icon.jpg" alt="App Store" className="w-9 h-9 rounded-[22%] object-cover" />
             </a>
             <a
               href="https://play.google.com/store/apps/details?id=it.officinadelpaninorimini.pienissimo&pli=1"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Google Play"
-              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center"
+              className="w-14 h-14 border border-border bg-card hover:border-primary transition-colors flex items-center justify-center overflow-hidden"
             >
-              <PiAndroidLogoFill size={26} className="text-foreground" />
+              <img src="/images/google-play-icon.jpg" alt="Google Play" className="w-9 h-9 object-contain" />
             </a>
           </div>
         </div>
