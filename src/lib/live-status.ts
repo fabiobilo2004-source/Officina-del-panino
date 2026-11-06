@@ -5,6 +5,10 @@ function romeDateISO(now: Date): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome" }).format(now);
 }
 
+// Durante la fiera Santarcangelo è aperta anche il martedì.
+export const SANTA_FIERA = romeDateISO(new Date()) <= SANTA_OPEN_UNTIL;
+export const SANTA_TUESDAY = SANTA_FIERA ? "18:00–23:30" : null;
+
 // ── Ferie / Holiday closures ── true = chiuso per ferie ──
 export const FERIE = {
   rimini: false,
@@ -19,7 +23,7 @@ const RIMINI: string[] = ["18:00–02:30", "18:00–02:30", "18:00–02:30", "18
 // Santarcangelo Mon–Sun (Mon=0)
 const SANTA: (string | null)[] = [
   "18:00–23:30", // Mon
-  null,          // Tue chiuso
+  SANTA_TUESDAY, // Tue: chiuso, aperto solo durante la fiera
   "18:00–23:30", // Wed
   "18:00–23:30", // Thu
   "18:00–02:30", // Fri

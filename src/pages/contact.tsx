@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Phone, Clock, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { SiInstagram, SiFacebook, SiJusteat, SiTiktok } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
-import { FERIE } from "@/lib/live-status";
+import { FERIE, SANTA_FIERA } from "@/lib/live-status";
 
 type LocationKey = "rimini" | "santarcangelo";
 
@@ -42,7 +42,9 @@ const locations = {
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11412.0!2d12.4488!3d44.0645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132cb6a3e4e!2sPiazza+Guglielmo+Marconi+10+Santarcangelo+di+Romagna!5e0!3m2!1sen!2sit!4v1",
     days: [
       { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 23:30", timeEn: "6–11:30 pm" },
-      { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: "Chiuso",        timeEn: "Closed",       closed: true },
+      SANTA_FIERA
+        ? { key: "tuesday", it: "Martedì",   en: "Tuesday",   time: "18:00 – 23:30", timeEn: "6–11:30 pm" }
+        : { key: "tuesday", it: "Martedì",   en: "Tuesday",   time: "Chiuso",        timeEn: "Closed",       closed: true },
       { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 23:30", timeEn: "6–11:30 pm" },
       { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 23:30", timeEn: "6–11:30 pm" },
       { key: "friday",    it: "Venerdì",   en: "Friday",    time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { SiInstagram, SiFacebook, SiTiktok, SiJusteat } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
-import { isAnyLocationOpen } from "@/lib/live-status";
+import { isAnyLocationOpen, SANTA_FIERA } from "@/lib/live-status";
 
 export function Footer() {
   const { lang } = useLang();
@@ -30,8 +30,8 @@ export function Footer() {
       en: "Mon: 6 pm – 2:30 am\nTue: 6 pm – 2:30 am\nWed: 6 pm – 2:30 am\nThu: 6 pm – 2:30 am\nFri: 6 pm – 5 am\nSat: 6 pm – 5 am\nSun: 6 pm – 2:30 am",
     },
     santa_hours: {
-      it: "Lun: 18:00 – 23:30\nMar: Chiuso\nMer: 18:00 – 23:30\nGio: 18:00 – 23:30\nVen: 18:00 – 02:30\nSab: 18:00 – 02:30\nDom: 18:00 – 23:30",
-      en: "Mon: 6–11:30 pm\nTue: Closed\nWed: 6–11:30 pm\nThu: 6–11:30 pm\nFri: 6 pm – 2:30 am\nSat: 6 pm – 2:30 am\nSun: 6–11:30 pm",
+      it: `Lun: 18:00 – 23:30\nMar: ${SANTA_FIERA ? "18:00 – 23:30" : "Chiuso"}\nMer: 18:00 – 23:30\nGio: 18:00 – 23:30\nVen: 18:00 – 02:30\nSab: 18:00 – 02:30\nDom: 18:00 – 23:30`,
+      en: `Mon: 6–11:30 pm\nTue: ${SANTA_FIERA ? "6–11:30 pm" : "Closed"}\nWed: 6–11:30 pm\nThu: 6–11:30 pm\nFri: 6 pm – 2:30 am\nSat: 6 pm – 2:30 am\nSun: 6–11:30 pm`,
     },
   };
 

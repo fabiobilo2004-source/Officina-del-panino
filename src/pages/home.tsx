@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { SiTripadvisor, SiGoogle, SiJusteat } from "react-icons/si";
 import { getSmartAppLink } from "@/lib/app-store";
-import { FERIE } from "@/lib/live-status";
+import { FERIE, SANTA_FIERA } from "@/lib/live-status";
 import { AppStoreButtons } from "@/components/AppStoreButtons";
 import { AppDownloadSection } from "@/components/AppDownloadSection";
 
@@ -22,7 +22,7 @@ const riminiDays = [
 
 const santaDays = [
   { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 23:30" },
-  { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: "Chiuso" },
+  { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: SANTA_FIERA ? "18:00 – 23:30" : "Chiuso" },
   { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 23:30" },
   { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 23:30" },
   { key: "friday",    it: "Venerdì",   en: "Friday",    time: "18:00 – 02:30" },
