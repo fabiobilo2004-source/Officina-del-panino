@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X, ArrowRight } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { AppDownloadSection } from "@/components/AppDownloadSection";
+import { SANTA_FIERA } from "@/lib/live-status";
 
 const CARD = "flex-shrink-0 snap-start w-[78%] sm:w-[340px] md:w-[360px] aspect-[1188/1508] border border-border/40 shadow-2xl overflow-hidden";
 
@@ -33,12 +34,15 @@ export function NewsSection() {
         <div
           className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          <img
-            src="/images/news-fiera-san-martino.jpg"
-            alt="L'Officina riapre — Fiera di San Martino, Santarcangelo di Romagna, 7-11 novembre 2026"
-            loading="lazy"
-            className={`${CARD} object-cover`}
-          />
+          {/* Il post della fiera sparisce da solo dal 12/11/2026 */}
+          {SANTA_FIERA && (
+            <img
+              src="/images/news-fiera-san-martino.jpg"
+              alt="L'Officina riapre — Fiera di San Martino, Santarcangelo di Romagna, 7-11 novembre 2026"
+              loading="lazy"
+              className={`${CARD} object-cover`}
+            />
+          )}
 
           <button
             onClick={() => setAppOpen(true)}
