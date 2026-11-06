@@ -6,7 +6,7 @@ import { useLang } from "@/context/LanguageContext";
 import { AppDownloadSection } from "@/components/AppDownloadSection";
 import { SANTA_FIERA } from "@/lib/live-status";
 
-const CARD = "flex-shrink-0 snap-start w-[78%] sm:w-[340px] md:w-[360px] aspect-[1188/1508] border border-border/40 shadow-2xl overflow-hidden";
+const CARD = "flex-shrink-0 snap-start w-[78%] sm:w-[340px] lg:w-[calc((100%-3rem)/3)] aspect-[1188/1508] border border-border/40 shadow-2xl overflow-hidden";
 
 export function NewsSection() {
   const { lang } = useLang();
@@ -69,6 +69,18 @@ export function NewsSection() {
               </span>
             </div>
           </button>
+
+          <div className={`${CARD} flex flex-col bg-[#272725]`}>
+            <p className="pt-5 text-center text-xl md:text-2xl font-display uppercase tracking-[0.2em] text-primary">
+              {lang === "it" ? "Orario invernale" : "Winter hours"}
+            </p>
+            <img
+              src="/images/news-orari-rimini.jpg"
+              alt="Orari Officina del Panino Rimini — Domenica-Giovedì 18:00-02:30, Venerdì, Sabato e festivi 18:00-05:00"
+              loading="lazy"
+              className="flex-1 min-h-0 w-full object-contain"
+            />
+          </div>
         </div>
       </div>
 
