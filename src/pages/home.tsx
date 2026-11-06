@@ -587,7 +587,7 @@ export default function Home() {
       <section className="py-16 md:py-24 px-6 bg-background border-b border-border/30">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10 md:mb-14">
-            <h2 className="text-4xl md:text-5xl font-display text-primary mb-2">{lang === "it" ? "Notizie" : "News"}</h2>
+            <h2 className="text-4xl md:text-5xl font-display text-primary mb-2">{lang === "it" ? "Novità" : "News"}</h2>
             <div className="w-12 h-px bg-primary mx-auto" />
           </div>
           <motion.div
