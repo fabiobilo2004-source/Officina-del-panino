@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight, ChevronDown, X, ZoomIn, Phone, Play, Pause, Volume2, VolumeX, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
-import { SiTripadvisor, SiGoogle, SiJusteat } from "react-icons/si";
+import { SiTripadvisor, SiGoogle, SiJusteat, SiInstagram } from "react-icons/si";
 import { getSmartAppLink } from "@/lib/app-store";
 import { FERIE, SANTA_FIERA } from "@/lib/live-status";
 import { AppStoreButtons } from "@/components/AppStoreButtons";
@@ -276,6 +276,9 @@ export default function Home() {
   const [lavorazioneMuted, setLavorazioneMuted] = useState(true);
   const lavorazioneSectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress: lavorazioneScrollY } = useScroll({ target: lavorazioneSectionRef, offset: ["start end", "end start"] });
+
+  const instaSectionRef = useRef<HTMLElement>(null);
+  const instaInView = useInView(instaSectionRef, { once: true, margin: "300px" });
 
   const estateSectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress: estateScrollY } = useScroll({ target: estateSectionRef, offset: ["start end", "end start"] });
@@ -862,6 +865,63 @@ export default function Home() {
               {panegiustoMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
             </button>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── Instagram (solo desktop) ── */}
+      <section ref={instaSectionRef} className="hidden md:block py-20 lg:py-24 px-6 bg-background border-b border-border/30 overflow-hidden">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 items-center gap-12 lg:gap-20">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7 }}
+          >
+            <span className="text-primary text-xs font-display tracking-[0.25em] uppercase">@officinadelpanino.rimini</span>
+            <h2 className="text-4xl lg:text-5xl font-display text-white leading-tight mt-3 mb-6">
+              {lang === "it"
+                ? <>SEGUICI SULLA NOSTRA<br /><span className="text-primary">PAGINA INSTAGRAM</span></>
+                : <>FOLLOW US ON OUR<br /><span className="text-primary">INSTAGRAM PAGE</span></>}
+            </h2>
+            <p className="text-white/60 text-base lg:text-lg leading-[1.85] font-light max-w-md mb-10">
+              {lang === "it"
+                ? "Novità, panini appena usciti dalla piastra, orari e serate: tutto quello che succede in Officina lo trovi prima sul nostro Instagram."
+                : "News, sandwiches fresh off the grill, opening hours and nights out: everything happening at the Officina shows up first on our Instagram."}
+            </p>
+            <a
+              href="https://www.instagram.com/officinadelpanino.rimini/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 h-14 px-8 bg-[linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)] text-white font-display text-sm uppercase tracking-widest shadow-lg shadow-[#d62976]/30 hover:brightness-110 transition"
+            >
+              <SiInstagram size={20} />
+              {lang === "it" ? "Seguici" : "Follow us"}
+            </a>
+          </motion.div>
+          <motion.a
+            href="https://www.instagram.com/officinadelpanino.rimini/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram Officina del Panino"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8 }}
+            className="relative justify-self-center block"
+          >
+            <div aria-hidden className="absolute inset-0 -m-10 bg-primary/20 rounded-full blur-3xl" />
+            <div className="relative w-[260px] lg:w-[300px] aspect-[1180/2406] rounded-[2.5rem] overflow-hidden border-[6px] border-[#1a1a1a] bg-black shadow-2xl">
+              <video
+                src={instaInView ? "/videos/insta.mp4" : undefined}
+                poster="/images/insta-poster.jpg"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </motion.a>
         </div>
       </section>
 
