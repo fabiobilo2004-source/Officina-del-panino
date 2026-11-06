@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, X, ArrowRight } from "lucide-react";
+import { X, ArrowRight } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { AppDownloadSection } from "@/components/AppDownloadSection";
 
@@ -9,23 +9,7 @@ const CARD = "flex-shrink-0 snap-start w-[78%] sm:w-[340px] md:w-[360px] aspect-
 
 export function NewsSection() {
   const { lang } = useLang();
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(false);
   const [appOpen, setAppOpen] = useState(false);
-
-  const updateArrows = () => {
-    const el = trackRef.current;
-    if (!el) return;
-    setCanPrev(el.scrollLeft > 4);
-    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
-  };
-
-  useEffect(() => {
-    updateArrows();
-    window.addEventListener("resize", updateArrows);
-    return () => window.removeEventListener("resize", updateArrows);
-  }, []);
 
   useEffect(() => {
     if (!appOpen) return;
@@ -38,36 +22,15 @@ export function NewsSection() {
     };
   }, [appOpen]);
 
-  const scroll = (dir: 1 | -1) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const card = el.firstElementChild as HTMLElement | null;
-    el.scrollBy({ left: dir * ((card?.offsetWidth ?? 300) + 24), behavior: "smooth" });
-  };
-
-  const arrowCls = "w-11 h-11 flex items-center justify-center border border-border bg-card text-foreground hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:pointer-events-none";
-
   return (
     <section className="py-16 md:py-24 px-6 bg-background border-b border-border/30">
       <div className="max-w-5xl mx-auto">
-        <div className="flex items-end justify-between mb-10 md:mb-14">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-display text-primary mb-2">{lang === "it" ? "Novità" : "News"}</h2>
-            <div className="w-12 h-px bg-primary" />
-          </div>
-          <div className="flex gap-2">
-            <button onClick={() => scroll(-1)} disabled={!canPrev} aria-label={lang === "it" ? "Precedente" : "Previous"} className={arrowCls}>
-              <ChevronLeft size={20} />
-            </button>
-            <button onClick={() => scroll(1)} disabled={!canNext} aria-label={lang === "it" ? "Successiva" : "Next"} className={arrowCls}>
-              <ChevronRight size={20} />
-            </button>
-          </div>
+        <div className="mb-10 md:mb-14">
+          <h2 className="text-4xl md:text-5xl font-display text-primary mb-2">{lang === "it" ? "Novità" : "News"}</h2>
+          <div className="w-12 h-px bg-primary" />
         </div>
 
         <div
-          ref={trackRef}
-          onScroll={updateArrows}
           className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           <img
