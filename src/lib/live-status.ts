@@ -1,7 +1,16 @@
-// ── Ferie / Holiday closures ── set to true to override live status ──
+// Santarcangelo riapre per la Fiera di San Martino fino all'11/11/2026, poi torna chiusa.
+const SANTA_OPEN_UNTIL = "2026-11-11";
+
+function romeDateISO(now: Date): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Rome" }).format(now);
+}
+
+// ── Ferie / Holiday closures ── true = chiuso per ferie ──
 export const FERIE = {
-  rimini:         false,   // ← riapertà 16 settembre
-  santarcangelo:  true,   // ← rimetti false quando riaprono
+  rimini: false,
+  get santarcangelo() {
+    return romeDateISO(new Date()) > SANTA_OPEN_UNTIL;
+  },
 };
 
 // Rimini Mon–Sun (Mon=0): 18:00–02:30, except Fri/Sat 18:00–05:00

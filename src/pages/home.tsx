@@ -583,6 +583,30 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* ── Notizie ── */}
+      <section className="py-16 md:py-24 px-6 bg-background border-b border-border/30">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10 md:mb-14">
+            <h2 className="text-4xl md:text-5xl font-display text-primary mb-2">{lang === "it" ? "Notizie" : "News"}</h2>
+            <div className="w-12 h-px bg-primary mx-auto" />
+          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7 }}
+            className="flex justify-center"
+          >
+            <img
+              src="/images/news-fiera-san-martino.jpg"
+              alt="L'Officina riapre — Fiera di San Martino, Santarcangelo di Romagna, 7-11 novembre 2026"
+              loading="lazy"
+              className="w-full max-w-sm md:max-w-md border border-border/40 shadow-2xl"
+            />
+          </motion.div>
+        </div>
+      </section>
+
       <AppDownloadSection />
 
       {/* Featured Items — Parallax Scroll */}
