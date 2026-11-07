@@ -878,7 +878,7 @@ export default function Home() {
             transition={{ duration: 0.7 }}
             className="text-center md:text-left"
           >
-            <span className="text-primary text-xs font-display tracking-[0.25em] uppercase">@officinadelpanino.rimini</span>
+            <span className="text-white text-xs font-display tracking-[0.25em] uppercase">@officinadelpanino.rimini</span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display text-white leading-tight mt-3 mb-4 md:mb-6">
               {lang === "it"
                 ? <>SEGUICI SULLA NOSTRA<br /><span className="text-primary">PAGINA INSTAGRAM</span></>
