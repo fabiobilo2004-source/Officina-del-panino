@@ -1,0 +1,262 @@
+{
+  "globals": {},
+  "items": {
+    "/gallery::h1::GALLERIA::0": {
+      "font": "Rubik Dirt",
+      "color": "#ff4b1d",
+      "size": {
+        "desktop": 68
+      }
+    },
+    "/::h2::COME PREPARIAMO I TUOI PANINI::0": {
+      "texts": [
+        "COME PREPARIAMO I VOSTRI PANINI"
+      ]
+    },
+    "/contatti::h1::CONTATTI::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::span::Panini a::0": {
+      "texts": [
+        "Panini da"
+      ]
+    },
+    "/::span::9–12.5€::0": {
+      "texts": [
+        "9€"
+      ]
+    },
+    "/menu::h1::IL MENU::0": {
+      "font": "Rubik Dirt"
+    }
+  },
+  "images": {},
+  "news": [
+    {
+      "id": "fiera-san-martino",
+      "type": "image",
+      "src": "/images/news-fiera-san-martino.jpg",
+      "alt": "L'Officina riapre — Fiera di San Martino, Santarcangelo di Romagna, 7-11 novembre 2026",
+      "until": "2026-11-11"
+    },
+    {
+      "id": "app",
+      "type": "app"
+    },
+    {
+      "id": "orario-invernale",
+      "type": "image",
+      "src": "/images/news-orari-rimini.jpg",
+      "alt": "Orari Officina del Panino Rimini — Domenica-Giovedì 18:00-02:30, Venerdì, Sabato e festivi 18:00-05:00",
+      "title": "Orario invernale",
+      "fit": "contain",
+      "titleEn": "Winter hours"
+    }
+  ],
+  "hours": {
+    "rimini": {
+      "week": [
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "05:00"
+        },
+        {
+          "open": "18:00",
+          "close": "05:00"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        }
+      ],
+      "closures": [],
+      "specials": []
+    },
+    "santarcangelo": {
+      "week": [
+        {
+          "open": "18:00",
+          "close": "23:30"
+        },
+        null,
+        {
+          "open": "18:00",
+          "close": "23:30"
+        },
+        {
+          "open": "18:00",
+          "close": "23:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "23:30"
+        }
+      ],
+      "closures": [
+        {
+          "from": "2026-11-12",
+          "note": "Chiuso per ferie",
+          "noteEn": "Closed for holidays"
+        }
+      ],
+      "specials": [
+        {
+          "from": "2026-11-06",
+          "to": "2026-11-11",
+          "label": "Fiera di San Martino",
+          "week": [
+            {
+              "open": "18:00",
+              "close": "23:30"
+            },
+            {
+              "open": "18:00",
+              "close": "23:30"
+            },
+            {
+              "open": "18:00",
+              "close": "23:30"
+            },
+            {
+              "open": "18:00",
+              "close": "23:30"
+            },
+            {
+              "open": "18:00",
+              "close": "02:30"
+            },
+            {
+              "open": "18:00",
+              "close": "02:30"
+            },
+            {
+              "open": "18:00",
+              "close": "23:30"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "gallery": [
+    {
+      "src": "/images/creazioni-spread.webp",
+      "alt": "Panini aperti con tutti gli ingredienti"
+    },
+    {
+      "src": "/images/paniniinsalata.webp",
+      "alt": "Panini con insalata"
+    },
+    {
+      "src": "/images/gallery-paninivicini.webp",
+      "alt": "Cinque panini vicini con ripieni diversi"
+    },
+    {
+      "src": "/images/gallery-panino-castle.webp",
+      "alt": "Panino davanti al Castel Sismondo di Rimini"
+    },
+    {
+      "src": "/images/storefront.webp",
+      "alt": "Officina del Panino Storefront"
+    },
+    {
+      "src": "/images/panini-trio.webp",
+      "alt": "Tre panini misti con lattuga e cheesesteak"
+    },
+    {
+      "src": "/images/panini-wings.webp",
+      "alt": "Panini con onion rings e chicken wings"
+    },
+    {
+      "src": "/images/sandwich1.webp",
+      "alt": "Loaded Sandwich with Rucola and Meatballs"
+    },
+    {
+      "src": "/images/panino-patate.webp",
+      "alt": "Panino con patate e scamorza filante"
+    },
+    {
+      "src": "/images/sala.webp",
+      "alt": "Sala interna con pareti industrial e piante"
+    },
+    {
+      "src": "/images/interno.webp",
+      "alt": "Interno del locale con lampadine Edison"
+    },
+    {
+      "src": "/images/sandwiches-bag.webp",
+      "alt": "Sandwiches with Coca-Cola and Birra Moretti"
+    },
+    {
+      "src": "/images/panino-pollo.webp",
+      "alt": "Panino con pollo croccante, lattuga e patate"
+    },
+    {
+      "src": "/images/panino-rucola.webp",
+      "alt": "Panino con rucola, parmigiano e pomodorini"
+    },
+    {
+      "src": "/images/panino-verdure.webp",
+      "alt": "Panino con verdure e patate al forno"
+    },
+    {
+      "src": "/images/panino-melanzane.webp",
+      "alt": "Panino con melanzane grigliate"
+    },
+    {
+      "src": "/images/panino-heinz.webp",
+      "alt": "Panino con Heinz Classic Burger Sauce"
+    },
+    {
+      "src": "/images/wings-cheesefries.webp",
+      "alt": "Chicken wings e cheesefries"
+    }
+  ],
+  "creations": [
+    {
+      "src": "/images/creazioni-spread.webp"
+    },
+    {
+      "src": "/images/paniniinsalata.webp"
+    },
+    {
+      "src": "/images/creazioni-vicini.webp"
+    },
+    {
+      "src": "/images/creazioni-castello.webp"
+    },
+    {
+      "src": "/images/panini-trio.webp"
+    },
+    {
+      "src": "/images/sandwich1.webp"
+    },
+    {
+      "src": "/images/sandwiches-bag.webp"
+    }
+  ]
+}

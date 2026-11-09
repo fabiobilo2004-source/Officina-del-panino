@@ -1,5 +1,19 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist/public",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/api/admin/:path*",
+      "destination": "/api/admin?route=:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "admin-draft": false
+    }
+  }
 }

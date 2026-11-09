@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
@@ -15,6 +15,25 @@ const Contact   = lazy(() => import("@/pages/contact"));
 const Contatti  = lazy(() => import("@/pages/contatti"));
 const Social    = lazy(() => import("@/pages/social"));
 const NotFound  = lazy(() => import("@/pages/not-found"));
+// Admin: login su /admin, poi il pannello si apre sopra il sito. Il codice del pannello
+// si scarica solo per chi ha fatto il login (cookie admin_hint), i visitatori non lo caricano.
+const AdminPanel = lazy(() => import("@/components/admin/AdminPanel"));
+const AdminLogin = lazy(() => import("@/components/admin/AdminLogin"));
+
+function AdminGate() {
+  const [authed, setAuthed] = useState(false);
+  useEffect(() => {
+    const check = () => {
+      if (!document.cookie.includes("admin_hint=1")) { setAuthed(false); return; }
+      fetch("/api/admin/me").then((r) => setAuthed(r.ok)).catch(() => setAuthed(false));
+    };
+    check();
+    window.addEventListener("admin-auth", check);
+    return () => window.removeEventListener("admin-auth", check);
+  }, []);
+  if (!authed) return null;
+  return <Suspense fallback={null}><AdminPanel /></Suspense>;
+}
 
 const queryClient = new QueryClient();
 
@@ -45,6 +64,10 @@ function Layout({ children }: { children: React.ReactNode }) {
 }
 
 function Router() {
+  const [location] = useLocation();
+  if (location === "/admin") {
+    return <Suspense fallback={<PageFallback />}><AdminLogin /></Suspense>;
+  }
   return (
     <Layout>
       <ScrollToTop />
@@ -73,6 +96,7 @@ function App() {
           </WouterRouter>
           <Toaster />
           <Analytics />
+          <AdminGate />
         </TooltipProvider>
       </LanguageProvider>
     </QueryClientProvider>

@@ -1,16 +1,24 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ArrowRight } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { AppDownloadSection } from "@/components/AppDownloadSection";
-import { SANTA_FIERA } from "@/lib/live-status";
+import { romeDateISO } from "@/lib/live-status";
+import { getEdits, isAdminMode, subscribe } from "@/lib/site-edits";
 
-const CARD = "flex-shrink-0 snap-start w-[78%] sm:w-[340px] lg:w-[calc((100%-3rem)/3)] aspect-[1188/1508] border border-border/40 shadow-2xl overflow-hidden";
+// Strumenti per aggiungere/spostare/eliminare card: caricati solo in modalità admin
+const NewsAdminTools = lazy(() => import("@/components/admin/NewsAdminTools"));
+
+const SLOT = "relative flex-shrink-0 snap-start w-[78%] sm:w-[340px] lg:w-[calc((100%-3rem)/3)] aspect-[1188/1508]";
+const CARD = "w-full h-full border border-border/40 shadow-2xl overflow-hidden";
 
 export function NewsSection() {
   const { lang } = useLang();
   const [appOpen, setAppOpen] = useState(false);
+  const news = useSyncExternalStore(subscribe, () => getEdits().news);
+  const admin = useSyncExternalStore(subscribe, isAdminMode);
+  const today = romeDateISO(new Date());
 
   useEffect(() => {
     if (!appOpen) return;
@@ -34,53 +42,74 @@ export function NewsSection() {
         <div
           className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {/* Il post della fiera sparisce da solo dal 12/11/2026 */}
-          {SANTA_FIERA && (
-            <img
-              src="/images/news-fiera-san-martino.jpg"
-              alt="L'Officina riapre — Fiera di San Martino, Santarcangelo di Romagna, 7-11 novembre 2026"
-              loading="lazy"
-              className={`${CARD} object-cover`}
-            />
+          {news.map((item, index) => {
+            // Le card con una data di scadenza spariscono da sole il giorno dopo
+            const expired = item.type === "image" && !!item.until && today > item.until;
+            if (expired && !admin) return null;
+            return (
+              <div key={item.id} className={`${SLOT}${expired ? " opacity-40" : ""}`}>
+                {item.type === "app" ? (
+                  <button
+                    onClick={() => setAppOpen(true)}
+                    className={`${CARD} group relative bg-card text-left flex flex-col hover:border-primary transition-colors`}
+                  >
+                    <div aria-hidden className="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-72 bg-primary/25 rounded-full blur-3xl" />
+                    <div className="relative flex-1 flex items-start justify-center pt-8 overflow-hidden min-h-0">
+                      <img
+                        src="/images/app-screenshot.jpg"
+                        alt=""
+                        className="w-[55%] rounded-t-[1.6rem] shadow-2xl group-hover:-translate-y-2 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="relative p-6 border-t border-border/40 bg-card">
+                      <span className="text-primary text-[11px] font-display tracking-[0.25em] uppercase">
+                        {lang === "it" ? "Nuova app" : "New app"}
+                      </span>
+                      <h3 className="text-2xl md:text-3xl font-display text-foreground mt-1 mb-3 leading-tight">
+                        {lang === "it" ? "Scarica la nostra app" : "Download our app"}
+                      </h3>
+                      <span className="inline-flex items-center gap-2 text-sm font-display uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors">
+                        {lang === "it" ? "Scopri di più" : "Learn more"}
+                        <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                      </span>
+                    </div>
+                  </button>
+                ) : item.title ? (
+                  <div className={`${CARD} flex flex-col bg-[#272725]`}>
+                    <p className="pt-5 px-4 text-center text-xl md:text-2xl font-display uppercase tracking-[0.2em] text-primary">
+                      {lang === "en" && item.titleEn ? item.titleEn : item.title}
+                    </p>
+                    <img
+                      src={item.src}
+                      alt={item.alt ?? item.title}
+                      loading="lazy"
+                      className={`flex-1 min-h-0 w-full ${item.fit === "cover" ? "object-cover" : "object-contain"}`}
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={item.src}
+                    alt={item.alt ?? ""}
+                    loading="lazy"
+                    className={`${CARD} ${item.fit === "contain" ? "object-contain bg-[#272725]" : "object-cover"}`}
+                  />
+                )}
+                {admin && (
+                  <Suspense fallback={null}>
+                    <NewsAdminTools index={index} expired={expired} />
+                  </Suspense>
+                )}
+              </div>
+            );
+          })}
+
+          {admin && (
+            <div className={SLOT}>
+              <Suspense fallback={null}>
+                <NewsAdminTools index={-1} />
+              </Suspense>
+            </div>
           )}
-
-          <button
-            onClick={() => setAppOpen(true)}
-            className={`${CARD} group relative bg-card text-left flex flex-col hover:border-primary transition-colors`}
-          >
-            <div aria-hidden className="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-72 bg-primary/25 rounded-full blur-3xl" />
-            <div className="relative flex-1 flex items-start justify-center pt-8 overflow-hidden min-h-0">
-              <img
-                src="/images/app-screenshot.jpg"
-                alt=""
-                className="w-[55%] rounded-t-[1.6rem] shadow-2xl group-hover:-translate-y-2 transition-transform duration-300"
-              />
-            </div>
-            <div className="relative p-6 border-t border-border/40 bg-card">
-              <span className="text-primary text-[11px] font-display tracking-[0.25em] uppercase">
-                {lang === "it" ? "Nuova app" : "New app"}
-              </span>
-              <h3 className="text-2xl md:text-3xl font-display text-foreground mt-1 mb-3 leading-tight">
-                {lang === "it" ? "Scarica la nostra app" : "Download our app"}
-              </h3>
-              <span className="inline-flex items-center gap-2 text-sm font-display uppercase tracking-widest text-muted-foreground group-hover:text-primary transition-colors">
-                {lang === "it" ? "Scopri di più" : "Learn more"}
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </span>
-            </div>
-          </button>
-
-          <div className={`${CARD} flex flex-col bg-[#272725]`}>
-            <p className="pt-5 text-center text-xl md:text-2xl font-display uppercase tracking-[0.2em] text-primary">
-              {lang === "it" ? "Orario invernale" : "Winter hours"}
-            </p>
-            <img
-              src="/images/news-orari-rimini.jpg"
-              alt="Orari Officina del Panino Rimini — Domenica-Giovedì 18:00-02:30, Venerdì, Sabato e festivi 18:00-05:00"
-              loading="lazy"
-              className="flex-1 min-h-0 w-full object-contain"
-            />
-          </div>
         </div>
       </div>
 

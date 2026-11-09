@@ -1,11 +1,22 @@
 import { useState, useEffect } from "react";
 import { SiInstagram, SiFacebook, SiTiktok, SiJusteat } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
-import { isAnyLocationOpen, SANTA_FIERA } from "@/lib/live-status";
+import { DAY_NAMES, formatHours, isAnyLocationOpen, useHours, weekToShow, type LocationKey } from "@/lib/hours";
 
 export function Footer() {
   const { lang } = useLang();
   const [anyOpen, setAnyOpen] = useState(() => isAnyLocationOpen(new Date()));
+  const hours = useHours();
+  const now = new Date();
+
+  // Orari della settimana (abbreviati)
+  const hoursLines = (key: LocationKey) => (
+    <>
+      {weekToShow(hours[key], now).map((d, i) => (
+        <p key={i}>{DAY_NAMES[lang][i].slice(0, 3)}: {formatHours(d, lang)}</p>
+      ))}
+    </>
+  );
 
   useEffect(() => {
     const id = setInterval(() => setAnyOpen(isAnyLocationOpen(new Date())), 60_000);
@@ -21,18 +32,6 @@ export function Footer() {
     hours:     { it: "ORARI",    en: "HOURS" },
     contact:   { it: "CONTATTI", en: "CONTACT" },
     rights:    { it: "Tutti i diritti riservati.", en: "All rights reserved." },
-    rimini_closure: {
-      it: "Chiuso fino al 16 settembre",
-      en: "Closed until September 16",
-    },
-    rimini_hours: {
-      it: "Lun: 18:00 – 02:30\nMar: 18:00 – 02:30\nMer: 18:00 – 02:30\nGio: 18:00 – 02:30\nVen: 18:00 – 05:00\nSab: 18:00 – 05:00\nDom: 18:00 – 02:30",
-      en: "Mon: 6 pm – 2:30 am\nTue: 6 pm – 2:30 am\nWed: 6 pm – 2:30 am\nThu: 6 pm – 2:30 am\nFri: 6 pm – 5 am\nSat: 6 pm – 5 am\nSun: 6 pm – 2:30 am",
-    },
-    santa_hours: {
-      it: `Lun: 18:00 – 23:30\nMar: ${SANTA_FIERA ? "18:00 – 23:30" : "Chiuso"}\nMer: 18:00 – 23:30\nGio: 18:00 – 23:30\nVen: 18:00 – 02:30\nSab: 18:00 – 02:30\nDom: 18:00 – 23:30`,
-      en: `Mon: 6–11:30 pm\nTue: ${SANTA_FIERA ? "6–11:30 pm" : "Closed"}\nWed: 6–11:30 pm\nThu: 6–11:30 pm\nFri: 6 pm – 2:30 am\nSat: 6 pm – 2:30 am\nSun: 6–11:30 pm`,
-    },
   };
 
   return (
@@ -61,9 +60,7 @@ export function Footer() {
           </address>
           <div className="mt-4 text-sm space-y-1">
             <div className="text-muted-foreground">
-              {t.rimini_hours[lang].split("\n").map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
+              {hoursLines("rimini")}
             </div>
           </div>
         </div>
@@ -76,9 +73,7 @@ export function Footer() {
             <p className="pt-1">Tel: 0541 184 0930</p>
           </address>
           <div className="mt-4 text-sm text-muted-foreground space-y-1">
-            {t.santa_hours[lang].split("\n").map((line, i) => (
-              <p key={i}>{line}</p>
-            ))}
+            {hoursLines("santarcangelo")}
           </div>
         </div>
 

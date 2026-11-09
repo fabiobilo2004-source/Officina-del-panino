@@ -71,6 +71,7 @@
     "zod": "^3.25.76"
   },
   "dependencies": {
-    "@vercel/analytics": "^2.0.1"
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/blob": "2.8.2"
   }
 }

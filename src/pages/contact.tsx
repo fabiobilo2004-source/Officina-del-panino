@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Phone, Clock, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { SiInstagram, SiFacebook, SiJusteat, SiTiktok } from "react-icons/si";
 import { useLang } from "@/context/LanguageContext";
-import { FERIE, SANTA_FIERA } from "@/lib/live-status";
+import { DAY_NAMES, formatHours, liveStatus, todayIndex, useHours, weekToShow } from "@/lib/hours";
 
 type LocationKey = "rimini" | "santarcangelo";
 
@@ -19,15 +19,6 @@ const locations = {
     photo: "/images/storefront.webp",
     mapSrc:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2856.123!2d12.565!3d44.059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132cba!2sVia+Circonvallazione+Occidentale+70+Rimini!5e0!3m2!1sen!2sit!4v1",
-    days: [
-      { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
-      { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
-      { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
-      { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
-      { key: "friday",    it: "Venerdì",   en: "Friday",    time: "18:00 – 05:00", timeEn: "6 pm – 5 am", highlight: true },
-      { key: "saturday",  it: "Sabato",    en: "Saturday",  time: "18:00 – 05:00", timeEn: "6 pm – 5 am", highlight: true },
-      { key: "sunday",    it: "Domenica",  en: "Sunday",    time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
-    ],
   },
   santarcangelo: {
     nameIt: "Santarcangelo",
@@ -40,107 +31,9 @@ const locations = {
     photo: "/images/santarcangelo.webp",
     mapSrc:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11412.0!2d12.4488!3d44.0645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132cb6a3e4e!2sPiazza+Guglielmo+Marconi+10+Santarcangelo+di+Romagna!5e0!3m2!1sen!2sit!4v1",
-    days: [
-      { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 23:30", timeEn: "6–11:30 pm" },
-      SANTA_FIERA
-        ? { key: "tuesday", it: "Martedì",   en: "Tuesday",   time: "18:00 – 23:30", timeEn: "6–11:30 pm" }
-        : { key: "tuesday", it: "Martedì",   en: "Tuesday",   time: "Chiuso",        timeEn: "Closed",       closed: true },
-      { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 23:30", timeEn: "6–11:30 pm" },
-      { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 23:30", timeEn: "6–11:30 pm" },
-      { key: "friday",    it: "Venerdì",   en: "Friday",    time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
-      { key: "saturday",  it: "Sabato",    en: "Saturday",  time: "18:00 – 02:30", timeEn: "6 pm – 2:30 am", highlight: true },
-      { key: "sunday",    it: "Domenica",  en: "Sunday",    time: "18:00 – 23:30", timeEn: "6–11:30 pm" },
-    ],
   },
 };
 
-
-function parseTimeRange(timeStr: string): { openMin: number; closeMin: number } | null {
-  const match = timeStr.match(/(\d+):(\d+)\s*[–-]\s*(\d+):(\d+)/);
-  if (!match) return null;
-  const openMin = parseInt(match[1]) * 60 + parseInt(match[2]);
-  let closeMin = parseInt(match[3]) * 60 + parseInt(match[4]);
-  if (closeMin <= openMin) closeMin += 24 * 60;
-  return { openMin, closeMin };
-}
-
-function fmtMin(totalMin: number): string {
-  const h = Math.floor((totalMin % (24 * 60)) / 60);
-  const m = totalMin % 60;
-  return `${h}:${m.toString().padStart(2, "0")}`;
-}
-
-function getLiveStatus(
-  days: { key: string; it: string; en: string; time: string; timeEn: string }[],
-  lang: "it" | "en",
-  now: Date
-): { isOpen: boolean; text: string } {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Europe/Rome",
-    hour: "2-digit", minute: "2-digit", weekday: "short", hour12: false,
-  }).formatToParts(now);
-
-  const hour = parseInt(parts.find(p => p.type === "hour")?.value ?? "0");
-  const min  = parseInt(parts.find(p => p.type === "minute")?.value ?? "0");
-  const wd   = parts.find(p => p.type === "weekday")?.value ?? "Mon";
-
-  const wdMap: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-  const jsDay   = wdMap[wd] ?? 1;
-  const todayIdx = jsDay === 0 ? 6 : jsDay - 1; // 0=Mon … 6=Sun
-  const curMin   = hour * 60 + min;
-
-  // Check yesterday — might still be open (late-night hours crossing midnight)
-  const yestIdx   = (todayIdx - 1 + 7) % 7;
-  const yestRange = parseTimeRange(days[yestIdx].time);
-  if (yestRange && yestRange.closeMin > 24 * 60) {
-    const closeToday = yestRange.closeMin - 24 * 60;
-    if (curMin < closeToday) {
-      return {
-        isOpen: true,
-        text: lang === "it"
-          ? `Aperto · chiude alle ${fmtMin(closeToday)}`
-          : `Open · closes at ${fmtMin(closeToday)}`,
-      };
-    }
-  }
-
-  // Check today
-  const todayRange = parseTimeRange(days[todayIdx].time);
-  if (todayRange) {
-    if (curMin >= todayRange.openMin) {
-      return {
-        isOpen: true,
-        text: lang === "it"
-          ? `Aperto · chiude alle ${fmtMin(todayRange.closeMin)}`
-          : `Open · closes at ${fmtMin(todayRange.closeMin)}`,
-      };
-    }
-    // Closed but opens later today
-    return {
-      isOpen: false,
-      text: lang === "it"
-        ? `Chiuso · apre alle ${fmtMin(todayRange.openMin)}`
-        : `Closed · opens at ${fmtMin(todayRange.openMin)}`,
-    };
-  }
-
-  // Today closed entirely — find next opening
-  for (let offset = 1; offset <= 7; offset++) {
-    const nextIdx   = (todayIdx + offset) % 7;
-    const nextRange = parseTimeRange(days[nextIdx].time);
-    if (nextRange) {
-      const dayName = lang === "it" ? days[nextIdx].it : days[nextIdx].en;
-      return {
-        isOpen: false,
-        text: lang === "it"
-          ? `Chiuso · apre ${dayName} alle ${fmtMin(nextRange.openMin)}`
-          : `Closed · opens ${dayName} at ${fmtMin(nextRange.openMin)}`,
-      };
-    }
-  }
-
-  return { isOpen: false, text: lang === "it" ? "Chiuso" : "Closed" };
-}
 
 export default function Contact() {
   const { lang } = useLang();
@@ -196,13 +89,8 @@ export default function Contact() {
     setActiveLocation(key);
   };
 
-  const italyParts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Europe/Rome", weekday: "short", hour12: false,
-  }).formatToParts(now);
-  const italyWd = italyParts.find(p => p.type === "weekday")?.value ?? "Mon";
-  const wdMap: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-  const jsDay = wdMap[italyWd] ?? 1;
-  const todayMapped = jsDay === 0 ? 6 : jsDay - 1;
+  const todayMapped = todayIndex(now);
+  const hours = useHours();
 
   const loc = locations[activeLocation];
   const isRimini = activeLocation === "rimini";
@@ -341,14 +229,9 @@ export default function Contact() {
                         )}
                       </div>
                       {(() => {
-                        const ferie = activeLocation === "santarcangelo" ? FERIE.santarcangelo : FERIE.rimini;
-                        const status = getLiveStatus(loc.days, lang, now);
-                        const isOpen = !ferie && status.isOpen;
-                        const badgeText = ferie
-                          ? (activeLocation === "rimini"
-                              ? (lang === "it" ? "Chiuso fino al 16 settembre" : "Closed until September 16")
-                              : (lang === "it" ? "Chiuso per ferie" : "Closed for holidays"))
-                          : status.text;
+                        const status = liveStatus(hours[activeLocation], now, lang);
+                        const isOpen = status.isOpen;
+                        const badgeText = status.text;
                         return (
                           <div className={`inline-flex items-center gap-2 px-3 py-1.5 mb-5 text-xs font-display tracking-wider uppercase border ${
                             isOpen
@@ -361,28 +244,30 @@ export default function Contact() {
                         );
                       })()}
                       <div className="space-y-3">
-                        {loc.days.map((day, i) => {
+                        {weekToShow(hours[activeLocation], now).map((day, i) => {
                           const isToday = todayMapped === i;
-                          const isClosed = (day as any).closed;
+                          const isClosed = !day;
+                          // In evidenza i giorni aperti dopo mezzanotte
+                          const highlight = !!day && day.close < day.open;
                           return (
                             <div
-                              key={day.key}
+                              key={i}
                               className={`flex justify-between border-b pb-2 pl-2 transition-colors ${
                                 isToday
                                   ? "border-primary/50 border-l-2 border-l-primary bg-primary/5"
                                   : "border-border border-l-2 border-l-transparent"
                               }`}
                             >
-                              <span className={`${isToday ? "text-foreground font-bold" : (day as any).highlight ? "text-foreground font-semibold" : isClosed ? "text-muted-foreground/50" : "text-muted-foreground"}`}>
-                                {(day as any)[lang]}
+                              <span className={`${isToday ? "text-foreground font-bold" : highlight ? "text-foreground font-semibold" : isClosed ? "text-muted-foreground/50" : "text-muted-foreground"}`}>
+                                {DAY_NAMES[lang][i]}
                                 {isToday && (
                                   <span className="ml-2 text-xs text-primary font-bold uppercase tracking-wider">
                                     {t.today[lang]}
                                   </span>
                                 )}
                               </span>
-                              <span className={`font-mono ${isClosed ? "text-muted-foreground/50 italic" : (day as any).highlight || isToday ? "text-primary font-semibold" : "text-primary/80"}`}>
-                                {lang === "it" ? day.time : day.timeEn}
+                              <span className={`font-mono ${isClosed ? "text-muted-foreground/50 italic" : highlight || isToday ? "text-primary font-semibold" : "text-primary/80"}`}>
+                                {formatHours(day, lang)}
                               </span>
                             </div>
                           );

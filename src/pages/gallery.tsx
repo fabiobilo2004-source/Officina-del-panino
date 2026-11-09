@@ -1,32 +1,17 @@
-import { useState } from "react";
+import { Suspense, lazy, useState, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
+import { getEdits, isAdminMode, subscribe } from "@/lib/site-edits";
 
-const photos = [
-  { src: "/images/creazioni-spread.webp",      alt: "Panini aperti con tutti gli ingredienti",               titleKey: "spread" },
-  { src: "/images/paniniinsalata.webp",        alt: "Panini con insalata",                                    titleKey: "vicini" },
-  { src: "/images/gallery-paninivicini.webp",  alt: "Cinque panini vicini con ripieni diversi",              titleKey: "vicini" },
-  { src: "/images/gallery-panino-castle.webp", alt: "Panino davanti al Castel Sismondo di Rimini",           titleKey: "castle" },
-  { src: "/images/storefront.webp",            alt: "Officina del Panino Storefront",                        titleKey: "workshop" },
-  { src: "/images/panini-trio.webp",           alt: "Tre panini misti con lattuga e cheesesteak",            titleKey: "trio" },
-  { src: "/images/panini-wings.webp",          alt: "Panini con onion rings e chicken wings",                titleKey: "wings" },
-  { src: "/images/sandwich1.webp",             alt: "Loaded Sandwich with Rucola and Meatballs",             titleKey: "masterpiece" },
-  { src: "/images/panino-patate.webp",         alt: "Panino con patate e scamorza filante",                  titleKey: "patate" },
-  { src: "/images/sala.webp",                  alt: "Sala interna con pareti industrial e piante",           titleKey: "sala" },
-  { src: "/images/interno.webp",               alt: "Interno del locale con lampadine Edison",               titleKey: "interno" },
-  { src: "/images/sandwiches-bag.webp",        alt: "Sandwiches with Coca-Cola and Birra Moretti",           titleKey: "latenight" },
-  { src: "/images/panino-pollo.webp",         alt: "Panino con pollo croccante, lattuga e patate",          titleKey: "pollo" },
-  { src: "/images/panino-rucola.webp",        alt: "Panino con rucola, parmigiano e pomodorini",            titleKey: "rucola" },
-  { src: "/images/panino-verdure.webp",       alt: "Panino con verdure e patate al forno",                  titleKey: "verdure" },
-  { src: "/images/panino-melanzane.webp",     alt: "Panino con melanzane grigliate",                        titleKey: "melanzane" },
-  { src: "/images/panino-heinz.webp",          alt: "Panino con Heinz Classic Burger Sauce",                 titleKey: "heinz" },
-  { src: "/images/wings-cheesefries.webp",     alt: "Chicken wings e cheesefries",                           titleKey: "wingsfries" },
-];
+// Le foto della galleria si modificano dal pannello admin (src/content/site-edits.json → gallery)
+const ImageListAdminTools = lazy(() => import("@/components/admin/ImageListAdminTools"));
 
 export default function Gallery() {
   const { lang } = useLang();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const photos = useSyncExternalStore(subscribe, () => getEdits().gallery) ?? [];
+  const admin = useSyncExternalStore(subscribe, isAdminMode);
 
   const t = {
     title: { it: "GALLERIA", en: "GALLERY" },
@@ -81,7 +66,7 @@ export default function Gallery() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-2">
           {photos.map((photo, i) => (
             <motion.div
-              key={i}
+              key={photo.src + i}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
@@ -92,18 +77,30 @@ export default function Gallery() {
             >
               <img
                 src={photo.src}
-                alt={photo.alt}
+                alt={photo.alt ?? ""}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {admin && (
+                <Suspense fallback={null}>
+                  <ImageListAdminTools field="gallery" index={i} />
+                </Suspense>
+              )}
             </motion.div>
           ))}
+          {admin && (
+            <div className="relative bg-card" style={{ aspectRatio: "1/1" }}>
+              <Suspense fallback={null}>
+                <ImageListAdminTools field="gallery" index={-1} />
+              </Suspense>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Lightbox Modal */}
       <AnimatePresence>
-        {selectedIndex !== null && (
+        {selectedIndex !== null && photos[selectedIndex] && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -136,7 +133,7 @@ export default function Gallery() {
             >
               <img
                 src={photos[selectedIndex].src}
-                alt={photos[selectedIndex].alt}
+                alt={photos[selectedIndex].alt ?? ""}
                 className="max-h-[70vh] object-contain shadow-2xl border border-border/20"
               />
             </motion.div>

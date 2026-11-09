@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { Suspense, lazy, useEffect, useState, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { Link } from "wouter";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight, ChevronDown, X, ZoomIn, Phone, Play, Pause, Volume2, VolumeX, Download } from "lucide-react";
@@ -6,100 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/context/LanguageContext";
 import { SiTripadvisor, SiGoogle, SiJusteat, SiInstagram } from "react-icons/si";
 import { getSmartAppLink } from "@/lib/app-store";
-import { FERIE, SANTA_FIERA } from "@/lib/live-status";
+import { liveStatus, useHours } from "@/lib/hours";
+import { getEdits, isAdminMode, subscribe } from "@/lib/site-edits";
 import { AppStoreButtons } from "@/components/AppStoreButtons";
 import { NewsSection } from "@/components/NewsSection";
 
-const riminiDays = [
-  { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 02:30" },
-  { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: "18:00 – 02:30" },
-  { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 02:30" },
-  { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 02:30" },
-  { key: "friday",    it: "Venerdì",   en: "Friday",    time: "18:00 – 05:00" },
-  { key: "saturday",  it: "Sabato",    en: "Saturday",  time: "18:00 – 05:00" },
-  { key: "sunday",    it: "Domenica",  en: "Sunday",    time: "18:00 – 02:30" },
-];
-
-const santaDays = [
-  { key: "monday",    it: "Lunedì",    en: "Monday",    time: "18:00 – 23:30" },
-  { key: "tuesday",   it: "Martedì",   en: "Tuesday",   time: SANTA_FIERA ? "18:00 – 23:30" : "Chiuso" },
-  { key: "wednesday", it: "Mercoledì", en: "Wednesday", time: "18:00 – 23:30" },
-  { key: "thursday",  it: "Giovedì",   en: "Thursday",  time: "18:00 – 23:30" },
-  { key: "friday",    it: "Venerdì",   en: "Friday",    time: "18:00 – 02:30" },
-  { key: "saturday",  it: "Sabato",    en: "Saturday",  time: "18:00 – 02:30" },
-  { key: "sunday",    it: "Domenica",  en: "Sunday",    time: "18:00 – 23:30" },
-];
-
-function parseTime(s: string): { openMin: number; closeMin: number } | null {
-  const m = s.match(/(\d+):(\d+)\s*[–-]\s*(\d+):(\d+)/);
-  if (!m) return null;
-  const openMin = parseInt(m[1]) * 60 + parseInt(m[2]);
-  let closeMin  = parseInt(m[3]) * 60 + parseInt(m[4]);
-  if (closeMin <= openMin) closeMin += 1440;
-  return { openMin, closeMin };
-}
-
-function fmtMin(t: number) {
-  const h = Math.floor((t % 1440) / 60), mn = t % 60;
-  return `${h}:${mn.toString().padStart(2, "0")}`;
-}
-
-function getLiveStatus(days: { key: string; it: string; en: string; time: string }[], lang: "it" | "en", now: Date) {
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Europe/Rome", hour: "2-digit", minute: "2-digit", weekday: "short", hour12: false,
-  }).formatToParts(now);
-  const hour = parseInt(parts.find(p => p.type === "hour")?.value ?? "0");
-  const min  = parseInt(parts.find(p => p.type === "minute")?.value ?? "0");
-  const wd   = parts.find(p => p.type === "weekday")?.value ?? "Mon";
-  const wdMap: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-  const jsDay    = wdMap[wd] ?? 1;
-  const todayIdx = jsDay === 0 ? 6 : jsDay - 1;
-  const curMin   = hour * 60 + min;
-  const SOON     = 30; // minuti soglia "fra poco"
-
-  const yestIdx  = (todayIdx - 1 + 7) % 7;
-  const yestR    = parseTime(days[yestIdx].time);
-  if (yestR && yestR.closeMin > 1440) {
-    const closeToday = yestR.closeMin - 1440;
-    if (curMin < closeToday) {
-      const closing = closeToday - curMin <= SOON;
-      return { isOpen: true, soon: closing ? "closing" as const : null, text: lang === "it" ? `Aperto · chiude alle ${fmtMin(closeToday)}` : `Open · closes at ${fmtMin(closeToday)}` };
-    }
-  }
-  const todayR = parseTime(days[todayIdx].time);
-  if (todayR) {
-    if (curMin >= todayR.openMin) {
-      const closing = todayR.closeMin - curMin <= SOON;
-      return { isOpen: true, soon: closing ? "closing" as const : null, text: lang === "it" ? `Aperto · chiude alle ${fmtMin(todayR.closeMin)}` : `Open · closes at ${fmtMin(todayR.closeMin)}` };
-    }
-    const opening = todayR.openMin - curMin <= SOON;
-    return { isOpen: false, soon: opening ? "opening" as const : null, text: lang === "it" ? `Chiuso · apre alle ${fmtMin(todayR.openMin)}` : `Closed · opens at ${fmtMin(todayR.openMin)}` };
-  }
-  for (let i = 1; i <= 7; i++) {
-    const ni = (todayIdx + i) % 7;
-    const nr = parseTime(days[ni].time);
-    if (nr) {
-      const dn = lang === "it" ? days[ni].it : days[ni].en;
-      return { isOpen: false, soon: null, text: lang === "it" ? `Chiuso · apre ${dn} alle ${fmtMin(nr.openMin)}` : `Closed · opens ${dn} at ${fmtMin(nr.openMin)}` };
-    }
-  }
-  return { isOpen: false, soon: null, text: lang === "it" ? "Chiuso" : "Closed" };
-}
-
-const creazioniImages = [
-  "/images/creazioni-spread.webp",
-  "/images/paniniinsalata.webp",
-  "/images/creazioni-vicini.webp",
-  "/images/creazioni-castello.webp",
-  "/images/panini-trio.webp",
-  "/images/sandwich1.webp",
-  "/images/sandwiches-bag.webp",
-  "/images/panino-rucola.webp",
-  "/images/panino-verdure.webp",
-  "/images/panino-melanzane.webp",
-  "/images/panino-heinz.webp",
-  "/images/wings-cheesefries.webp",
-];
+// Le foto di "Le Nostre Creazioni" si modificano dal pannello admin (site-edits.json → creations)
+const ImageListAdminTools = lazy(() => import("@/components/admin/ImageListAdminTools"));
 
 const reviewsList = [
   { name: "Joe El Khoury",      it: "Per i non italiani, se cercate fast food e volete mangiare qualcosa oltre a pizza e pasta, questo posto è la scelta migliore! Scegli il tuo panino dalla carne alle salse.", en: "For non italians, if you are looking for fast food and you want to eat something other than pizza and pasta, this place is your best choice! You design your own sandwich from the type of meat to the sauces." },
@@ -200,7 +113,7 @@ function GearBackground() {
   );
 }
 
-function ParallaxCreazioneCard({ src, onClick }: { src: string; fromLeft: boolean; onClick: () => void }) {
+function ParallaxCreazioneCard({ src, onClick, tools }: { src: string; fromLeft: boolean; onClick: () => void; tools?: ReactNode }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -219,6 +132,7 @@ function ParallaxCreazioneCard({ src, onClick }: { src: string; fromLeft: boolea
       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
         <ZoomIn size={32} className="text-white drop-shadow-lg" />
       </div>
+      {tools}
     </motion.div>
   );
 }
@@ -235,7 +149,15 @@ export default function Home() {
   const lavorazioneVideoRef = useRef<HTMLVideoElement>(null);
 
   const [now, setNow] = useState(new Date());
+  const hours = useHours();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const creazioniImages = (useSyncExternalStore(subscribe, () => getEdits().creations) ?? []).map((c) => c.src);
+  const admin = useSyncExternalStore(subscribe, isAdminMode);
+  const creationTools = (index: number) => admin && (
+    <Suspense fallback={null}>
+      <ImageListAdminTools field="creations" index={index} />
+    </Suspense>
+  );
   const [isMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
   const [orderOpen, setOrderOpen] = useState(false);
 
@@ -538,22 +460,19 @@ export default function Home() {
             {/* Live status badges */}
             <div className="flex flex-col md:flex-row items-center justify-center gap-1.5 md:gap-3">
               {[
-                { label: "OFFICINA DI RIMINI",         days: riminiDays, ferie: FERIE.rimini, ferieText: null },
-                { label: "OFFICINA DI SANTARCANGELO",  days: santaDays,  ferie: FERIE.santarcangelo, ferieText: null },
-              ].map(({ label, days, ferie, ferieText }) => {
-                const s = getLiveStatus(days, lang, now);
-                const dotColor = ferie ? "bg-red-500" : s.soon ? "bg-amber-400 animate-pulse" : s.isOpen ? "bg-green-400 animate-pulse" : "bg-red-500";
-                const textColor = ferie ? "text-red-400" : s.soon ? "text-amber-400" : s.isOpen ? "text-green-400" : "text-red-400";
-                const statusWord = ferie
-                  ? (ferieText ? ferieText[lang] : (lang === "it" ? "CHIUSO PER FERIE" : "CLOSED FOR HOLIDAYS"))
-                  : s.soon === "closing"
+                { label: "OFFICINA DI RIMINI",         loc: hours.rimini },
+                { label: "OFFICINA DI SANTARCANGELO",  loc: hours.santarcangelo },
+              ].map(({ label, loc }) => {
+                const s = liveStatus(loc, now, lang);
+                const dotColor = s.soon ? "bg-amber-400 animate-pulse" : s.isOpen ? "bg-green-400 animate-pulse" : "bg-red-500";
+                const textColor = s.soon ? "text-amber-400" : s.isOpen ? "text-green-400" : "text-red-400";
+                const statusWord = s.soon === "closing"
                   ? (lang === "it" ? "CHIUDE FRA POCO" : "CLOSING SOON")
                   : s.soon === "opening"
                   ? (lang === "it" ? "APRE FRA POCO" : "OPENING SOON")
                   : s.isOpen
                   ? (lang === "it" ? "APERTO ORA" : "OPEN NOW")
                   : (lang === "it" ? "CHIUSO ORA" : "CLOSED NOW");
-                const detail = ferie ? "" : s.text.includes("·") ? s.text.split("·").slice(1).join("·").trim() : "";
                 return (
                   <div key={label} className="flex flex-col items-center gap-0.5 w-[130px] md:w-40 px-1.5 py-1 bg-black/60 backdrop-blur-sm border border-white/10">
                     <span className="text-white/50 text-[8px] md:text-[10px] font-display tracking-[0.05em] md:tracking-[0.1em] uppercase leading-tight text-center">{label}</span>
@@ -597,7 +516,7 @@ export default function Home() {
           </div>
 
           {(() => {
-            const imgs = creazioniImages.slice(0, -5);
+            const imgs = creazioniImages;
             const leftImgs  = imgs.filter((_, i) => i % 2 === 0);
             const rightImgs = imgs.filter((_, i) => i % 2 === 1);
             return (
@@ -606,21 +525,28 @@ export default function Home() {
                 <div className="hidden md:grid grid-cols-2 gap-8 items-start">
                   <div className="flex flex-col gap-8">
                     {leftImgs.map((src, i) => (
-                      <ParallaxCreazioneCard key={src} src={src} fromLeft={true} onClick={() => setLightboxIdx(i * 2)} />
+                      <ParallaxCreazioneCard key={src + i} src={src} fromLeft={true} onClick={() => setLightboxIdx(i * 2)} tools={creationTools(i * 2)} />
                     ))}
                   </div>
                   <div className="flex flex-col gap-8 mt-36">
                     {rightImgs.map((src, i) => (
-                      <ParallaxCreazioneCard key={src} src={src} fromLeft={false} onClick={() => setLightboxIdx(i * 2 + 1)} />
+                      <ParallaxCreazioneCard key={src + i} src={src} fromLeft={false} onClick={() => setLightboxIdx(i * 2 + 1)} tools={creationTools(i * 2 + 1)} />
                     ))}
                   </div>
                 </div>
                 {/* Mobile: singola colonna */}
                 <div className="flex md:hidden flex-col gap-6">
                   {imgs.map((src, i) => (
-                    <ParallaxCreazioneCard key={src} src={src} fromLeft={i % 2 === 0} onClick={() => setLightboxIdx(i)} />
+                    <ParallaxCreazioneCard key={src + i} src={src} fromLeft={i % 2 === 0} onClick={() => setLightboxIdx(i)} tools={creationTools(i)} />
                   ))}
                 </div>
+                {admin && (
+                  <div className="relative mt-8 h-40">
+                    <Suspense fallback={null}>
+                      <ImageListAdminTools field="creations" index={-1} />
+                    </Suspense>
+                  </div>
+                )}
               </>
             );
           })()}
@@ -1254,7 +1180,7 @@ export default function Home() {
       </section>
 
       {/* Lightbox */}
-      {lightboxIdx !== null && (
+      {lightboxIdx !== null && creazioniImages[lightboxIdx] && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
