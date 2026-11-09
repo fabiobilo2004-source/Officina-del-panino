@@ -11,7 +11,8 @@
     "/::h2::COME PREPARIAMO I TUOI PANINI::0": {
       "texts": [
         "COME PREPARIAMO I NOSTRI PANINI"
-      ]
+      ],
+      "font": "Rubik Dirt"
     },
     "/contatti::h1::CONTATTI::0": {
       "font": "Rubik Dirt"
@@ -24,9 +25,42 @@
     "/::span::9–12.5€::0": {
       "texts": [
         "9€"
-      ]
+      ],
+      "font": "Rubik Dirt"
     },
     "/menu::h1::IL MENU::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::span::DEL PANINO::0": {
+      "texts": [
+        "DEL PANINo"
+      ]
+    },
+    "/::h2::Novità::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::h2::LE NOSTRE CREAZIONI::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::h2::LA NOSTRA STORIA::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::h2::ORDINA ORA::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::h2::COSA DICONO::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::p::Premi e::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::span::DOPO LA DISCOTECA::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::span::2019::0": {
+      "font": "Rubik Dirt"
+    },
+    "/::span::2::0": {
       "font": "Rubik Dirt"
     }
   },
