@@ -392,14 +392,14 @@ export default function AdminPanel() {
           style={phone ? undefined : { left: pos.x, top: pos.y, width: PANEL_W, maxHeight: `calc(100vh - ${pos.y + MARGIN}px)` }}
           className={`fixed z-[300] bg-[#111]/95 backdrop-blur text-white border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden ${
             phone
-              ? "left-0 right-0 bottom-0 max-h-[55dvh] rounded-t-2xl border-b-0 text-[15px] pb-[env(safe-area-inset-bottom)] [&_input]:text-base [&_textarea]:text-base [&_select]:text-base"
+              ? "left-0 right-0 bottom-0 max-h-[45dvh] rounded-t-2xl border-b-0 text-[14px] pb-[env(safe-area-inset-bottom)] [&_input]:text-base [&_textarea]:text-base [&_select]:text-base"
               : "rounded-xl text-[13px]"
           }`}
         >
           {phone && (
             <button
               onClick={() => setMinimized(!minimized)}
-              className="w-full pt-2 pb-1 flex justify-center"
+              className="w-full pt-1.5 pb-0.5 flex justify-center"
               aria-label={minimized ? "Espandi il pannello" : "Riduci il pannello"}
             >
               <span className="w-10 h-1 rounded-full bg-white/30" />
@@ -407,41 +407,44 @@ export default function AdminPanel() {
           )}
           <header
             onPointerDown={phone ? undefined : startPanelDrag}
-            className={`px-3 py-2.5 flex items-center gap-1 select-none ${phone ? "" : "cursor-grab active:cursor-grabbing"} ${minimized ? "" : "border-b border-white/10"}`}
+            className={`px-3 ${phone ? "py-1" : "py-2.5"} flex items-center gap-1 select-none ${phone ? "" : "cursor-grab active:cursor-grabbing"} ${minimized ? "" : "border-b border-white/10"}`}
             title={phone ? undefined : "Trascina per spostare il pannello"}
           >
             {!phone && <span className="text-white/30 mr-1" aria-hidden>⋮⋮</span>}
-            <div className="flex-1 min-w-0">
-              <p className="font-semibold text-sm leading-tight">Pannello admin</p>
+            <div className={`flex-1 min-w-0 ${phone ? "flex items-baseline gap-2" : ""}`}>
+              <p className="font-semibold text-sm leading-tight shrink-0">{phone ? "Admin" : "Pannello admin"}</p>
               <p className="text-white/50 text-[11px] truncate">
                 {dirty
                   ? <span className="text-amber-400">Modifiche non salvate</span>
                   : unpublished
                   ? <span className="text-sky-300">Da pubblicare</span>
-                  : <>Vista {bp === "desktop" ? "computer" : "mobile"} · tutto pubblicato</>}
+                  : <>{phone ? "" : `Vista ${bp === "desktop" ? "computer" : "mobile"} · `}tutto pubblicato</>}
               </p>
             </div>
-            {(minimized || phone) && canUndo() && (
-              <button onClick={undo} className={`${phone ? "w-10 h-10 text-lg" : "w-7 h-7"} rounded hover:bg-white/10`} title="Annulla l'ultima modifica" aria-label="Annulla l'ultima modifica">↶</button>
+            {minimized && canUndo() && (
+              <button onClick={undo} className={`${phone ? "w-9 h-9 text-lg" : "w-7 h-7"} rounded hover:bg-white/10`} title="Annulla l'ultima modifica" aria-label="Annulla l'ultima modifica">↶</button>
             )}
-            {(minimized || phone) && dirty && (
-              <button onClick={save} className={`rounded bg-red-600 font-semibold hover:bg-red-500 ${phone ? "h-10 px-4" : "h-7 px-2.5 text-[12px]"}`}>Salva</button>
+            {minimized && dirty && (
+              <button onClick={save} className={`rounded bg-red-600 font-semibold hover:bg-red-500 ${phone ? "h-9 px-3" : "h-7 px-2.5 text-[12px]"}`}>Salva</button>
             )}
             {!phone && <button onClick={otherSide} className="w-7 h-7 rounded hover:bg-white/10" title="Sposta dall'altro lato" aria-label="Sposta dall'altro lato">⇆</button>}
-            <button onClick={() => setMinimized(!minimized)} className={`${phone ? "w-10 h-10" : "w-7 h-7"} rounded hover:bg-white/10`} title={minimized ? "Espandi" : "Riduci"} aria-label={minimized ? "Espandi" : "Riduci"}>{phone ? (minimized ? "▴" : "▾") : minimized ? "▢" : "–"}</button>
-            <button onClick={() => { setOpen(false); setSelected(null); }} className={`${phone ? "w-10 h-10" : "w-7 h-7"} rounded hover:bg-white/10`} title="Chiudi" aria-label="Chiudi">✕</button>
+            <button onClick={() => setMinimized(!minimized)} className={`${phone ? "w-9 h-9" : "w-7 h-7"} rounded hover:bg-white/10`} title={minimized ? "Espandi" : "Riduci"} aria-label={minimized ? "Espandi" : "Riduci"}>{phone ? (minimized ? "▴" : "▾") : minimized ? "▢" : "–"}</button>
+            <button onClick={() => { setOpen(false); setSelected(null); }} className={`${phone ? "w-9 h-9" : "w-7 h-7"} rounded hover:bg-white/10`} title="Chiudi" aria-label="Chiudi">✕</button>
           </header>
           {!minimized && <>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-6">
-            <button
-              onClick={() => setHoursOpen(true)}
-              className="w-full h-10 rounded bg-white/10 hover:bg-white/20 font-semibold flex items-center justify-center gap-2"
-            >
-              🕒 Orari e chiusure
-            </button>
+          <div className={`flex-1 overflow-y-auto ${phone ? "p-3 space-y-4" : "p-4 space-y-6"}`}>
+            {/* Sul telefono, mentre modifichi un testo, si nasconde per lasciare spazio */}
+            {!(phone && el) && (
+              <button
+                onClick={() => setHoursOpen(true)}
+                className="w-full h-10 rounded bg-white/10 hover:bg-white/20 font-semibold flex items-center justify-center gap-2"
+              >
+                🕒 Orari e chiusure
+              </button>
+            )}
 
-            <Section title={isVideo ? "Video selezionato" : isImage ? "Immagine selezionata" : "Testo selezionato"}>
+            <Section title={phone && el ? "" : isVideo ? "Video selezionato" : isImage ? "Immagine selezionata" : "Testo selezionato"}>
               {!el ? (
                 <p className="text-white/50 leading-relaxed">
                   {phone
@@ -549,15 +552,16 @@ export default function AdminPanel() {
 
           </div>
 
-          <footer className="p-4 border-t border-white/10 space-y-2">
+          <footer className={`border-t border-white/10 ${phone ? "px-3 py-2 space-y-1.5" : "p-4 space-y-2"}`}>
             {status && <p className="text-[12px] text-white/60">{status}</p>}
-            {dirty ? (
+            {/* Sul telefono lo stato è già scritto nella barra in alto */}
+            {!phone && (dirty ? (
               <p className="text-[12px] text-amber-400">Modifiche non salvate</p>
             ) : unpublished ? (
               <p className="text-[12px] text-sky-300">Salvato: i visitatori lo vedranno quando pubblichi</p>
             ) : (
               <p className="text-[12px] text-white/40">Il sito è aggiornato</p>
-            )}
+            ))}
             <div className="flex gap-2">
               <button
                 onClick={undo}
@@ -626,7 +630,7 @@ function Outline({ box, color, thick }: { box: Box; color: string; thick?: boole
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section>
-      <h3 className="text-[11px] uppercase tracking-[0.15em] text-white/50 mb-3">{title}</h3>
+      {title && <h3 className="text-[11px] uppercase tracking-[0.15em] text-white/50 mb-3">{title}</h3>}
       <div className="space-y-3">{children}</div>
     </section>
   );
