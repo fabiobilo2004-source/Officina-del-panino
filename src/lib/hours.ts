@@ -146,11 +146,12 @@ export function liveStatus(loc: LocationHours, now: Date, lang: "it" | "en"): Li
   return { isOpen: false, soon: null, closure, text: it ? "Chiuso" : "Closed" };
 }
 
-/** Orari da mostrare lunedì → domenica: per ogni giorno vale il prossimo (oggi compreso), con eventuali periodi speciali */
+/** Orari da mostrare lunedì → domenica: per ogni giorno vale il prossimo (oggi compreso),
+ *  con periodi speciali e chiusure (nei giorni di chiusura: "Chiuso") */
 export function weekToShow(loc: LocationHours, now: Date): DayHours[] {
   const { date } = romeNow(now);
   const today = weekdayOf(date);
-  return Array.from({ length: 7 }, (_, i) => plannedHours(loc, addDays(date, (i - today + 7) % 7)));
+  return Array.from({ length: 7 }, (_, i) => hoursOn(loc, addDays(date, (i - today + 7) % 7)));
 }
 
 export function todayIndex(now: Date) {

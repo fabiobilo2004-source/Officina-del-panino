@@ -1,12 +1,26 @@
 // Pagina /admin: il titolare entra con la password e torna al sito con il pannello aperto.
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useLocation } from "wouter";
+import { setAdminTab } from "@/lib/admin-tab";
 
 export default function AdminLogin() {
   const [, navigate] = useLocation();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
+
+  const enter = () => {
+    setAdminTab(true);
+    window.dispatchEvent(new Event("admin-auth"));
+    navigate("/");
+  };
+
+  // Login ancora valido su questo dispositivo: entra senza chiedere la password
+  useEffect(() => {
+    if (!document.cookie.includes("admin_hint=1")) { setChecking(false); return; }
+    fetch("/api/admin/me").then((r) => (r.ok ? enter() : setChecking(false))).catch(() => setChecking(false));
+  }, []);
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -20,13 +34,14 @@ export default function AdminLogin() {
       });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body.error ?? "Accesso non riuscito");
-      window.dispatchEvent(new Event("admin-auth"));
-      navigate("/");
+      enter();
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
       setLoading(false);
     }
   };
+
+  if (checking) return <div className="min-h-[100dvh] bg-background" />;
 
   return (
     <div data-admin-ui className="min-h-[100dvh] flex items-center justify-center bg-background px-6">

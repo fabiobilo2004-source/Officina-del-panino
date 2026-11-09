@@ -5,6 +5,7 @@ import {
   setAdminMode, setEdits, subscribe, type ItemEdit, type SiteEditsData,
 } from "@/lib/site-edits";
 import { ImagePicker } from "@/components/admin/ImagePicker";
+import { setAdminTab } from "@/lib/admin-tab";
 import { HoursEditor } from "@/components/admin/HoursEditor";
 import { PublishDialog, summarize } from "@/components/admin/PublishDialogs";
 
@@ -349,6 +350,7 @@ export default function AdminPanel() {
   const logout = async () => {
     if (dirty && !window.confirm("Hai modifiche non salvate. Uscire lo stesso?")) return;
     await fetch(`${API}/logout`, { method: "POST" });
+    setAdminTab(false);
     // Fuori dall'admin si vede di nuovo il sito pubblicato
     if (published) setEdits(published, { record: false });
     window.dispatchEvent(new Event("admin-auth"));

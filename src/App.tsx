@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { isAdminTab } from "@/lib/admin-tab";
 
 const Home      = lazy(() => import("@/pages/home"));
 const Menu      = lazy(() => import("@/pages/menu"));
@@ -15,8 +16,8 @@ const Contact   = lazy(() => import("@/pages/contact"));
 const Contatti  = lazy(() => import("@/pages/contatti"));
 const Social    = lazy(() => import("@/pages/social"));
 const NotFound  = lazy(() => import("@/pages/not-found"));
-// Admin: login su /admin, poi il pannello si apre sopra il sito. Il codice del pannello
-// si scarica solo per chi ha fatto il login (cookie admin_hint), i visitatori non lo caricano.
+// Admin: si entra da /admin, poi il pannello si apre sopra il sito (solo in quella scheda).
+// Il codice del pannello si scarica solo per chi è entrato, i visitatori non lo caricano.
 const AdminPanel = lazy(() => import("@/components/admin/AdminPanel"));
 const AdminLogin = lazy(() => import("@/components/admin/AdminLogin"));
 
@@ -24,7 +25,7 @@ function AdminGate() {
   const [authed, setAuthed] = useState(false);
   useEffect(() => {
     const check = () => {
-      if (!document.cookie.includes("admin_hint=1")) { setAuthed(false); return; }
+      if (!isAdminTab() || !document.cookie.includes("admin_hint=1")) { setAuthed(false); return; }
       fetch("/api/admin/me").then((r) => setAuthed(r.ok)).catch(() => setAuthed(false));
     };
     check();
