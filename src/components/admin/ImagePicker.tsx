@@ -67,6 +67,12 @@ export function ImagePicker({ current, onPick, onClose, kind = "image" }: { curr
           <button onClick={onClose} className="w-9 h-9 rounded hover:bg-white/10" aria-label="Chiudi">✕</button>
         </header>
         {error && <p className="px-4 pt-3 text-red-400">{error}</p>}
+        {images && !canUpload && (
+          <p className="px-4 pt-3 text-amber-400">
+            Caricamento di foto nuove non attivo: su Vercel manca il collegamento allo spazio foto (Storage → Blob).
+            Puoi comunque scegliere una delle immagini già presenti.
+          </p>
+        )}
         <div className="flex-1 overflow-y-auto p-4">
           {!images ? (
             <p className="text-white/50">Caricamento…</p>

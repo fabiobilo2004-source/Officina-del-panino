@@ -9,6 +9,13 @@ const REPO = "fabiobilo2004-source/Officina-del-panino";
 
 type VercelRequest = IncomingMessage & { body?: unknown };
 
+// Chiave dello spazio foto (Vercel Blob). Di solito si chiama BLOB_READ_WRITE_TOKEN, ma se lo spazio
+// è stato collegato con un prefisso ha un altro nome (es. OFFICINA_MEDIA_READ_WRITE_TOKEN)
+function blobToken() {
+  if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
+  return Object.entries(process.env).find(([k, v]) => k.endsWith("READ_WRITE_TOKEN") && v?.startsWith("vercel_blob_rw_"))?.[1];
+}
+
 function send(res: ServerResponse, status: number, json: unknown, cookies?: string[]) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json");
@@ -23,6 +30,7 @@ export default async function handler(req: VercelRequest, res: ServerResponse) {
   const route = "/" + (url.searchParams.get("route") ?? url.pathname.replace(/^\/api\/admin\/?/, "")).replace(/^\/+/, "");
   const cookie = req.headers.cookie ?? "";
   const secret = process.env.ADMIN_SECRET;
+  const blob = blobToken();
 
   try {
     // Caricamento diretto di foto/video su Vercel Blob (i file grandi non passano dalla funzione)
@@ -31,9 +39,11 @@ export default async function handler(req: VercelRequest, res: ServerResponse) {
       if (body?.type === "blob.generate-client-token" && !(secret && isAuthed(cookie, secret))) {
         return send(res, 401, { error: "Sessione scaduta: rientra da /admin" });
       }
+      if (!blob) return send(res, 500, { error: "Spazio foto non collegato su Vercel (Storage → Blob)" });
       const result = await handleUpload({
         body,
         request: req,
+        token: blob,
         onBeforeGenerateToken: async (pathname) => ({
           allowedContentTypes: pathname.startsWith("uploads/video/") ? ["video/*"] : ["image/*"],
           maximumSizeInBytes: 200 * 1024 * 1024,
@@ -48,7 +58,7 @@ export default async function handler(req: VercelRequest, res: ServerResponse) {
       token: process.env.GITHUB_TOKEN,
       repo: REPO,
       origin: `https://${host}`,
-      blobToken: process.env.BLOB_READ_WRITE_TOKEN,
+      blobToken: blob,
     });
     const query = Object.fromEntries([...url.searchParams].filter(([k]) => k !== "route"));
     const result = await handleAdmin(
