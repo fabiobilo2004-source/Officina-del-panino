@@ -9,6 +9,7 @@ import { setAdminTab } from "@/lib/admin-tab";
 import { HoursEditor } from "@/components/admin/HoursEditor";
 import { PublishDialog, summarize } from "@/components/admin/PublishDialogs";
 import { FIXED_SECTIONS, setSectionState } from "@/components/HomeBlocks";
+import { RichTextarea } from "@/components/admin/RichTextarea";
 
 const API = "/api/admin";
 const WEIGHTS = [300, 400, 500, 600, 700, 800, 900];
@@ -507,18 +508,16 @@ export default function AdminPanel() {
                 <div className="space-y-4">
                   {orig.map((o, i) => (
                     <Field key={i} label={orig.length > 1 ? `Testo ${i + 1}` : "Testo"}>
-                      <textarea
+                      <RichTextarea
                         value={item.texts?.[i] ?? o}
                         rows={Math.min(6, Math.max(2, Math.ceil(o.length / 34)))}
-                        onChange={(e) => {
-                          const v = e.target.value;
+                        onChange={(v) => {
                           updateItem(selected!, (it) => {
                             const texts = orig.map((_, j) => it.texts?.[j]);
                             texts[i] = v === o ? undefined : v;
                             return { ...it, texts: texts as string[] };
                           }, `text${i}`);
                         }}
-                        className="w-full bg-black border border-white/20 rounded p-2 text-white resize-y focus:outline-none focus:border-red-500"
                       />
                     </Field>
                   ))}

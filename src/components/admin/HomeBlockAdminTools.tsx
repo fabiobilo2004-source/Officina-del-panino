@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { getEdits, setEdits, type CtaTarget, type HomeLayout, type HomeSection } from "@/lib/site-edits";
 import { CTA_TARGETS, HOME_SLOTS } from "@/components/HomeBlocks";
 import { ImagePicker } from "@/components/admin/ImagePicker";
+import { RichTextarea } from "@/components/admin/RichTextarea";
 
 const UI = { fontFamily: "system-ui, -apple-system, sans-serif" };
 
@@ -219,23 +220,17 @@ function SectionForm({ section, onSave, onClose }: {
 
           <label className="block">
             <span className="block text-[12px] text-white/60 mb-1">{layout === "quote" || layout === "promo" ? "Frase" : "Titolo"}</span>
-            <input
+            <RichTextarea
               value={draft.title ?? ""}
-              onChange={(e) => set({ title: e.target.value })}
+              onChange={(v) => set({ title: v })}
+              singleLine
               placeholder={layout === "quote" ? "es. Il panino che salva la tua notte" : layout === "promo" ? "es. Martedì 2x1 su tutti i panini" : "es. Il nostro pane"}
-              className="w-full h-10 bg-black border border-white/20 rounded px-3 focus:outline-none focus:border-red-500"
             />
           </label>
 
           <label className="block">
             <span className="block text-[12px] text-white/60 mb-1">Testo (vai a capo due volte per un nuovo paragrafo)</span>
-            <textarea
-              value={draft.body ?? ""}
-              onChange={(e) => set({ body: e.target.value })}
-              rows={6}
-              placeholder="Racconta…"
-              className="w-full bg-black border border-white/20 rounded p-3 leading-relaxed focus:outline-none focus:border-red-500"
-            />
+            <RichTextarea value={draft.body ?? ""} onChange={(v) => set({ body: v })} rows={6} placeholder="Racconta…" />
           </label>
 
           {usesPhoto && (

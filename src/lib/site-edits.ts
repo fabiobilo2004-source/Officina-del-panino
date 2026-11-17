@@ -5,6 +5,7 @@
 // - news: le card della sezione Novità.
 import initial from "@/content/site-edits.json";
 import type { HoursData } from "@/lib/hours";
+import { hasRich, richFragment } from "@/lib/rich-text";
 
 export type Breakpoint = "desktop" | "mobile";
 
@@ -108,7 +109,8 @@ const SINGLE_WEIGHT_FONTS = ["Bebas Neue", "Anton", "Fjalla One", "Staatliches",
 const STYLE_PROPS = ["font-family", "font-size", "font-weight", "color", "translate"] as const;
 const MOBILE_MAX = 767;
 
-type Info = { nodes: Text[]; orig: string[]; applied: string[]; style: Record<string, string> | null };
+// rich: per i testi con parole colorate, lo <span> messo accanto al nodo di testo (che resta vuoto)
+type Info = { nodes: Text[]; orig: string[]; applied: string[]; style: Record<string, string> | null; rich?: (HTMLElement | null)[] };
 type AttrInfo = { orig: string; applied: string };
 
 export function normalize(d: Partial<SiteEditsData>): SiteEditsData {
@@ -280,8 +282,30 @@ function applyStyles(el: HTMLElement, info: Info, edit: ItemEdit | undefined, bp
 
 function applyItem(el: HTMLElement, info: Info, edit: ItemEdit | undefined, bp: Breakpoint) {
   const want = info.orig.map((o, i) => edit?.texts?.[i] ?? o);
-  info.nodes.forEach((t, i) => { if (t.nodeValue !== want[i]) t.nodeValue = want[i]; });
-  info.applied = want;
+  const rich = (info.rich ??= []);
+  info.applied = want.map((text, i) => {
+    const t = info.nodes[i];
+    // Parole colorate: il nodo di testo di React resta vuoto e accanto si mette uno <span> con i colori
+    const colored = hasRich(text);
+    const shown = colored ? "" : text;
+    if (t.nodeValue !== shown) t.nodeValue = shown;
+    const old = rich[i];
+    if (colored) {
+      if (!old || old.dataset.text !== text || old.previousSibling !== t) {
+        old?.remove();
+        const span = document.createElement("span");
+        span.dataset.seRich = "";
+        span.dataset.text = text;
+        span.append(richFragment(text));
+        t.after(span);
+        rich[i] = span;
+      }
+    } else if (old) {
+      old.remove();
+      rich[i] = null;
+    }
+    return shown;
+  });
   applyStyles(el, info, edit, bp);
 }
 
@@ -356,7 +380,7 @@ function pass() {
   };
 
   for (const el of document.body.querySelectorAll<HTMLElement>("*")) {
-    if (el.closest("script, style, noscript, svg, [data-admin-ui]")) continue;
+    if (el.closest("script, style, noscript, svg, [data-admin-ui], [data-se-rich]")) continue;
     const scope = el.closest("nav, footer") ? "*" : window.location.pathname;
 
     if (el instanceof HTMLImageElement) {
@@ -381,6 +405,8 @@ function pass() {
 
     let info = infos.get(el);
     if (!info || !intact(el, info)) {
+      // Il testo è cambiato da solo (es. cambio lingua): via le vecchie parole colorate
+      info?.rich?.forEach((r) => r?.remove());
       const nodes = directTexts(el);
       if (!nodes.length && !info) continue;
       info = { nodes, orig: nodes.map((n) => n.nodeValue!), applied: nodes.map((n) => n.nodeValue!), style: info?.style ?? null };

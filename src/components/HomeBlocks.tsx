@@ -5,6 +5,7 @@ import { Suspense, lazy, useSyncExternalStore, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { getEdits, isAdminMode, setEdits, subscribe, type CtaTarget, type HomeSection } from "@/lib/site-edits";
 import { getSmartAppLink } from "@/lib/app-store";
+import { Rich, plainText } from "@/lib/rich-text";
 
 const HomeBlockAdminTools = lazy(() => import("@/components/admin/HomeBlockAdminTools"));
 const SectionGateAdmin = lazy(() => import("@/components/admin/SectionGateAdmin"));
@@ -68,7 +69,7 @@ function Paragraphs({ text, className }: { text?: string; className: string }) {
   return (
     <>
       {text.split(/\n\s*\n/).map((para, i) => (
-        <p key={i} className={`${className} whitespace-pre-line`}>{para}</p>
+        <p key={i} className={`${className} whitespace-pre-line`}><Rich text={para} /></p>
       ))}
     </>
   );
@@ -78,7 +79,7 @@ function Block({ block }: { block: HomeSection }) {
   const layout = block.layout ?? "right";
   const title = (centered?: boolean) => block.title && (
     <>
-      <h2 className="text-4xl md:text-5xl font-display text-primary mb-2 leading-tight">{block.title}</h2>
+      <h2 className="text-4xl md:text-5xl font-display text-primary mb-2 leading-tight"><Rich text={block.title} /></h2>
       <div className={`w-12 h-px bg-primary mb-8 ${centered ? "mx-auto" : ""}`} />
     </>
   );
@@ -100,7 +101,7 @@ function Block({ block }: { block: HomeSection }) {
     return (
       <section className="py-10 md:py-14 px-6 bg-primary text-primary-foreground">
         <motion.div {...fadeIn(0, 20)} className="max-w-4xl mx-auto text-center">
-          {block.title && <p className="text-3xl md:text-5xl font-display uppercase tracking-wide leading-tight">{block.title}</p>}
+          {block.title && <p className="text-3xl md:text-5xl font-display uppercase tracking-wide leading-tight"><Rich text={block.title} /></p>}
           <Paragraphs text={block.body} className="mt-3 text-base md:text-lg text-white/90 leading-relaxed" />
         </motion.div>
       </section>
@@ -161,7 +162,7 @@ function Block({ block }: { block: HomeSection }) {
         <motion.div {...fadeIn(0, 30)} className="max-w-4xl mx-auto text-center">
           <span aria-hidden className="block font-display text-7xl md:text-8xl text-primary leading-none mb-2">“</span>
           {block.title && (
-            <p className="text-3xl md:text-5xl font-display uppercase tracking-wide text-foreground leading-tight mb-6">{block.title}</p>
+            <p className="text-3xl md:text-5xl font-display uppercase tracking-wide text-foreground leading-tight mb-6"><Rich text={block.title} /></p>
           )}
           <Paragraphs text={block.body} className="text-base md:text-lg text-muted-foreground mb-4 last:mb-0 leading-[1.8]" />
         </motion.div>
@@ -177,7 +178,7 @@ function Block({ block }: { block: HomeSection }) {
           <Paragraphs text={block.body} className="text-base md:text-lg text-muted-foreground mb-6 last:mb-0 leading-[1.8] font-light" />
         </motion.div>
         {block.src && (
-          <motion.img {...fadeIn(0, 40)} src={block.src} alt={block.title ?? ""} loading="lazy" className="mt-10 md:mt-14 w-full h-auto shadow-2xl border border-border/30" />
+          <motion.img {...fadeIn(0, 40)} src={block.src} alt={plainText(block.title ?? "")} loading="lazy" className="mt-10 md:mt-14 w-full h-auto shadow-2xl border border-border/30" />
         )}
       </section>
     );
@@ -190,7 +191,7 @@ function Block({ block }: { block: HomeSection }) {
       <video src={block.video} autoPlay muted loop playsInline className="w-full h-auto shadow-2xl border border-border/30 bg-black" />
     )
     : block.src && (
-      <img src={block.src} alt={block.title ?? ""} loading="lazy" className="w-full h-auto shadow-2xl border border-border/30" />
+      <img src={block.src} alt={plainText(block.title ?? "")} loading="lazy" className="w-full h-auto shadow-2xl border border-border/30" />
     );
   return (
     <section className="pt-14 pb-10 md:pt-24 md:pb-16 px-6 max-w-7xl mx-auto">

@@ -5,6 +5,7 @@ import { X, ArrowRight } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { AppDownloadSection } from "@/components/AppDownloadSection";
 import { romeDateISO } from "@/lib/live-status";
+import { Rich, plainText } from "@/lib/rich-text";
 import { getEdits, isAdminMode, subscribe, type NewsItem } from "@/lib/site-edits";
 
 // Strumenti per aggiungere/spostare/eliminare card: caricati solo in modalità admin
@@ -96,7 +97,7 @@ export function NewsSection() {
                   ) : (
                     <img
                       src={item.src}
-                      alt={item.alt ?? item.postTitle ?? ""}
+                      alt={item.alt ?? plainText(item.postTitle ?? "")}
                       loading="lazy"
                       className={`${CARD} ${item.fit === "contain" ? "object-contain bg-[#272725]" : "object-cover"}`}
                     />
@@ -107,7 +108,7 @@ export function NewsSection() {
                       {inner}
                       <span className="absolute inset-x-px bottom-px flex items-end justify-between gap-3 px-5 pb-4 pt-16 bg-gradient-to-t from-black/90 via-black/55 to-transparent">
                         {item.postTitle && (
-                          <span className="text-white font-display text-xl leading-tight line-clamp-2">{item.postTitle}</span>
+                          <span className="text-white font-display text-xl leading-tight line-clamp-2"><Rich text={item.postTitle} /></span>
                         )}
                         <span className="ml-auto shrink-0 inline-flex items-center gap-1.5 text-xs font-display uppercase tracking-widest text-white/80 group-hover:text-primary transition-colors">
                           {lang === "it" ? "Leggi" : "Read"}
@@ -192,18 +193,18 @@ export function NewsSection() {
               >
                 <X size={20} />
               </button>
-              <img src={post.src} alt={post.alt ?? post.postTitle ?? ""} className="w-full max-h-[60vh] object-contain bg-black" />
+              <img src={post.src} alt={post.alt ?? plainText(post.postTitle ?? "")} className="w-full max-h-[60vh] object-contain bg-black" />
               <div className="px-6 md:px-10 py-8 md:py-10">
                 <span className="text-primary text-[11px] font-display tracking-[0.25em] uppercase">
                   {lang === "it" ? "Novità" : "News"}
                 </span>
                 {post.postTitle && (
-                  <h3 className="text-3xl md:text-4xl font-display text-foreground mt-2 mb-5 leading-tight">{post.postTitle}</h3>
+                  <h3 className="text-3xl md:text-4xl font-display text-foreground mt-2 mb-5 leading-tight"><Rich text={post.postTitle} /></h3>
                 )}
                 {post.postBody && (
                   <div className="space-y-4 text-muted-foreground text-base md:text-lg leading-relaxed">
                     {post.postBody.split(/\n\s*\n/).map((para, i) => (
-                      <p key={i} className="whitespace-pre-line">{para}</p>
+                      <p key={i} className="whitespace-pre-line"><Rich text={para} /></p>
                     ))}
                   </div>
                 )}

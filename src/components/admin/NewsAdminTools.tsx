@@ -3,6 +3,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { getEdits, setEdits, type NewsItem } from "@/lib/site-edits";
 import { ImagePicker } from "@/components/admin/ImagePicker";
+import { RichTextarea } from "@/components/admin/RichTextarea";
 
 function setNews(fn: (news: NewsItem[]) => NewsItem[]) {
   const cur = getEdits();
@@ -193,23 +194,11 @@ function ArticleForm({ title, body, skipLabel, onSave, onClose }: {
           </p>
           <label className="block">
             <span className="block text-[12px] text-white/60 mb-1">Titolo</span>
-            <input
-              value={t}
-              onChange={(e) => setT(e.target.value)}
-              placeholder="es. Arriva il nuovo panino Biella"
-              autoFocus
-              className="w-full h-10 bg-black border border-white/20 rounded px-3 focus:outline-none focus:border-red-500"
-            />
+            <RichTextarea value={t} onChange={setT} singleLine autoFocus placeholder="es. Arriva il nuovo panino Biella" />
           </label>
           <label className="block">
             <span className="block text-[12px] text-white/60 mb-1">Testo (vai a capo due volte per un nuovo paragrafo)</span>
-            <textarea
-              value={b}
-              onChange={(e) => setB(e.target.value)}
-              rows={8}
-              placeholder="Racconta la novità…"
-              className="w-full bg-black border border-white/20 rounded p-3 leading-relaxed focus:outline-none focus:border-red-500"
-            />
+            <RichTextarea value={b} onChange={setB} rows={8} placeholder="Racconta la novità…" />
           </label>
         </div>
         <footer className="flex gap-2 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t border-white/10">
