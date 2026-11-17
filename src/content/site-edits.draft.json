@@ -82,6 +82,9 @@
     },
     "/contact::h2::Rimini::0": {
       "font": "Rubik Dirt"
+    },
+    "/contact::h2::Santarcangelo::0": {
+      "font": "Rubik Dirt"
     }
   },
   "images": {},
