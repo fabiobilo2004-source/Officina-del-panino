@@ -2,6 +2,7 @@
 import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import type { SiteEditsData } from "@/lib/site-edits";
+import { MENU_SECTIONS } from "@/lib/menu";
 
 const same = (a: unknown, b: unknown) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 
@@ -35,6 +36,8 @@ export function summarize(published: SiteEditsData, draft: SiteEditsData): strin
   if (!same(published.news, draft.news)) lines.push("Sezione Novità");
   if (!same(published.gallery, draft.gallery)) lines.push("Foto della Galleria");
   if (!same(published.creations, draft.creations)) lines.push("Foto di Le Nostre Creazioni");
+  const menuChanged = Object.keys({ ...published.menu, ...draft.menu }).filter((k) => !same(published.menu?.[k], draft.menu?.[k]));
+  if (menuChanged.length) lines.push(`Menu: ${menuChanged.map((k) => MENU_SECTIONS[k]?.label ?? k).join(", ")}`);
   if (!same(published.hours?.rimini, draft.hours?.rimini)) lines.push("Orari e chiusure di Rimini");
   if (!same(published.hours?.santarcangelo, draft.hours?.santarcangelo)) lines.push("Orari e chiusure di Santarcangelo");
   if (!same(published.globals, draft.globals)) lines.push("Font di tutto il sito");

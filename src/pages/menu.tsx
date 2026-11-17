@@ -1,6 +1,11 @@
-import { useRef, useState } from "react";
+import { Suspense, lazy, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useLang } from "@/context/LanguageContext";
+import { itemDesc, itemName, useMenuSection, type MenuSection } from "@/lib/menu";
+import { isAdminMode, subscribe } from "@/lib/site-edits";
+
+// Comandi per aggiungere/modificare/togliere voci: caricati solo in modalità admin
+const MenuAdminTools = lazy(() => import("@/components/admin/MenuAdminTools"));
 
 function BestSellerCard({
   item, imgSrc, direction, lang,
@@ -34,6 +39,7 @@ function BestSellerCard({
   );
 }
 
+// Le altre sezioni del menu si modificano dal pannello admin (src/content/site-edits.json → menu)
 const menuData = {
   bestSellers: [
     {
@@ -52,156 +58,35 @@ const menuData = {
       descEn: "200g scottona beef burger, crispy bacon, double cheddar, salad, baked potatoes and burger sauce",
     },
   ],
-  proposte: [
-    {
-      name: "Biella",
-      isNew: true,
-      desc: "Doppio Cheese-steak di manzo, doppio formaggio fuso, rucola, pomodorini e scaglie di Grana",
-      descEn: "Double beef cheese-steak, double melted cheese, arugula, cherry tomatoes and Grana shavings",
-    },
-    {
-      name: "Carrucola 2.0",
-      isNew: false,
-      desc: "Doppia Porchetta, doppia provola affumicata, funghi trifolati, patate al forno e maionese al tartufo",
-      descEn: "Double porchetta, double smoked provola, sautéed mushrooms, baked potatoes and truffle mayo",
-    },
-    {
-      name: "Martello",
-      isNew: false,
-      desc: "Doppia Porchetta, parmigiana di melanzane e patate alla piastra con provola affumicata",
-      descEn: "Double porchetta, eggplant parmigiana and grilled potatoes with smoked provola",
-    },
-    {
-      name: "Pistone",
-      isNew: true,
-      desc: "Il nostro hot dog con doppio wurstel fritto, doppio cheddar, bacon croccante, cipolla stufata e salsa BBQ",
-      descEn: "Our hot dog with double fried wurstel, double cheddar, crispy bacon, stewed onion and BBQ sauce",
-    },
-    {
-      name: "Trivella 2.0",
-      isNew: false,
-      desc: "Doppia salsiccia, doppia provola affumicata, melanzane a funghetto e mayonese al basilico",
-      descEn: "Double sausage, double smoked provola, eggplant funghetto and basil mayo",
-    },
-    {
-      name: "Incudine",
-      isNew: false,
-      desc: "Hamburger di scottona 200 gr., doppio cheddar, rucola, pomodorini e melanzane alla griglia",
-      descEn: "200g scottona burger, double cheddar, arugula, cherry tomatoes and grilled eggplant",
-    },
-    {
-      name: "Chiodo",
-      isNew: true,
-      desc: "Doppio Cheese-steak di manzo, doppio cheddar, insalata verde, cipolla stufata e pomodorini",
-      descEn: "Double beef cheese-steak, double cheddar, green salad, stewed onion and cherry tomatoes",
-    },
-    {
-      name: "Pinza 2.0",
-      isNew: false,
-      desc: "Doppio Cheese-steak di manzo, doppio formaggio fuso, peperoni in padella, funghi trifolati, cipolla stufata e mayonese al pepe rosa",
-      descEn: "Double beef cheese-steak, double melted cheese, pan peppers, sautéed mushrooms, stewed onion and pink pepper mayo",
-    },
-    {
-      name: "Cacciavite",
-      isNew: false,
-      desc: "Doppia Salsiccia, doppia provola affumicata, friarelli e patate al forno",
-      descEn: "Double sausage, double smoked provola, broccoli rabe and baked potatoes",
-    },
-  ],
-  vegOptions: [
-    {
-      name: "Candela",
-      isNew: true,
-      badge: "VEGETARIANO",
-      desc: "Friarielli, funghi trifolati, doppia provola affumicata, patate al forno, maionese al basilico",
-      descEn: "Broccoli rabe, sautéed mushrooms, double smoked provola, baked potatoes, basil mayo",
-    },
-    {
-      name: "Perno",
-      isNew: true,
-      badge: "VEGAN",
-      desc: "Peperoni in padella, cipolla stufata, melanzane a funghetto e rucola",
-      descEn: "Pan peppers, stewed onion, eggplant funghetto and arugula",
-    },
-  ],
-  buildYourOwn: {
-    carni: {
-      it: ["Bacon", "Cheese-steak di manzo", "Cheese-steak di pollo", "Hamburger di scottona", "Porchetta", "Salsiccia", "Straccetto di pollo", "Wurstel"],
-      en: ["Bacon", "Beef cheese-steak", "Chicken cheese-steak", "Scottona beef burger", "Porchetta", "Sausage", "Chicken strips", "Wurstel"],
-    },
-    formaggi: {
-      it: ["Cheddar", "Formaggio fuso", "Provola affumicata"],
-      en: ["Cheddar", "Melted cheese", "Smoked provola"],
-    },
-    contorni: {
-      it: ["Cipolla stufata", "Friarielli", "Funghi trifolati", "Insalata", "Melanzane a funghetto", "Melanzane alla griglia", "Parmigiana di melanzane", "Patate al forno", "Patate alla piastra con provola", "Patatine fritte", "Peperoni in padella", "Pomodorini", "Rucola"],
-      en: ["Stewed onion", "Broccoli rabe", "Sautéed mushrooms", "Lettuce", "Eggplant funghetto", "Grilled eggplant", "Eggplant parmigiana", "Baked potatoes", "Grilled potatoes with provola", "French fries", "Pan peppers", "Cherry tomatoes", "Arugula"],
-    },
-    salse: {
-      it: ["Ketchup", "Mayonese", "Mayonese al basilico", "Mayonese al pepe rosa", "Mayonese al tartufo", "Salsa BBQ", "Salsa burger", "Salsa curry", "Salsa piccante"],
-      en: ["Ketchup", "Mayo", "Basil mayo", "Pink pepper mayo", "Truffle mayo", "BBQ sauce", "Burger sauce", "Curry sauce", "Hot sauce"],
-    },
-  },
-  sfizi: [
-    { name: "Alette di pollo", nameEn: "Chicken wings", qty: "5 pz.", price: "5€" },
-    { name: "Onion rings",     nameEn: "Onion rings",    qty: "8 pz.", price: "5€" },
-    { name: "Straccetti di pollo", nameEn: "Chicken strips", qty: "8 pz.", price: "6€" },
-    { name: "Jalapenos",       nameEn: "Jalapeños",      qty: "",      price: "5,5€" },
-  ],
-  patatine: {
-    base: [
-      { name: "Patatine fritte", nameEn: "French fries", price: "5€" },
-      { name: "Patate al forno", nameEn: "Baked potatoes", price: "6€" },
-    ],
-    formaggi: [
-      { name: "Cheddar / Formaggio fuso", nameEn: "Cheddar / Melted cheese", extra: "+1€" },
-      { name: "Provola affumicata", nameEn: "Smoked provola", extra: "+1,5€" },
-    ],
-    carni: [
-      { name: "Wurstel", nameEn: "Wurstel", extra: "+1€" },
-      { name: "Manzo / Porchetta / Salsiccia / Bacon", nameEn: "Beef / Porchetta / Sausage / Bacon", extra: "+1,5€" },
-    ],
-  },
-  insalate: [
-    {
-      name: "Contadina",
-      desc: "Lattuga, rucola, filetti di pollo, pomodorini, melanzane grigliate e doppia provola affumicata",
-      descEn: "Lettuce, arugula, chicken fillets, cherry tomatoes, grilled eggplant and double smoked provola",
-      price: "10€",
-    },
-    {
-      name: "Cheesteak Salad",
-      desc: "Lattuga, rucola, pomodorini, cheese-steak, bacon, doppio cheddar e scaglie di grana",
-      descEn: "Lettuce, arugula, cherry tomatoes, cheese-steak, bacon, double cheddar and Grana shavings",
-      price: "10€",
-    },
-  ],
-  bevande: [
-    { name: "Coca Cola in vetro",              nameEn: "Coca Cola (glass bottle)",     price: "3€" },
-    { name: "Coca Cola in lattina",            nameEn: "Coca Cola (can)",              price: "2,5€" },
-    { name: "Coca Cola Zero in lattina",       nameEn: "Coca Cola Zero (can)",         price: "2,5€" },
-    { name: "Fanta in lattina",                nameEn: "Fanta (can)",                  price: "2,5€" },
-    { name: "Sprite in lattina",               nameEn: "Sprite (can)",                 price: "2,5€" },
-    { name: "Fuze Tea in lattina",             nameEn: "Fuze Tea (can)",               price: "2,5€" },
-    { name: "Acqua Naturale / Frizzante 0.5L", nameEn: "Still / Sparkling Water 0.5L", price: "1,20€" },
-  ],
-  birre: [
-    { name: "Moretti 33 CL",                 price: "3€" },
-    { name: "Heineken 33 CL",                price: "3€" },
-    { name: "Ichnusa non filtrata 33 CL",    price: "3,5€" },
-    { name: "Messina 33 CL",                 price: "3,5€" },
-    { name: "Moretti Rossa 33 CL",           price: "4€" },
-    { name: "Erdinger 33 CL",               price: "5€" },
-    { name: "Gradisca 50 CL",               price: "6€" },
-  ],
-  vini: [
-    { name: "Ribolla Gialla 375 CL", price: "10€" },
-    { name: "Sangiovese 375 CL",     price: "10€" },
-  ],
+
 };
 
 export default function Menu() {
   const { lang } = useLang();
+  const admin = useSyncExternalStore(subscribe, isAdminMode);
+  const menu = {
+    proposte: useMenuSection("proposte"),
+    veg: useMenuSection("veg"),
+    build_carni: useMenuSection("build_carni"),
+    build_formaggi: useMenuSection("build_formaggi"),
+    build_contorni: useMenuSection("build_contorni"),
+    build_salse: useMenuSection("build_salse"),
+    sfizi: useMenuSection("sfizi"),
+    patatine_base: useMenuSection("patatine_base"),
+    patatine_formaggi: useMenuSection("patatine_formaggi"),
+    patatine_carni: useMenuSection("patatine_carni"),
+    insalate: useMenuSection("insalate"),
+    birre: useMenuSection("birre"),
+    vini: useMenuSection("vini"),
+    bevande: useMenuSection("bevande"),
+  };
+  // ✎ ✕ ↑ ↓ su una voce, e "+ Aggiungi" in fondo a una sezione (solo admin)
+  const tools = (section: MenuSection, index: number, chip?: boolean) => admin && (
+    <Suspense fallback={null}>
+      <MenuAdminTools section={section} index={index} chip={chip} />
+    </Suspense>
+  );
+  const addButton = (section: MenuSection, chip?: boolean) => tools(section, -1, chip);
 
   const [isMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
   const paniniRef   = useRef<HTMLDivElement>(null);
@@ -381,11 +266,12 @@ export default function Menu() {
             <span className="text-2xl font-display text-primary">11€</span>
           </div>
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
-            {menuData.proposte.map((item, i) => (
-              <motion.div key={i} whileHover={{ x: 5 }}
-                className="group border-l-2 border-transparent hover:border-primary pl-4 transition-all">
+            {menu.proposte.map((item, i) => (
+              <motion.div key={item.id} whileHover={{ x: 5 }}
+                className="group relative border-l-2 border-transparent hover:border-primary pl-4 transition-all">
+                {tools("proposte", i)}
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-display text-xl group-hover:text-primary transition-colors">{item.name}</h3>
+                  <h3 className="font-display text-xl group-hover:text-primary transition-colors">{itemName(item, lang)}</h3>
                   {item.isNew && (
                     <span className="text-[10px] font-display tracking-widest bg-primary text-primary-foreground px-2 py-0.5">
                       {t.isNew[lang]}
@@ -393,11 +279,12 @@ export default function Menu() {
                   )}
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  {lang === "it" ? item.desc : item.descEn}
+                  {itemDesc(item, lang)}
                 </p>
               </motion.div>
             ))}
           </div>
+          {addButton("proposte")}
         </motion.div>
 
         {/* ── VEG OPTIONS 9€ ── */}
@@ -408,25 +295,29 @@ export default function Menu() {
               <p className="text-sm text-gray-900 font-semibold">{t.veg_note[lang]}</p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
-              {menuData.vegOptions.map((item, i) => (
-                <div key={i} className="border-l-4 border-black/20 pl-4">
+              {menu.veg.map((item, i) => (
+                <div key={item.id} className="relative border-l-4 border-black/20 pl-4">
+                  {tools("veg", i)}
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-display text-xl text-gray-900">{item.name}</h3>
+                    <h3 className="font-display text-xl text-gray-900">{itemName(item, lang)}</h3>
                     {item.isNew && (
                       <span className="text-[10px] font-display tracking-widest bg-primary text-primary-foreground px-2 py-0.5">
                         {t.isNew[lang]}
                       </span>
                     )}
-                    <span className="text-[10px] font-display tracking-widest border border-black/30 text-gray-900 px-2 py-0.5">
-                      {item.badge}
-                    </span>
+                    {item.badge && (
+                      <span className="text-[10px] font-display tracking-widest border border-black/30 text-gray-900 px-2 py-0.5">
+                        {item.badge}
+                      </span>
+                    )}
                   </div>
                   <p className="text-gray-800 text-sm leading-relaxed font-semibold">
-                    {lang === "it" ? item.desc : item.descEn}
+                    {itemDesc(item, lang)}
                   </p>
                 </div>
               ))}
             </div>
+            {addButton("veg")}
           </div>
         </motion.div>
 
@@ -476,17 +367,17 @@ export default function Menu() {
             const catLight: Record<string, boolean> = {
               carni: false, formaggi: false, contorni: false, salse: false,
             };
-            const cats: { key: keyof typeof selected; label: string; items: string[]; wide?: boolean }[] = [
-              { key: "carni",    label: t.carni[lang],    items: menuData.buildYourOwn.carni[lang] },
-              { key: "formaggi", label: t.formaggi[lang], items: menuData.buildYourOwn.formaggi[lang] },
-              { key: "contorni", label: t.contorni[lang], items: menuData.buildYourOwn.contorni[lang], wide: true },
-              { key: "salse",    label: t.salse[lang],    items: menuData.buildYourOwn.salse[lang],    wide: true },
+            const cats: { key: keyof typeof selected; section: MenuSection; label: string; items: string[]; wide?: boolean }[] = [
+              { key: "carni",    section: "build_carni",    label: t.carni[lang],    items: menu.build_carni.map((x) => itemName(x, lang)) },
+              { key: "formaggi", section: "build_formaggi", label: t.formaggi[lang], items: menu.build_formaggi.map((x) => itemName(x, lang)) },
+              { key: "contorni", section: "build_contorni", label: t.contorni[lang], items: menu.build_contorni.map((x) => itemName(x, lang)), wide: true },
+              { key: "salse",    section: "build_salse",    label: t.salse[lang],    items: menu.build_salse.map((x) => itemName(x, lang)),    wide: true },
             ];
             const totalSelected = Object.values(selected).reduce((n, s) => n + s.size, 0);
             return (
               <>
                 <div className="grid md:grid-cols-2 gap-8 relative z-10">
-                  {cats.map(({ key, label, items, wide }) => {
+                  {cats.map(({ key, section, label, items, wide }) => {
                     const count = selected[key].size;
                     const limit = limits[key];
                     const atLimit = count >= limit;
@@ -503,7 +394,8 @@ export default function Menu() {
                             const isSel = selected[key].has(item);
                             const isDis = atLimit && !isSel;
                             return (
-                              <button key={idx} onClick={() => toggle(key, item)} disabled={isDis}
+                              <span key={idx} className="inline-flex items-center">
+                              <button onClick={() => toggle(key, item)} disabled={isDis}
                                 className={`px-3 py-2.5 md:py-1.5 rounded-full text-sm font-bold transition-all ${
                                   isSel  ? "bg-white text-gray-900 shadow-sm"
                                   : isDis ? "bg-white/15 border border-white/10 text-white/25 cursor-not-allowed"
@@ -513,8 +405,11 @@ export default function Menu() {
                                 }`}>
                                 {item}
                               </button>
+                              {tools(section, idx, true)}
+                              </span>
                             );
                           })}
+                          {addButton(section, true)}
                         </div>
                       </div>
                     );
@@ -547,10 +442,11 @@ export default function Menu() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white rounded-2xl p-6">
             <h2 className="text-3xl font-display border-b border-gray-200 pb-4 mb-6 text-primary">{t.sfizi[lang]}</h2>
             <div className="space-y-4">
-              {menuData.sfizi.map((item, i) => (
-                <div key={i} className="flex justify-between items-baseline">
+              {menu.sfizi.map((item, i) => (
+                <div key={item.id} className="relative flex justify-between items-baseline">
+                  {tools("sfizi", i)}
                   <span className="text-gray-900 font-bold">
-                    {lang === "it" ? item.name : item.nameEn}
+                    {itemName(item, lang)}
                     {item.qty && <span className="text-gray-500 text-xs ml-1">({item.qty})</span>}
                   </span>
                   <div className="flex-1 border-b border-dotted border-gray-300 mx-4 relative top-[-4px]" />
@@ -558,6 +454,7 @@ export default function Menu() {
                 </div>
               ))}
             </div>
+            {addButton("sfizi")}
           </motion.div>
 
           {/* PATATINE BUILDER */}
@@ -577,35 +474,41 @@ export default function Menu() {
 
             <div className="mb-4">
               <p className="text-xs font-display tracking-widest text-primary mb-2">{t.pat_base[lang]}</p>
-              {menuData.patatine.base.map((item, i) => (
-                <div key={i} className="flex justify-between items-baseline mb-2">
-                  <span className="text-gray-900 font-bold">{lang === "it" ? item.name : item.nameEn}</span>
+              {menu.patatine_base.map((item, i) => (
+                <div key={item.id} className="relative flex justify-between items-baseline mb-2">
+                  {tools("patatine_base", i)}
+                  <span className="text-gray-900 font-bold">{itemName(item, lang)}</span>
                   <div className="flex-1 border-b border-dotted border-black/20 mx-4 relative top-[-4px]" />
                   <span className="font-display text-primary">{item.price}</span>
                 </div>
               ))}
+              {addButton("patatine_base")}
             </div>
 
             <div className="mb-4">
               <p className="text-xs font-display tracking-widest text-primary mb-2">{t.pat_cheese[lang]}</p>
-              {menuData.patatine.formaggi.map((item, i) => (
-                <div key={i} className="flex justify-between items-baseline mb-2">
-                  <span className="text-gray-900 font-bold">{lang === "it" ? item.name : item.nameEn}</span>
+              {menu.patatine_formaggi.map((item, i) => (
+                <div key={item.id} className="relative flex justify-between items-baseline mb-2">
+                  {tools("patatine_formaggi", i)}
+                  <span className="text-gray-900 font-bold">{itemName(item, lang)}</span>
                   <div className="flex-1 border-b border-dotted border-black/20 mx-4 relative top-[-4px]" />
-                  <span className="font-display text-primary">{item.extra}</span>
+                  <span className="font-display text-primary">{item.price}</span>
                 </div>
               ))}
+              {addButton("patatine_formaggi")}
             </div>
 
             <div>
               <p className="text-xs font-display tracking-widest text-primary mb-2">{t.pat_meat[lang]}</p>
-              {menuData.patatine.carni.map((item, i) => (
-                <div key={i} className="flex justify-between items-baseline mb-2">
-                  <span className="text-gray-900 font-bold">{lang === "it" ? item.name : item.nameEn}</span>
+              {menu.patatine_carni.map((item, i) => (
+                <div key={item.id} className="relative flex justify-between items-baseline mb-2">
+                  {tools("patatine_carni", i)}
+                  <span className="text-gray-900 font-bold">{itemName(item, lang)}</span>
                   <div className="flex-1 border-b border-dotted border-black/20 mx-4 relative top-[-4px]" />
-                  <span className="font-display text-primary">{item.extra}</span>
+                  <span className="font-display text-primary">{item.price}</span>
                 </div>
               ))}
+              {addButton("patatine_carni")}
             </div>
           </motion.div>
         </div>
@@ -617,13 +520,15 @@ export default function Menu() {
             <span className="text-2xl font-display text-primary">10€</span>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            {menuData.insalate.map((item, i) => (
-              <div key={i}>
-                <h3 className="font-display text-xl text-primary mb-1">{item.name}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{lang === "it" ? item.desc : item.descEn}</p>
+            {menu.insalate.map((item, i) => (
+              <div key={item.id} className="relative">
+                {tools("insalate", i)}
+                <h3 className="font-display text-xl text-primary mb-1">{itemName(item, lang)}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{itemDesc(item, lang)}</p>
               </div>
             ))}
           </div>
+          {addButton("insalate")}
         </motion.div>
 
         {/* ── BIRRE + VINI + BEVANDE ── */}
@@ -633,14 +538,16 @@ export default function Menu() {
               <h2 className="text-3xl font-display flex-1">{t.birre[lang]}</h2>
             </div>
             <div className="space-y-4">
-              {menuData.birre.map((item, i) => (
-                <div key={i} className="flex justify-between items-baseline">
-                  <span className="text-muted-foreground text-sm">{item.name}</span>
+              {menu.birre.map((item, i) => (
+                <div key={item.id} className="relative flex justify-between items-baseline">
+                  {tools("birre", i)}
+                  <span className="text-muted-foreground text-sm">{itemName(item, lang)}</span>
                   <div className="flex-1 border-b border-dotted border-border mx-4 opacity-50 relative top-[-4px]" />
                   <span className="font-display text-primary">{item.price}</span>
                 </div>
               ))}
             </div>
+            {addButton("birre")}
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
@@ -648,27 +555,31 @@ export default function Menu() {
               <h2 className="text-3xl font-display flex-1">{t.vini[lang]}</h2>
             </div>
             <div className="space-y-4">
-              {menuData.vini.map((item, i) => (
-                <div key={i} className="flex justify-between items-baseline">
-                  <span className="text-muted-foreground text-sm">{item.name}</span>
+              {menu.vini.map((item, i) => (
+                <div key={item.id} className="relative flex justify-between items-baseline">
+                  {tools("vini", i)}
+                  <span className="text-muted-foreground text-sm">{itemName(item, lang)}</span>
                   <div className="flex-1 border-b border-dotted border-border mx-4 opacity-50 relative top-[-4px]" />
                   <span className="font-display text-primary">{item.price}</span>
                 </div>
               ))}
             </div>
+            {addButton("vini")}
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="md:col-span-2 lg:col-span-1">
             <h2 className="text-3xl font-display border-b border-border pb-4 mb-6">{t.bevande[lang]}</h2>
             <div className="space-y-4">
-              {menuData.bevande.map((item, i) => (
-                <div key={i} className="flex justify-between items-baseline">
-                  <span className="text-muted-foreground text-sm">{lang === "en" && item.nameEn ? item.nameEn : item.name}</span>
+              {menu.bevande.map((item, i) => (
+                <div key={item.id} className="relative flex justify-between items-baseline">
+                  {tools("bevande", i)}
+                  <span className="text-muted-foreground text-sm">{itemName(item, lang)}</span>
                   <div className="flex-1 border-b border-dotted border-border mx-4 opacity-50 relative top-[-4px]" />
                   <span className="font-display text-primary">{item.price}</span>
                 </div>
               ))}
             </div>
+            {addButton("bevande")}
           </motion.div>
         </div>
 

@@ -23,6 +23,22 @@ export type NewsItem =
 
 export type GalleryItem = { src: string; alt?: string };
 
+/** Una voce del menu (piatto, ingrediente o bevanda). I campi in inglese sono facoltativi: se mancano si usa l'italiano */
+export type MenuItem = {
+  id: string;
+  name: string;
+  nameEn?: string;
+  desc?: string;
+  descEn?: string;
+  price?: string;
+  qty?: string;
+  isNew?: boolean;
+  badge?: string;
+};
+
+/** Sezioni del menu modificabili dall'admin, ognuna una lista di voci (vedi src/lib/menu.ts) */
+export type MenuData = Record<string, MenuItem[]>;
+
 export type SiteEditsData = {
   globals: { displayFont?: string; bodyFont?: string };
   items: Record<string, ItemEdit>;
@@ -33,6 +49,7 @@ export type SiteEditsData = {
   gallery?: GalleryItem[];
   /** Foto della sezione "Le Nostre Creazioni" in homepage */
   creations?: GalleryItem[];
+  menu?: MenuData;
   hours?: HoursData;
 };
 
@@ -59,7 +76,7 @@ export function normalize(d: Partial<SiteEditsData>): SiteEditsData {
   return {
     globals: { ...d.globals }, items: { ...d.items }, images: { ...d.images }, videos: { ...d.videos }, links: { ...d.links },
     news: [...(d.news ?? [])], gallery: d.gallery ? [...d.gallery] : undefined,
-    creations: d.creations ? [...d.creations] : undefined, hours: d.hours,
+    creations: d.creations ? [...d.creations] : undefined, menu: d.menu, hours: d.hours,
   };
 }
 
