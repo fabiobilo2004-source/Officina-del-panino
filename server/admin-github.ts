@@ -6,6 +6,8 @@
 import { list } from "@vercel/blob";
 import type { AdminStorage, MediaItem, MediaKind } from "./admin-core.js";
 
+type BlobAuth = { token?: string; oidcToken?: string; storeId?: string };
+
 const MAIN = "main";
 const DRAFT_BRANCH = "admin-draft";
 const PUBLISHED_PATH = "src/content/site-edits.json";
@@ -14,11 +16,11 @@ const COMMITTER = { name: "Pannello admin", email: "admin@officinadelpanino.it" 
 
 type GitFile = { text: string; sha: string };
 
-export function githubStorage({ token, repo, origin, blobToken, api = "https://api.github.com" }: {
+export function githubStorage({ token, repo, origin, blob, api = "https://api.github.com" }: {
   token: string;
   repo: string;
   origin: string;
-  blobToken?: string;
+  blob?: BlobAuth | null;
   api?: string;
 }): AdminStorage {
   const gh = async (url: string, init: RequestInit = {}) => {
@@ -68,7 +70,7 @@ export function githubStorage({ token, repo, origin, blobToken, api = "https://a
   };
 
   return {
-    uploadsEnabled: !!blobToken,
+    uploadsEnabled: !!blob,
 
     async readPublished() {
       const file = await getFile(PUBLISHED_PATH, MAIN);
@@ -106,8 +108,8 @@ export function githubStorage({ token, repo, origin, blobToken, api = "https://a
     },
     async listMedia(kind: MediaKind) {
       const items: MediaItem[] = [];
-      if (blobToken) {
-        const { blobs } = await list({ prefix: `uploads/${kind}/`, token: blobToken }).catch(() => ({ blobs: [] as { url: string; uploadedAt: Date }[] }));
+      if (blob) {
+        const { blobs } = await list({ prefix: `uploads/${kind}/`, ...blob }).catch(() => ({ blobs: [] as { url: string; uploadedAt: Date }[] }));
         blobs
           .sort((a, b) => +new Date(b.uploadedAt) - +new Date(a.uploadedAt))
           .forEach((b) => items.push({ src: b.url, uploaded: true }));

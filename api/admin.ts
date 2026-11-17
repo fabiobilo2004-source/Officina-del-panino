@@ -1,7 +1,8 @@
 // Funzione Vercel del pannello /admin sul sito online.
 // Tutte le richieste /api/admin/* arrivano qui (vedi vercel.json).
 import type { IncomingMessage, ServerResponse } from "http";
-import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
+import { issueSignedToken } from "@vercel/blob";
+import { handleUploadPresigned, type HandleUploadPresignedBody } from "@vercel/blob/client";
 import { handleAdmin, isAuthed } from "../server/admin-core.js";
 import { githubStorage } from "../server/admin-github.js";
 
@@ -9,11 +10,17 @@ const REPO = "fabiobilo2004-source/Officina-del-panino";
 
 type VercelRequest = IncomingMessage & { body?: unknown };
 
-// Chiave dello spazio foto (Vercel Blob). Di solito si chiama BLOB_READ_WRITE_TOKEN, ma se lo spazio
-// è stato collegato con un prefisso ha un altro nome (es. OFFICINA_MEDIA_READ_WRITE_TOKEN)
-function blobToken() {
-  if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
-  return Object.entries(process.env).find(([k, v]) => k.endsWith("READ_WRITE_TOKEN") && v?.startsWith("vercel_blob_rw_"))?.[1];
+export type BlobAuth = { token?: string; oidcToken?: string; storeId?: string };
+
+// Accesso allo spazio foto (Vercel Blob). Gli spazi collegati di recente usano OIDC: Vercel dà solo
+// BLOB_STORE_ID e un token temporaneo in ogni richiesta. Quelli più vecchi una chiave *_READ_WRITE_TOKEN.
+function blobAuth(req: IncomingMessage): BlobAuth | null {
+  const storeId = process.env.BLOB_STORE_ID;
+  const oidcToken = (req.headers["x-vercel-oidc-token"] as string | undefined) ?? process.env.VERCEL_OIDC_TOKEN;
+  if (storeId && oidcToken) return { oidcToken, storeId };
+  const token = process.env.BLOB_READ_WRITE_TOKEN
+    ?? Object.entries(process.env).find(([k, v]) => k.endsWith("READ_WRITE_TOKEN") && v?.startsWith("vercel_blob_rw_"))?.[1];
+  return token ? { token } : null;
 }
 
 function send(res: ServerResponse, status: number, json: unknown, cookies?: string[]) {
@@ -30,25 +37,34 @@ export default async function handler(req: VercelRequest, res: ServerResponse) {
   const route = "/" + (url.searchParams.get("route") ?? url.pathname.replace(/^\/api\/admin\/?/, "")).replace(/^\/+/, "");
   const cookie = req.headers.cookie ?? "";
   const secret = process.env.ADMIN_SECRET;
-  const blob = blobToken();
+  const blob = blobAuth(req);
 
   try {
-    // Caricamento diretto di foto/video su Vercel Blob (i file grandi non passano dalla funzione)
+    // Caricamento diretto di foto/video su Vercel Blob con un indirizzo firmato valido 15 minuti
+    // (i file grandi vanno dal telefono allo spazio foto senza passare dalla funzione)
     if (route === "/blob" && req.method === "POST") {
-      const body = req.body as HandleUploadBody;
-      if (body?.type === "blob.generate-client-token" && !(secret && isAuthed(cookie, secret))) {
+      const body = req.body as HandleUploadPresignedBody;
+      if (body?.type === "blob.generate-presigned-url" && !(secret && isAuthed(cookie, secret))) {
         return send(res, 401, { error: "Sessione scaduta: rientra da /admin" });
       }
       if (!blob) return send(res, 500, { error: "Spazio foto non collegato su Vercel (Storage → Blob)" });
-      const result = await handleUpload({
+      const result = await handleUploadPresigned({
         body,
         request: req,
-        token: blob,
-        onBeforeGenerateToken: async (pathname) => ({
-          allowedContentTypes: pathname.startsWith("uploads/video/") ? ["video/*"] : ["image/*"],
-          maximumSizeInBytes: 200 * 1024 * 1024,
-          addRandomSuffix: true,
-        }),
+        getSignedToken: async (pathname) => {
+          const limits = {
+            allowedContentTypes: pathname.startsWith("uploads/video/") ? ["video/*"] : ["image/*"],
+            maximumSizeInBytes: 200 * 1024 * 1024,
+          };
+          const token = await issueSignedToken({
+            ...blob,
+            ...limits,
+            pathname,
+            operations: ["put"],
+            validUntil: Date.now() + 15 * 60 * 1000,
+          });
+          return { token, urlOptions: { ...limits, addRandomSuffix: true } };
+        },
       });
       return send(res, 200, result);
     }
@@ -58,7 +74,7 @@ export default async function handler(req: VercelRequest, res: ServerResponse) {
       token: process.env.GITHUB_TOKEN,
       repo: REPO,
       origin: `https://${host}`,
-      blobToken: blob,
+      blob,
     });
     const query = Object.fromEntries([...url.searchParams].filter(([k]) => k !== "route"));
     const result = await handleAdmin(

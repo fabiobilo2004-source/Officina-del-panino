@@ -42,8 +42,8 @@ export async function uploadMedia(original: File, kind: "image" | "video"): Prom
     return body.src;
   }
 
-  const { upload } = await import("@vercel/blob/client");
-  const blob = await upload(`uploads/${kind}/${safeName(file.name)}`, file, {
+  const { uploadPresigned } = await import("@vercel/blob/client");
+  const blob = await uploadPresigned(`uploads/${kind}/${safeName(file.name)}`, file, {
     access: "public",
     handleUploadUrl: "/api/admin/blob",
     multipart: file.size > 20 * 1024 * 1024,
