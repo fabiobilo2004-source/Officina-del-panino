@@ -1,5 +1,6 @@
 // Comandi admin sulle card della sezione Novità: aggiungi (+), sposta, cambia immagine, data di scadenza, elimina.
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { getEdits, setEdits, type NewsItem } from "@/lib/site-edits";
 import { ImagePicker } from "@/components/admin/ImagePicker";
 
@@ -11,6 +12,9 @@ function setNews(fn: (news: NewsItem[]) => NewsItem[]) {
 export default function NewsAdminTools({ index, expired }: { index: number; expired?: boolean }) {
   const [picker, setPicker] = useState(false);
   const [options, setOptions] = useState(false);
+  const [article, setArticle] = useState(false);
+  // Novità appena aggiunta: dopo l'immagine si propone subito di scrivere l'articolo
+  const [newId, setNewId] = useState<string | null>(null);
 
   if (index < 0) {
     return (
@@ -26,8 +30,26 @@ export default function NewsAdminTools({ index, expired }: { index: number; expi
           <ImagePicker
             onClose={() => setPicker(false)}
             onPick={(src) => {
-              setNews((n) => [...n, { id: `novita-${Date.now()}`, type: "image", src, fit: "cover" }]);
+              const id = `novita-${Date.now()}`;
+              setNews((n) => [...n, { id, type: "image", src, fit: "cover" }]);
               setPicker(false);
+              setNewId(id);
+            }}
+          />
+        )}
+        {newId && (
+          <ArticleForm
+            title=""
+            body=""
+            skipLabel="Solo immagine"
+            onClose={() => setNewId(null)}
+            onSave={(postTitle, postBody) => {
+              if (postTitle || postBody) {
+                setNews((n) => n.map((it) => (it.id === newId && it.type === "image"
+                  ? { ...it, postTitle: postTitle || undefined, postBody: postBody || undefined }
+                  : it)));
+              }
+              setNewId(null);
             }}
           />
         )}
@@ -67,6 +89,7 @@ export default function NewsAdminTools({ index, expired }: { index: number; expi
         {item.type === "image" && (
           <>
             <Tool onClick={() => setPicker(true)} title="Cambia immagine">🖼</Tool>
+            <Tool onClick={() => setArticle(true)} title="Scrivi l'articolo">📝</Tool>
             <Tool onClick={() => setOptions(!options)} title="Visibile fino al…">📅</Tool>
           </>
         )}
@@ -89,6 +112,18 @@ export default function NewsAdminTools({ index, expired }: { index: number; expi
           </label>
           <button onClick={() => setOptions(false)} className="w-full h-8 rounded bg-white/10 hover:bg-white/20">Chiudi</button>
         </div>
+      )}
+
+      {article && item.type === "image" && (
+        <ArticleForm
+          title={item.postTitle ?? ""}
+          body={item.postBody ?? ""}
+          onClose={() => setArticle(false)}
+          onSave={(postTitle, postBody) => {
+            patch({ postTitle: postTitle || undefined, postBody: postBody || undefined });
+            setArticle(false);
+          }}
+        />
       )}
 
       {picker && item.type === "image" && (
@@ -114,5 +149,75 @@ function Tool({ onClick, title, disabled, danger, children }: { onClick: () => v
     >
       {children}
     </button>
+  );
+}
+
+// Titolo e testo dell'articolo che si apre toccando la card della novità
+function ArticleForm({ title, body, skipLabel, onSave, onClose }: {
+  title: string;
+  body: string;
+  /** Testo del bottone secondario (di base "Annulla") */
+  skipLabel?: string;
+  onSave: (title: string, body: string) => void;
+  onClose: () => void;
+}) {
+  const [t, setT] = useState(title);
+  const [b, setB] = useState(body);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      data-admin-ui
+      style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
+      className="fixed inset-0 z-[400] bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center sm:p-4"
+      onClick={onClose}
+    >
+      <form
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={(e) => { e.preventDefault(); onSave(t.trim(), b.trim()); }}
+        className="w-full sm:max-w-lg max-h-[90dvh] flex flex-col bg-[#111] text-white border border-white/15 rounded-t-2xl sm:rounded-xl shadow-2xl text-[14px] max-sm:[&_input]:text-base max-sm:[&_textarea]:text-base"
+      >
+        <header className="flex items-center gap-3 px-5 py-4 border-b border-white/10">
+          <p className="flex-1 font-semibold">Articolo della novità</p>
+          <button type="button" onClick={onClose} className="w-9 h-9 rounded hover:bg-white/10" aria-label="Chiudi">✕</button>
+        </header>
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+          <p className="text-white/50 text-[12px]">
+            Se scrivi un articolo, sulla card compare "Leggi →" e toccandola si apre l'immagine grande con il tuo testo.
+            Lascia tutto vuoto per avere solo l'immagine.
+          </p>
+          <label className="block">
+            <span className="block text-[12px] text-white/60 mb-1">Titolo</span>
+            <input
+              value={t}
+              onChange={(e) => setT(e.target.value)}
+              placeholder="es. Arriva il nuovo panino Biella"
+              autoFocus
+              className="w-full h-10 bg-black border border-white/20 rounded px-3 focus:outline-none focus:border-red-500"
+            />
+          </label>
+          <label className="block">
+            <span className="block text-[12px] text-white/60 mb-1">Testo (vai a capo due volte per un nuovo paragrafo)</span>
+            <textarea
+              value={b}
+              onChange={(e) => setB(e.target.value)}
+              rows={8}
+              placeholder="Racconta la novità…"
+              className="w-full bg-black border border-white/20 rounded p-3 leading-relaxed focus:outline-none focus:border-red-500"
+            />
+          </label>
+        </div>
+        <footer className="flex gap-2 px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t border-white/10">
+          <button type="button" onClick={onClose} className="flex-1 h-11 rounded border border-white/20 hover:border-white/50">{skipLabel ?? "Annulla"}</button>
+          <button type="submit" className="flex-[2] h-11 rounded bg-red-600 font-semibold hover:bg-red-500">Fatto</button>
+        </footer>
+      </form>
+    </div>,
+    document.body,
   );
 }

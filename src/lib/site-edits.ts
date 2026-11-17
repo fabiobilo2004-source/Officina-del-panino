@@ -19,7 +19,19 @@ export type ItemEdit = {
 
 export type NewsItem =
   | { id: string; type: "app" }
-  | { id: string; type: "image"; src: string; alt?: string; title?: string; titleEn?: string; fit?: "cover" | "contain"; until?: string };
+  | {
+      id: string;
+      type: "image";
+      src: string;
+      alt?: string;
+      title?: string;
+      titleEn?: string;
+      fit?: "cover" | "contain";
+      until?: string;
+      /** Articolo che si apre toccando la card (facoltativo) */
+      postTitle?: string;
+      postBody?: string;
+    };
 
 export type GalleryItem = { src: string; alt?: string };
 

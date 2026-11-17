@@ -5,7 +5,7 @@ import { X, ArrowRight } from "lucide-react";
 import { useLang } from "@/context/LanguageContext";
 import { AppDownloadSection } from "@/components/AppDownloadSection";
 import { romeDateISO } from "@/lib/live-status";
-import { getEdits, isAdminMode, subscribe } from "@/lib/site-edits";
+import { getEdits, isAdminMode, subscribe, type NewsItem } from "@/lib/site-edits";
 
 // Strumenti per aggiungere/spostare/eliminare card: caricati solo in modalità admin
 const NewsAdminTools = lazy(() => import("@/components/admin/NewsAdminTools"));
@@ -16,20 +16,24 @@ const CARD = "w-full h-full border border-border/40 shadow-2xl overflow-hidden";
 export function NewsSection() {
   const { lang } = useLang();
   const [appOpen, setAppOpen] = useState(false);
+  // Articolo aperto (novità con titolo/testo)
+  const [post, setPost] = useState<Extract<NewsItem, { type: "image" }> | null>(null);
+  const modalOpen = appOpen || !!post;
+  const closeModal = () => { setAppOpen(false); setPost(null); };
   const news = useSyncExternalStore(subscribe, () => getEdits().news);
   const admin = useSyncExternalStore(subscribe, isAdminMode);
   const today = romeDateISO(new Date());
 
   useEffect(() => {
-    if (!appOpen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setAppOpen(false); };
+    if (!modalOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeModal(); };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [appOpen]);
+  }, [modalOpen]);
 
   return (
     <section className="py-16 md:py-24 px-6 bg-background border-b border-border/30">
@@ -74,26 +78,45 @@ export function NewsSection() {
                       </span>
                     </div>
                   </button>
-                ) : item.title ? (
-                  <div className={`${CARD} flex flex-col bg-[#272725]`}>
-                    <p className="pt-5 px-4 text-center text-xl md:text-2xl font-display uppercase tracking-[0.2em] text-primary">
-                      {lang === "en" && item.titleEn ? item.titleEn : item.title}
-                    </p>
+                ) : (() => {
+                  // Immagine (con eventuale titolo sopra); se c'è un articolo la card si apre toccandola
+                  const hasPost = !!(item.postTitle || item.postBody);
+                  const inner = item.title ? (
+                    <div className={`${CARD} flex flex-col bg-[#272725]`}>
+                      <p className="pt-5 px-4 text-center text-xl md:text-2xl font-display uppercase tracking-[0.2em] text-primary">
+                        {lang === "en" && item.titleEn ? item.titleEn : item.title}
+                      </p>
+                      <img
+                        src={item.src}
+                        alt={item.alt ?? item.title}
+                        loading="lazy"
+                        className={`flex-1 min-h-0 w-full ${item.fit === "cover" ? "object-cover" : "object-contain"}`}
+                      />
+                    </div>
+                  ) : (
                     <img
                       src={item.src}
-                      alt={item.alt ?? item.title}
+                      alt={item.alt ?? item.postTitle ?? ""}
                       loading="lazy"
-                      className={`flex-1 min-h-0 w-full ${item.fit === "cover" ? "object-cover" : "object-contain"}`}
+                      className={`${CARD} ${item.fit === "contain" ? "object-contain bg-[#272725]" : "object-cover"}`}
                     />
-                  </div>
-                ) : (
-                  <img
-                    src={item.src}
-                    alt={item.alt ?? ""}
-                    loading="lazy"
-                    className={`${CARD} ${item.fit === "contain" ? "object-contain bg-[#272725]" : "object-cover"}`}
-                  />
-                )}
+                  );
+                  if (!hasPost) return inner;
+                  return (
+                    <button onClick={() => setPost(item)} className="group relative block w-full h-full text-left">
+                      {inner}
+                      <span className="absolute inset-x-px bottom-px flex items-end justify-between gap-3 px-5 pb-4 pt-16 bg-gradient-to-t from-black/90 via-black/55 to-transparent">
+                        {item.postTitle && (
+                          <span className="text-white font-display text-xl leading-tight line-clamp-2">{item.postTitle}</span>
+                        )}
+                        <span className="ml-auto shrink-0 inline-flex items-center gap-1.5 text-xs font-display uppercase tracking-widest text-white/80 group-hover:text-primary transition-colors">
+                          {lang === "it" ? "Leggi" : "Read"}
+                          <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        </span>
+                      </span>
+                    </button>
+                  );
+                })()}
                 {admin && (
                   <Suspense fallback={null}>
                     <NewsAdminTools index={index} expired={expired} />
@@ -141,6 +164,51 @@ export function NewsSection() {
                 <AppDownloadSection />
               </div>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>, document.body)}
+
+      {createPortal(<AnimatePresence>
+        {post && (
+          <motion.div
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeModal}
+          >
+            <motion.article
+              className="relative max-w-2xl mx-auto my-0 md:my-12 bg-card border border-border/40 shadow-2xl min-h-full md:min-h-0"
+              initial={{ scale: 0.94, y: 30 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.96, y: 20 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={closeModal}
+                aria-label={lang === "it" ? "Chiudi" : "Close"}
+                className="absolute top-3 right-3 z-10 w-10 h-10 flex items-center justify-center bg-black/60 border border-white/20 text-white hover:border-primary hover:text-primary transition-colors"
+              >
+                <X size={20} />
+              </button>
+              <img src={post.src} alt={post.alt ?? post.postTitle ?? ""} className="w-full max-h-[60vh] object-contain bg-black" />
+              <div className="px-6 md:px-10 py-8 md:py-10">
+                <span className="text-primary text-[11px] font-display tracking-[0.25em] uppercase">
+                  {lang === "it" ? "Novità" : "News"}
+                </span>
+                {post.postTitle && (
+                  <h3 className="text-3xl md:text-4xl font-display text-foreground mt-2 mb-5 leading-tight">{post.postTitle}</h3>
+                )}
+                {post.postBody && (
+                  <div className="space-y-4 text-muted-foreground text-base md:text-lg leading-relaxed">
+                    {post.postBody.split(/\n\s*\n/).map((para, i) => (
+                      <p key={i} className="whitespace-pre-line">{para}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.article>
           </motion.div>
         )}
       </AnimatePresence>, document.body)}
