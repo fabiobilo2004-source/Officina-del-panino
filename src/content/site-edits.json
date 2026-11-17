@@ -68,6 +68,17 @@
     },
     "/::span::PAGINA INSTAGRAM::0": {
       "font": "Rubik Dirt"
+    },
+    "/::h2::Il pane giusto fa la differenza. 🍞🔥::0": {
+      "move": {
+        "desktop": [
+          0,
+          0
+        ]
+      },
+      "texts": [
+        "Il pane giusto fa la differenza."
+      ]
     }
   },
   "images": {},
@@ -185,115 +196,6 @@
       "src": "/images/sandwiches-bag.webp"
     }
   ],
-  "hours": {
-    "rimini": {
-      "week": [
-        {
-          "open": "18:00",
-          "close": "02:30"
-        },
-        {
-          "open": "18:00",
-          "close": "02:30"
-        },
-        {
-          "open": "18:00",
-          "close": "02:30"
-        },
-        {
-          "open": "18:00",
-          "close": "02:30"
-        },
-        {
-          "open": "18:00",
-          "close": "05:00"
-        },
-        {
-          "open": "18:00",
-          "close": "05:00"
-        },
-        {
-          "open": "18:00",
-          "close": "02:30"
-        }
-      ],
-      "closures": [],
-      "specials": []
-    },
-    "santarcangelo": {
-      "week": [
-        {
-          "open": "18:00",
-          "close": "23:30"
-        },
-        null,
-        {
-          "open": "18:00",
-          "close": "23:30"
-        },
-        {
-          "open": "18:00",
-          "close": "23:30"
-        },
-        {
-          "open": "18:00",
-          "close": "02:30"
-        },
-        {
-          "open": "18:00",
-          "close": "02:30"
-        },
-        {
-          "open": "18:00",
-          "close": "23:30"
-        }
-      ],
-      "closures": [
-        {
-          "from": "2026-11-12",
-          "note": "Chiuso per ferie",
-          "noteEn": "Closed for holidays"
-        }
-      ],
-      "specials": [
-        {
-          "from": "2026-11-06",
-          "to": "2026-11-11",
-          "label": "Fiera di San Martino",
-          "week": [
-            {
-              "open": "18:00",
-              "close": "23:30"
-            },
-            {
-              "open": "18:00",
-              "close": "23:30"
-            },
-            {
-              "open": "18:00",
-              "close": "23:30"
-            },
-            {
-              "open": "18:00",
-              "close": "23:30"
-            },
-            {
-              "open": "18:00",
-              "close": "02:30"
-            },
-            {
-              "open": "18:00",
-              "close": "02:30"
-            },
-            {
-              "open": "18:00",
-              "close": "23:30"
-            }
-          ]
-        }
-      ]
-    }
-  },
   "menu": {
     "proposte": [
       {
@@ -718,5 +620,114 @@
         "price": "1,20€"
       }
     ]
+  },
+  "hours": {
+    "rimini": {
+      "week": [
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "05:00"
+        },
+        {
+          "open": "18:00",
+          "close": "05:00"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        }
+      ],
+      "closures": [],
+      "specials": []
+    },
+    "santarcangelo": {
+      "week": [
+        {
+          "open": "18:00",
+          "close": "23:30"
+        },
+        null,
+        {
+          "open": "18:00",
+          "close": "23:30"
+        },
+        {
+          "open": "18:00",
+          "close": "23:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "02:30"
+        },
+        {
+          "open": "18:00",
+          "close": "23:30"
+        }
+      ],
+      "closures": [
+        {
+          "from": "2026-11-12",
+          "note": "Chiuso per ferie",
+          "noteEn": "Closed for holidays"
+        }
+      ],
+      "specials": [
+        {
+          "from": "2026-11-06",
+          "to": "2026-11-11",
+          "label": "Fiera di San Martino",
+          "week": [
+            {
+              "open": "18:00",
+              "close": "23:30"
+            },
+            {
+              "open": "18:00",
+              "close": "23:30"
+            },
+            {
+              "open": "18:00",
+              "close": "23:30"
+            },
+            {
+              "open": "18:00",
+              "close": "23:30"
+            },
+            {
+              "open": "18:00",
+              "close": "02:30"
+            },
+            {
+              "open": "18:00",
+              "close": "02:30"
+            },
+            {
+              "open": "18:00",
+              "close": "23:30"
+            }
+          ]
+        }
+      ]
+    }
   }
 }
