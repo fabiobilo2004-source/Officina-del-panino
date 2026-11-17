@@ -36,6 +36,10 @@ export function summarize(published: SiteEditsData, draft: SiteEditsData): strin
   if (!same(published.news, draft.news)) lines.push("Sezione Novità");
   if (!same(published.gallery, draft.gallery)) lines.push("Foto della Galleria");
   if (!same(published.creations, draft.creations)) lines.push("Foto di Le Nostre Creazioni");
+  if (!same(published.homeSections, draft.homeSections)) lines.push("Sezioni aggiunte in homepage");
+  if (!same(published.hiddenSections ?? [], draft.hiddenSections ?? []) || !same(published.removedSections ?? [], draft.removedSections ?? [])) {
+    lines.push("Sezioni nascoste, rimosse o rimesse in homepage");
+  }
   const menuChanged = Object.keys({ ...published.menu, ...draft.menu }).filter((k) => !same(published.menu?.[k], draft.menu?.[k]));
   if (menuChanged.length) lines.push(`Menu: ${menuChanged.map((k) => MENU_SECTIONS[k]?.label ?? k).join(", ")}`);
   if (!same(published.hours?.rimini, draft.hours?.rimini)) lines.push("Orari e chiusure di Rimini");

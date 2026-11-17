@@ -10,6 +10,7 @@ import { liveStatus, useHours } from "@/lib/hours";
 import { getEdits, isAdminMode, subscribe } from "@/lib/site-edits";
 import { AppStoreButtons } from "@/components/AppStoreButtons";
 import { NewsSection } from "@/components/NewsSection";
+import { HomeBlocks } from "@/components/HomeBlocks";
 
 // Le foto di "Le Nostre Creazioni" si modificano dal pannello admin (site-edits.json → creations)
 const ImageListAdminTools = lazy(() => import("@/components/admin/ImageListAdminTools"));
@@ -505,7 +506,11 @@ export default function Home() {
         </motion.div>
       </section>
 
+      <HomeBlocks after="hero" />
+
       <NewsSection />
+
+      <HomeBlocks after="novita" />
 
       {/* Featured Items — Parallax Scroll */}
       <section className="py-24 bg-card border-b border-border/30">
@@ -559,6 +564,8 @@ export default function Home() {
         </div>
       </section>
 
+      <HomeBlocks after="creazioni" />
+
       {/* Stats Section */}
       <section className="py-12 md:py-16 border-y border-border/50 bg-background relative overflow-hidden">
         <div aria-hidden className="absolute inset-0 flex items-center justify-center select-none pointer-events-none">
@@ -586,6 +593,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <HomeBlocks after="numeri" />
 
       {/* Story / Vibe Section */}
       <section className="pt-14 pb-10 md:pt-24 md:pb-16 px-6 max-w-7xl mx-auto">
@@ -616,6 +625,8 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      <HomeBlocks after="storia" />
 
       {/* Come prepariamo i tuoi panini — Video Section */}
       <section ref={lavorazioneSectionRef} className="py-24 bg-background border-b border-border/30 relative overflow-hidden">
@@ -667,6 +678,8 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      <HomeBlocks after="lavorazione" />
 
       {/* ── Estate Section ── */}
       <section ref={estateSectionRef} className="py-24 bg-card border-b border-border/30">
@@ -729,6 +742,8 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      <HomeBlocks after="estate" />
 
       {/* ── Pane Giusto Section ── */}
       <section ref={paneSectionRef} className="py-24 bg-background border-b border-border/30 relative overflow-hidden">
@@ -793,6 +808,8 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      <HomeBlocks after="pane" />
 
       {/* ── Instagram ── */}
       <section ref={instaSectionRef} className="py-16 md:py-20 lg:py-24 px-6 bg-background border-b border-border/30 overflow-hidden">
@@ -861,6 +878,8 @@ export default function Home() {
         </div>
       </section>
 
+      <HomeBlocks after="instagram" />
+
       {/* ── Late Night Section ── */}
       <section className="py-0 bg-background border-b border-border/30 overflow-hidden relative">
         <GearBackground />
@@ -911,6 +930,8 @@ export default function Home() {
         </div>
       </section>
 
+
+      <HomeBlocks after="notte" />
 
       {/* ── Take Away Section ── */}
       <section className="py-20 md:py-28 bg-card border-y border-border/30 overflow-hidden">
@@ -997,6 +1018,8 @@ export default function Home() {
         </div>
       </section>
 
+      <HomeBlocks after="takeaway" />
+
       {/* ── Award Section ── */}
       <section className="py-20 md:py-28 bg-background border-b border-border/30 overflow-hidden relative">
         <GearBackground />
@@ -1044,6 +1067,8 @@ export default function Home() {
           />
         </motion.div>
       </section>
+
+      <HomeBlocks after="premi" />
 
       {/* Reviews — titolo unico + due carousel */}
       <section className="py-14 md:py-24 px-4 sm:px-6 max-w-7xl mx-auto">
@@ -1178,6 +1203,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <HomeBlocks after="recensioni" />
 
       {/* Lightbox */}
       {lightboxIdx !== null && creazioniImages[lightboxIdx] && (

@@ -48,6 +48,28 @@ export type MenuItem = {
   badge?: string;
 };
 
+/** Modelli delle sezioni aggiunte in homepage (vedi src/components/HomeBlocks.tsx) */
+export type HomeLayout = "right" | "left" | "banner" | "center" | "quote" | "gallery" | "cta" | "promo" | "video";
+
+/** Dove porta il bottone del modello "Invito con bottone" */
+export type CtaTarget = "app" | "justeat" | "menu" | "tel-rimini" | "tel-santarcangelo" | "instagram";
+
+/** Sezione aggiunta dall'admin in homepage, dopo la sezione `after` */
+export type HomeSection = {
+  id: string;
+  after: string;
+  layout?: HomeLayout;
+  title?: string;
+  body?: string;
+  /** Foto (modelli con una foto) */
+  src?: string;
+  /** Foto della galleria (fino a 3) */
+  images?: string[];
+  /** Video (modello Testo + video) */
+  video?: string;
+  button?: { label: string; target: CtaTarget };
+};
+
 /** Sezioni del menu modificabili dall'admin, ognuna una lista di voci (vedi src/lib/menu.ts) */
 export type MenuData = Record<string, MenuItem[]>;
 
@@ -62,6 +84,11 @@ export type SiteEditsData = {
   /** Foto della sezione "Le Nostre Creazioni" in homepage */
   creations?: GalleryItem[];
   menu?: MenuData;
+  homeSections?: HomeSection[];
+  /** Sezioni fisse della homepage nascoste dall'admin (id come in HOME_SLOTS) */
+  hiddenSections?: string[];
+  /** Sezioni fisse rimosse del tutto: come nascoste, ma senza la riga gialla in pagina (si rimettono dal pannello) */
+  removedSections?: string[];
   hours?: HoursData;
 };
 
@@ -88,11 +115,14 @@ export function normalize(d: Partial<SiteEditsData>): SiteEditsData {
   return {
     globals: { ...d.globals }, items: { ...d.items }, images: { ...d.images }, videos: { ...d.videos }, links: { ...d.links },
     news: [...(d.news ?? [])], gallery: d.gallery ? [...d.gallery] : undefined,
-    creations: d.creations ? [...d.creations] : undefined, menu: d.menu, hours: d.hours,
+    creations: d.creations ? [...d.creations] : undefined, menu: d.menu,
+    homeSections: d.homeSections ? [...d.homeSections] : undefined,
+    hiddenSections: d.hiddenSections ? [...d.hiddenSections] : undefined,
+    removedSections: d.removedSections ? [...d.removedSections] : undefined, hours: d.hours,
   };
 }
 
-let data: SiteEditsData = normalize(initial as Partial<SiteEditsData>);
+let data: SiteEditsData = normalize(initial as unknown as Partial<SiteEditsData>);
 let adminMode = false;
 const infos = new WeakMap<Element, Info>();
 const srcInfos = new WeakMap<Element, AttrInfo>();

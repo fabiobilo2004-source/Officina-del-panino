@@ -8,6 +8,7 @@ import { ImagePicker } from "@/components/admin/ImagePicker";
 import { setAdminTab } from "@/lib/admin-tab";
 import { HoursEditor } from "@/components/admin/HoursEditor";
 import { PublishDialog, summarize } from "@/components/admin/PublishDialogs";
+import { FIXED_SECTIONS, setSectionState } from "@/components/HomeBlocks";
 
 const API = "/api/admin";
 const WEIGHTS = [300, 400, 500, 600, 700, 800, 900];
@@ -443,6 +444,32 @@ export default function AdminPanel() {
                 🕒 Orari e chiusure
               </button>
             )}
+
+            {/* Sezioni della homepage nascoste o rimosse: qui si possono sempre rimettere */}
+            {!(phone && el) && (() => {
+              const off = Object.values(FIXED_SECTIONS).filter((sec) =>
+                sec && ((edits.hiddenSections ?? []).includes(sec.id) || (edits.removedSections ?? []).includes(sec.id)));
+              if (!off.length) return null;
+              return (
+                <Section title="Sezioni nascoste e rimosse">
+                  {off.map((sec) => sec && (
+                    <div key={sec.id} className="flex items-center gap-2">
+                      <span className="flex-1 truncate">
+                        {sec.label}
+                        <span className="text-white/40"> · {(edits.removedSections ?? []).includes(sec.id) ? "rimossa" : "nascosta"}</span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setSectionState(sec.id, "visible")}
+                        className="h-8 px-3 rounded border border-white/25 hover:border-white/60"
+                      >
+                        Rimetti
+                      </button>
+                    </div>
+                  ))}
+                </Section>
+              );
+            })()}
 
             <Section title={phone && el ? "" : isVideo ? "Video selezionato" : isImage ? "Immagine selezionata" : "Testo selezionato"}>
               {!el ? (
