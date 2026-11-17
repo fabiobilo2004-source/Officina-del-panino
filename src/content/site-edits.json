@@ -75,13 +75,6 @@
   "links": {},
   "news": [
     {
-      "id": "fiera-san-martino",
-      "type": "image",
-      "src": "/images/news-fiera-san-martino.jpg",
-      "alt": "L'Officina riapre — Fiera di San Martino, Santarcangelo di Romagna, 7-11 novembre 2026",
-      "until": "2026-11-11"
-    },
-    {
       "id": "app",
       "type": "app"
     },
